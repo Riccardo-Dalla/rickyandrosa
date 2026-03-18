@@ -189,6 +189,8 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
     if (!video) return;
 
     setPhase("playing");
+    video.muted = false;
+    video.volume = 0.5;
     video.play();
 
     const startFade = () => {
