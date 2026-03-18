@@ -139,14 +139,29 @@ export function GuestInfoForm({
       address: address.trim(),
     });
 
+    // Safety net: if the page closes mid-request, sendBeacon delivers the data
+    const beaconGuard = () => {
+      if (navigator.sendBeacon) {
+        const blob = new Blob([payload], { type: "application/json" });
+        navigator.sendBeacon("/api/guest-info", blob);
+      }
+    };
+    window.addEventListener("beforeunload", beaconGuard);
+
     const fetchPromise = fetch("/api/guest-info", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: payload,
       keepalive: true,
     })
-      .then((res) => res.json())
-      .catch(() => ({ status: "success" }));
+      .then((res) => {
+        window.removeEventListener("beforeunload", beaconGuard);
+        return res.json();
+      })
+      .catch(() => {
+        window.removeEventListener("beforeunload", beaconGuard);
+        return { status: "success" };
+      });
 
     setStatus("submitting");
 
