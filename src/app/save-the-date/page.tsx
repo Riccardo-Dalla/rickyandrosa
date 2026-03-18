@@ -61,7 +61,7 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
       <span className="font-serif text-5xl font-light tracking-wide text-white sm:text-6xl md:text-7xl">
         {String(value).padStart(2, "0")}
       </span>
-      <span className="mt-2 font-serif text-[9px] font-medium uppercase tracking-[0.35em] text-white/40">
+      <span className="mt-2 font-serif text-[11px] font-medium uppercase tracking-[0.35em] text-white/40 sm:text-[9px]">
         {label}
       </span>
     </div>
@@ -249,7 +249,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
         <motion.p
           animate={{ opacity: [0.5, 0.9, 0.5] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="rounded-full bg-black/30 px-6 py-2 font-sans text-xs uppercase tracking-[0.3em] text-white backdrop-blur-sm sm:text-sm"
+          className="rounded-full bg-black/30 px-8 py-3 font-sans text-sm uppercase tracking-[0.3em] text-white backdrop-blur-sm sm:px-6 sm:py-2 sm:text-sm"
         >
           Tap to open
         </motion.p>
@@ -275,8 +275,19 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
     bgAudio.currentTime = 2;
     bgAudio.volume = 0.4;
     bgAudio.play().catch(() => {});
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        bgAudio.pause();
+      } else {
+        bgAudio.play().catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       bgAudio.pause();
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [bgAudio]);
   const [guestSubmitted, setGuestSubmitted] = useState(() => {
@@ -328,7 +339,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.35 }}
-            className="font-serif text-[15px] font-medium uppercase tracking-[0.6em] text-gold/70 sm:text-[17px]"
+            className="font-serif text-base font-medium uppercase tracking-[0.6em] text-gold/70 sm:text-[17px]"
           >
             {t.saveTheDate.saveTheDate}
           </motion.p>
@@ -390,7 +401,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
             <p className="font-display text-3xl font-bold uppercase tracking-[0.35em] text-white sm:text-4xl md:text-5xl">
               {t.saveTheDate.date}
             </p>
-            <p className="mt-4 font-serif text-sm font-medium uppercase tracking-[0.5em] text-white/50 sm:text-base">
+            <p className="mt-4 font-serif text-base font-medium uppercase tracking-[0.5em] text-white/50 sm:text-base">
               {t.saveTheDate.location}
             </p>
             <CalendarButton />
@@ -409,7 +420,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
             transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
             className="flex flex-col items-center gap-3"
           >
-            <span className="font-serif text-[8px] uppercase tracking-[0.4em] text-white/25">
+            <span className="font-serif text-[10px] uppercase tracking-[0.4em] text-white/25 sm:text-[8px]">
               {t.saveTheDate.scroll}
             </span>
             <div className="h-8 w-px bg-gradient-to-b from-white/25 to-transparent" />
@@ -424,10 +435,10 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <ScrollReveal>
             <Flourish className="mx-auto mb-10 opacity-40" />
-            <p className="font-serif text-base font-medium uppercase tracking-[0.5em] text-gold/70 sm:text-lg">
+            <p className="font-serif text-lg font-medium uppercase tracking-[0.5em] text-gold/70 sm:text-lg">
               {t.guestForm.title}
             </p>
-            <p className="mx-auto mt-6 max-w-md font-serif text-base font-light italic text-white/45 sm:text-lg">
+            <p className="mx-auto mt-6 max-w-md font-serif text-lg font-light italic text-white/45 sm:text-lg">
               {t.guestForm.subtitle}
             </p>
           </ScrollReveal>
@@ -448,7 +459,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
               >
                 <div className="mx-auto mb-10 h-px w-20 bg-gold/20" />
 
-                <p className="font-serif text-[10px] font-medium uppercase tracking-[0.5em] text-gold/60">
+                <p className="font-serif text-xs font-medium uppercase tracking-[0.5em] text-gold/60 sm:text-[10px]">
                   {t.saveTheDate.countingDown}
                 </p>
 
@@ -464,7 +475,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
                   </div>
                 </div>
 
-                <p className="mt-14 font-serif text-lg font-light italic tracking-wide text-white/35">
+                <p className="mt-14 font-serif text-xl font-light italic tracking-wide text-white/35 sm:text-lg">
                   {t.saveTheDate.untilCelebrate}
                 </p>
               </motion.div>

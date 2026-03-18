@@ -221,10 +221,10 @@ export function GuestInfoForm({
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <h3 className="font-serif text-2xl font-light tracking-wide text-white">
+            <h3 className="font-serif text-2xl font-light tracking-wide text-white sm:text-2xl">
               {resultTitle}
             </h3>
-            <p className="mt-4 font-serif text-sm font-light text-white/40">
+            <p className="mt-4 font-serif text-base font-light text-white/40 sm:text-sm">
               {resultMessage}
             </p>
           </motion.div>
@@ -247,7 +247,7 @@ export function GuestInfoForm({
             className="space-y-6 sm:space-y-8"
           >
             <div>
-              <label className="block font-sans text-[10px] font-medium uppercase tracking-[0.3em] text-white/40">
+              <label className="block font-sans text-xs font-medium uppercase tracking-[0.3em] text-white/40 sm:text-[10px]">
                 {t.guestForm.name}
               </label>
               <input
@@ -267,7 +267,7 @@ export function GuestInfoForm({
             </div>
 
             <div>
-              <label className="block font-sans text-[10px] font-medium uppercase tracking-[0.3em] text-white/40">
+              <label className="block font-sans text-xs font-medium uppercase tracking-[0.3em] text-white/40 sm:text-[10px]">
                 {t.guestForm.email}
               </label>
               <input
@@ -288,7 +288,7 @@ export function GuestInfoForm({
             </div>
 
             <div className="relative">
-              <label className="block font-sans text-[10px] font-medium uppercase tracking-[0.3em] text-white/40">
+              <label className="block font-sans text-xs font-medium uppercase tracking-[0.3em] text-white/40 sm:text-[10px]">
                 {t.guestForm.address}
               </label>
               <input
@@ -332,7 +332,7 @@ export function GuestInfoForm({
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="text-center font-sans text-xs text-rose/80"
+                  className="text-center font-sans text-sm text-rose/80 sm:text-xs"
                 >
                   {t.guestForm.errorMessage}
                 </motion.p>
@@ -351,7 +351,7 @@ export function GuestInfoForm({
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     className="inline-block h-5 w-5 rounded-full border-2 border-gold/30 border-t-gold"
                   />
-                  <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-gold/70">
+                  <span className="font-sans text-xs font-semibold uppercase tracking-[0.3em] text-gold/70 sm:text-[10px]">
                     Submitting...
                   </span>
                 </motion.div>
