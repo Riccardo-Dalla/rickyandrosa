@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion";
+import { GuestInfoForm } from "@/components/GuestInfoForm";
 
 function useCountdown(targetMs: number) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -222,7 +223,7 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: phase === "sealed" ? 1 : 0 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-[15%] left-0 right-0 z-[25] flex justify-center pointer-events-none"
+        className="absolute bottom-[5%] left-0 right-0 z-[25] flex justify-center pointer-events-none"
       >
         <motion.p
           animate={{ opacity: [0.5, 0.9, 0.5] }}
@@ -247,6 +248,10 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
 function SaveTheDateContent() {
   const { t } = useI18n();
   const countdown = useCountdown(new Date("2027-06-19T16:00:00").getTime());
+  const [guestSubmitted, setGuestSubmitted] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("rr-guest-submitted") === "true";
+  });
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -381,37 +386,59 @@ function SaveTheDateContent() {
         </motion.div>
       </section>
 
-      {/* ─── Countdown ─── */}
+      {/* ─── Guest Details + Countdown ─── */}
       <section className="relative px-6 py-28 sm:py-36">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#2a3d2e] via-[#1e3025] to-[#243529]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2a3d2e] via-[#1e3025] to-deep" />
 
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <ScrollReveal>
-            <p className="font-serif text-[10px] font-medium uppercase tracking-[0.5em] text-gold/60">
-              {t.saveTheDate.countingDown}
+            <Flourish className="mx-auto mb-10 opacity-40" />
+            <p className="font-serif text-base font-medium uppercase tracking-[0.5em] text-gold/70 sm:text-lg">
+              {t.guestForm.title}
+            </p>
+            <p className="mx-auto mt-6 max-w-md font-serif text-base font-light italic text-white/45 sm:text-lg">
+              {t.guestForm.subtitle}
             </p>
           </ScrollReveal>
 
           <ScrollReveal delay={0.15}>
-            <div className="mt-12 flex items-center justify-center gap-6 sm:gap-10 md:gap-14">
-              <CountdownUnit value={countdown.days} label={t.saveTheDate.days} />
-              <span className="mt-[-20px] font-serif text-3xl font-light text-white/15">:</span>
-              <CountdownUnit value={countdown.hours} label={t.saveTheDate.hours} />
-              <span className="mt-[-20px] font-serif text-3xl font-light text-white/15">:</span>
-              <CountdownUnit value={countdown.minutes} label={t.saveTheDate.minutes} />
-              <span className="mt-[-20px] font-serif text-3xl font-light text-white/15 hidden sm:block">:</span>
-              <div className="hidden sm:block">
-                <CountdownUnit value={countdown.seconds} label={t.saveTheDate.seconds} />
-              </div>
+            <div className="mt-14">
+              <GuestInfoForm onSubmitted={() => setGuestSubmitted(true)} />
             </div>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.3}>
-            <div className="mx-auto mt-14 h-px w-20 bg-gold/20" />
-            <p className="mt-8 font-serif text-lg font-light italic tracking-wide text-white/35">
-              {t.saveTheDate.untilCelebrate}
-            </p>
-          </ScrollReveal>
+          <AnimatePresence>
+            {guestSubmitted && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                className="mt-20"
+              >
+                <div className="mx-auto mb-10 h-px w-20 bg-gold/20" />
+
+                <p className="font-serif text-[10px] font-medium uppercase tracking-[0.5em] text-gold/60">
+                  {t.saveTheDate.countingDown}
+                </p>
+
+                <div className="mt-12 flex items-center justify-center gap-6 sm:gap-10 md:gap-14">
+                  <CountdownUnit value={countdown.days} label={t.saveTheDate.days} />
+                  <span className="mt-[-20px] font-serif text-3xl font-light text-white/15">:</span>
+                  <CountdownUnit value={countdown.hours} label={t.saveTheDate.hours} />
+                  <span className="mt-[-20px] font-serif text-3xl font-light text-white/15">:</span>
+                  <CountdownUnit value={countdown.minutes} label={t.saveTheDate.minutes} />
+                  <span className="mt-[-20px] font-serif text-3xl font-light text-white/15 hidden sm:block">:</span>
+                  <div className="hidden sm:block">
+                    <CountdownUnit value={countdown.seconds} label={t.saveTheDate.seconds} />
+                  </div>
+                </div>
+
+                <p className="mt-14 font-serif text-lg font-light italic tracking-wide text-white/35">
+                  {t.saveTheDate.untilCelebrate}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
     </>

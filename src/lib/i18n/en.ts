@@ -38,6 +38,30 @@ const en = {
     untilCelebrate: "Until we celebrate together",
   },
 
+  guestForm: {
+    title: "One Last Thing",
+    subtitle:
+      "Please share your details so we can send you a formal invitation",
+    name: "Full Name",
+    email: "Email",
+    address: "Mailing Address",
+    namePlaceholder: "First & Last Name",
+    emailPlaceholder: "your@email.com",
+    addressPlaceholder: "Start typing your address...",
+    submit: "Submit",
+    submitting: "Submitting...",
+    successTitle: "Thank You!",
+    successMessage:
+      "We\u2019ve saved your details and will send your invitation soon.",
+    duplicateTitle: "Already Received!",
+    duplicateMessage:
+      "We already have your information on file \u2014 no need to submit again.",
+    errorMessage: "Something went wrong. Please try again.",
+    required: "This field is required",
+    invalidEmail: "Please enter a valid email address",
+    selectAddress: "Please select an address from the suggestions",
+  },
+
   ourStory: {
     riccardoRosa: "Riccardo & Rosa",
     ourStory: "Our Story",

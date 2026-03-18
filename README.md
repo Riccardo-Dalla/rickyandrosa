@@ -20,14 +20,43 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+Copy `.env.example` to `.env.local` and fill in the values:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+cp .env.example .env.local
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Variable | Required | Side | Purpose |
+|----------|----------|------|---------|
+| `GOOGLE_APPS_SCRIPT_URL` | Yes | Server | Google Apps Script web app URL for saving guest info to Google Sheets |
+| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | No | Client | Google Maps API key for address autocomplete on the save-the-date form |
+
+`.env.local` is gitignored and should never be committed. For production (Vercel), set these in the dashboard under Settings > Environment Variables.
+
+### Google Sheets Setup
+
+The save-the-date page collects guest names, emails, and mailing addresses and saves them to a Google Sheet via a Google Apps Script web app.
+
+1. Create a new Google Sheet (or use an existing one with a dedicated tab)
+2. Go to **Extensions > Apps Script**
+3. Paste the script from the setup instructions (see conversation history or `.env.example` comments)
+4. Click **Deploy > New deployment** — choose **Web app**, set "Execute as" to **Me**, "Who has access" to **Anyone**
+5. Copy the deployment URL into `GOOGLE_APPS_SCRIPT_URL`
+
+The script is bound to the spreadsheet it was created from, so `getActiveSpreadsheet()` always targets the right sheet. Use `getSheetByName("Tab Name")` if you want to target a specific tab.
+
+### Address Autocomplete (Optional)
+
+To enable Google Maps address autocomplete:
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Enable **Places API** and **Maps JavaScript API**
+3. Create an API key, restrict it to your domain
+4. Set `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` in `.env.local`
+
+The form works without this — the address field will just be a regular text input.
 
 ## Deploy on Vercel
 

@@ -40,6 +40,30 @@ const it: Translations = {
     untilCelebrate: "Fino a quando festeggeremo insieme",
   },
 
+  guestForm: {
+    title: "Un\u2019Ultima Cosa",
+    subtitle:
+      "Condividi i tuoi dati per ricevere l\u2019invito formale",
+    name: "Nome Completo",
+    email: "Email",
+    address: "Indirizzo Postale",
+    namePlaceholder: "Nome e Cognome",
+    emailPlaceholder: "tua@email.com",
+    addressPlaceholder: "Inizia a digitare il tuo indirizzo...",
+    submit: "Invia",
+    submitting: "Invio in corso...",
+    successTitle: "Grazie!",
+    successMessage:
+      "Abbiamo salvato i tuoi dati e ti invieremo l\u2019invito presto.",
+    duplicateTitle: "Gi\u00E0 Ricevuto!",
+    duplicateMessage:
+      "Abbiamo gi\u00E0 le tue informazioni \u2014 non \u00E8 necessario reinviare.",
+    errorMessage: "Qualcosa \u00E8 andato storto. Riprova.",
+    required: "Questo campo \u00E8 obbligatorio",
+    invalidEmail: "Inserisci un indirizzo email valido",
+    selectAddress: "Seleziona un indirizzo dai suggerimenti",
+  },
+
   ourStory: {
     riccardoRosa: "Riccardo & Rosa",
     ourStory: "La Nostra Storia",
