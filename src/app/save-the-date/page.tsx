@@ -178,7 +178,7 @@ function Flourish({ className = "" }: { className?: string }) {
 }
 
 /* ─── Full-Screen Envelope Video ─── */
-function Envelope({ onOpen }: { onOpen: () => void }) {
+function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const { t } = useI18n();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<"sealed" | "playing" | "fading" | "done">("sealed");
@@ -193,11 +193,17 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
     video.volume = 0.5;
     video.play();
 
+    // Pre-create audio during user gesture so the browser allows playback later
+    const bgAudio = new Audio("/save-the-date.mp3");
+    bgAudio.preload = "auto";
+    bgAudio.volume = 0;
+    bgAudio.play().catch(() => {});
+
     const startFade = () => {
       setPhase("fading");
       setTimeout(() => {
         setPhase("done");
-        onOpen();
+        onOpen(bgAudio);
       }, 1000);
     };
 
@@ -260,9 +266,19 @@ function Envelope({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function SaveTheDateContent() {
+function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
   const { t } = useI18n();
   const countdown = useCountdown(new Date("2027-06-19T16:00:00").getTime());
+
+  useEffect(() => {
+    if (!bgAudio) return;
+    bgAudio.currentTime = 2;
+    bgAudio.volume = 0.4;
+    bgAudio.play().catch(() => {});
+    return () => {
+      bgAudio.pause();
+    };
+  }, [bgAudio]);
   const [guestSubmitted, setGuestSubmitted] = useState(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem("rr-guest-submitted") === "true";
@@ -462,6 +478,7 @@ function SaveTheDateContent() {
 
 export default function SaveTheDate() {
   const [isOpened, setIsOpened] = useState(false);
+  const [bgAudio, setBgAudio] = useState<HTMLAudioElement | null>(null);
 
   return (
     <div className="std-page bg-deep">
@@ -471,12 +488,12 @@ export default function SaveTheDate() {
             key="envelope"
             className="fixed inset-0 z-50 overflow-hidden"
           >
-            <Envelope onOpen={() => setIsOpened(true)} />
+            <Envelope onOpen={(audio) => { setBgAudio(audio); setIsOpened(true); }} />
           </motion.section>
         )}
       </AnimatePresence>
 
-      {isOpened && <SaveTheDateContent />}
+      {isOpened && <SaveTheDateContent bgAudio={bgAudio} />}
     </div>
   );
 }

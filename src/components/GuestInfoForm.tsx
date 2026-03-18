@@ -190,12 +190,12 @@ export function GuestInfoForm({
       : t.guestForm.successMessage;
 
   const inputClass = (hasError: boolean) =>
-    `mt-2 w-full border-0 border-b-2 bg-transparent pb-3 font-serif text-lg font-light text-white placeholder-white/20 outline-none transition-colors duration-300 ${
+    `mt-2 w-full border-0 border-b-2 bg-transparent py-3 font-serif text-base font-light text-white placeholder-white/20 outline-none transition-colors duration-300 sm:text-lg ${
       hasError ? "border-red-400" : "border-white/15 focus:border-gold/50"
     }`;
 
   return (
-    <div className="mx-auto max-w-md">
+    <div className="mx-auto max-w-md px-4 sm:px-0">
       <AnimatePresence mode="wait">
         {showResult ? (
           <motion.div
@@ -244,7 +244,7 @@ export function GuestInfoForm({
                 e.preventDefault();
               }
             }}
-            className="space-y-8"
+            className="space-y-6 sm:space-y-8"
           >
             <div>
               <label className="block font-sans text-[10px] font-medium uppercase tracking-[0.3em] text-white/40">
@@ -314,7 +314,7 @@ export function GuestInfoForm({
                       key={s.placeId}
                       type="button"
                       onClick={() => selectSuggestion(s.placeId, s.text)}
-                      className="block w-full border-t border-white/[0.04] px-4 py-3 text-left font-sans text-[13px] text-white/60 transition-colors first:border-t-0 hover:bg-white/[0.06] hover:text-white/85"
+                      className="block w-full border-t border-white/[0.04] px-4 py-4 text-left font-sans text-sm text-white/60 transition-colors first:border-t-0 hover:bg-white/[0.06] hover:text-white/85 sm:py-3 sm:text-[13px]"
                     >
                       {s.text}
                     </button>
@@ -360,7 +360,7 @@ export function GuestInfoForm({
                   type="submit"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2.5 border border-white/20 px-10 py-3 font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold"
+                  className="inline-flex items-center gap-2.5 border border-white/20 px-8 py-4 font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold sm:px-10 sm:py-3 sm:text-[10px]"
                 >
                   <svg
                     width="13"
