@@ -56,12 +56,13 @@ export function Navigation() {
             : "bg-transparent"
         }`}
       >
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
+        <nav className="flex items-center justify-between px-4 py-4 sm:px-6">
+          {/* Left — R&R logo */}
           <Link href="/" className="text-3xl leading-none">
             <RRLogo />
           </Link>
 
-          {/* Desktop nav */}
+          {/* Center — Desktop nav */}
           <ul className="hidden items-center gap-8 lg:flex">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
@@ -94,6 +95,7 @@ export function Navigation() {
             ))}
           </ul>
 
+          {/* Right — Language toggle + mobile burger */}
           <div className="flex items-center gap-3">
             {/* Mobile burger */}
             <button

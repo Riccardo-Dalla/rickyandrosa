@@ -18,9 +18,7 @@ export default function Home() {
       >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
-      {/* Fallback gradient shown while video loads or if missing */}
-      <div className="absolute inset-0 bg-gradient-to-b from-deep via-deep/95 to-charcoal" />
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-800/50 via-gray-800/30 to-gray-800/50" />
 
       <div className="relative z-10 px-6 text-center">
         <motion.h1
