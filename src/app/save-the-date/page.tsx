@@ -71,13 +71,15 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
 const GOOGLE_CAL_URL =
   "https://calendar.google.com/calendar/render?action=TEMPLATE" +
   "&text=R%26R+Wedding" +
-  "&dates=20270619T140000Z/20270620T020000Z" +
+  "&dates=20270619T140000Z/20270620T000000Z" +
   "&location=Bologna%2C+Italy" +
-  "&details=The+wedding+of+Riccardo+%26+Rosa";
+  "&details=The+wedding+of+Riccardo+%26+Rosa" +
+  "&ctz=Europe/Rome";
 
 const ICS_DATA =
   "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\n" +
-  "DTSTART:20270619T160000\r\nDTEND:20270620T020000\r\n" +
+  "DTSTART;TZID=Europe/Rome:20270619T160000\r\n" +
+  "DTEND;TZID=Europe/Rome:20270620T020000\r\n" +
   "SUMMARY:R&R Wedding\r\nLOCATION:Bologna, Italy\r\n" +
   "DESCRIPTION:The wedding of Riccardo & Rosa\r\n" +
   "END:VEVENT\r\nEND:VCALENDAR";
@@ -85,20 +87,31 @@ const ICS_DATA =
 function CalendarButton() {
   const [open, setOpen] = useState(false);
   const { t } = useI18n();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClick = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [open]);
 
   const downloadICS = () => {
-    const blob = new Blob([ICS_DATA], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = url;
+    a.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ICS_DATA);
     a.download = "rr-wedding.ics";
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
     setOpen(false);
   };
 
   return (
-    <div className="relative mt-8 inline-block">
+    <div ref={wrapperRef} className="relative mt-8 inline-block">
       <motion.button
         onClick={() => setOpen(!open)}
         whileHover={{ scale: 1.03 }}
@@ -117,11 +130,11 @@ function CalendarButton() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            initial={{ opacity: 0, y: -8, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            exit={{ opacity: 0, y: -8, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-1/2 z-20 mt-2 -translate-x-1/2 overflow-hidden border border-white/15 bg-deep/90 backdrop-blur-md"
+            className="absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 overflow-hidden rounded border border-white/15 bg-deep/90 backdrop-blur-md"
           >
             <a
               href={GOOGLE_CAL_URL}
