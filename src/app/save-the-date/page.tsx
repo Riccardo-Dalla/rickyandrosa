@@ -1,9 +1,18 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { Inter, Playfair_Display } from "next/font/google";
 import { useI18n } from "@/lib/i18n/context";
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from "framer-motion";
 import { GuestInfoForm } from "@/components/GuestInfoForm";
+
+const inter = Inter({
+  subsets: ["latin"],
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+});
 
 function useCountdown(targetMs: number) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -70,18 +79,18 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
 
 const GOOGLE_CAL_URL =
   "https://calendar.google.com/calendar/render?action=TEMPLATE" +
-  "&text=R%26R+Wedding" +
+  "&text=Rosa+%26+Riccardo%27s+Wedding+%F0%9F%92%8D%F0%9F%92%95" +
   "&dates=20270619T140000Z/20270620T000000Z" +
   "&location=Bologna%2C+Italy" +
-  "&details=The+wedding+of+Riccardo+%26+Rosa" +
+  "&details=Rosa+%26+Riccardo%27s+Wedding+%F0%9F%92%8D%F0%9F%92%95" +
   "&ctz=Europe/Rome";
 
 const ICS_DATA =
   "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\n" +
   "DTSTART;TZID=Europe/Rome:20270619T160000\r\n" +
   "DTEND;TZID=Europe/Rome:20270620T020000\r\n" +
-  "SUMMARY:R&R Wedding\r\nLOCATION:Bologna, Italy\r\n" +
-  "DESCRIPTION:The wedding of Riccardo & Rosa\r\n" +
+  "SUMMARY:Rosa & Riccardo's Wedding 💍💕\r\nLOCATION:Bologna, Italy\r\n" +
+  "DESCRIPTION:Rosa & Riccardo's Wedding 💍💕\r\n" +
   "END:VEVENT\r\nEND:VCALENDAR";
 
 function CalendarButton() {
@@ -116,7 +125,7 @@ function CalendarButton() {
         onClick={() => setOpen(!open)}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
-        className="inline-flex items-center gap-2.5 border border-white/20 px-7 py-2.5 font-sans text-[10px] font-semibold uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold"
+        className="inline-flex items-center gap-2.5 rounded-full border border-white/20 px-7 py-2.5 font-sans text-[10px] font-semibold tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="4" width="18" height="18" rx="2" />
@@ -182,6 +191,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const { t } = useI18n();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<"sealed" | "playing" | "fading" | "done">("sealed");
+  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleOpen = () => {
     if (phase !== "sealed") return;
@@ -189,21 +199,29 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     if (!video) return;
 
     setPhase("playing");
-    video.muted = false;
-    video.volume = 0.5;
+    // Keep the video muted so only the main song is heard
+    video.muted = true;
+    video.volume = 0.0;
     video.play();
 
-    // Pre-create audio during user gesture so the browser allows playback later
+    // Start background music immediately on tap, at a clean point in the track
     const bgAudio = new Audio("/save-the-date.mp3");
     bgAudio.preload = "auto";
-    bgAudio.volume = 0;
+    bgAudio.currentTime = 11;
+    bgAudio.volume = 0.4;
+    bgAudio.loop = true;
     bgAudio.play().catch(() => {});
+    bgAudioRef.current = bgAudio;
 
     const startFade = () => {
       setPhase("fading");
       setTimeout(() => {
         setPhase("done");
-        onOpen(bgAudio);
+        if (bgAudioRef.current) {
+          onOpen(bgAudioRef.current);
+        } else {
+          onOpen(bgAudio);
+        }
       }, 1000);
     };
 
@@ -249,7 +267,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
         <motion.p
           animate={{ opacity: [0.5, 0.9, 0.5] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="rounded-full bg-black/30 px-8 py-3 font-sans text-sm uppercase tracking-[0.3em] text-white backdrop-blur-sm sm:px-6 sm:py-2 sm:text-sm"
+          className="font-sans text-sm uppercase tracking-[0.3em] text-white/45 sm:text-sm"
         >
           Tap to open
         </motion.p>
@@ -272,21 +290,19 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
 
   useEffect(() => {
     if (!bgAudio) return;
-    bgAudio.currentTime = 2;
-    bgAudio.volume = 0.4;
-    bgAudio.play().catch(() => {});
 
     const onVisibility = () => {
       if (document.hidden) {
         bgAudio.pause();
       } else {
-        bgAudio.play().catch(() => {});
+        if (bgAudio.paused) {
+          bgAudio.play().catch(() => {});
+        }
       }
     };
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
-      bgAudio.pause();
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [bgAudio]);
@@ -314,9 +330,9 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
           <img
             src="/save-the-date-bg.jpg"
             alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-60"
+            className="absolute inset-0 h-full w-full object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-deep/50 via-deep/30 to-deep/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-deep/70 via-deep/40 to-deep/70" />
           <div className="std-grain absolute inset-0 opacity-[0.03]" />
         </motion.div>
 
@@ -327,81 +343,42 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
           style={{ opacity: heroOpacity, y: heroY }}
           className="relative z-10 px-6 text-center"
         >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-          >
-            <Flourish className="mx-auto mb-8 opacity-60" />
-          </motion.div>
-
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.35 }}
-            className="font-serif text-base font-medium uppercase tracking-[0.6em] text-gold/70 sm:text-[17px]"
+            className={`${inter.className} text-[11px] font-medium uppercase tracking-[0.25em] text-white/70 sm:text-xs`}
           >
             {t.saveTheDate.saveTheDate}
           </motion.p>
 
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
-            className="mt-8 font-serif text-6xl font-light tracking-[0.08em] text-white sm:text-7xl md:text-8xl lg:text-9xl"
+            className="mt-10 flex justify-center"
           >
-            Riccardo
-          </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.8 }}
-            className="my-4 flex items-center justify-center gap-6"
-          >
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.4, delay: 0.9 }}
-              className="h-px w-12 bg-gold/40 sm:w-16"
+            <img
+              src="/rr-logo.png"
+              alt="Riccardo & Rosa"
+              className="w-[208px] opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
             />
-            <span className="font-serif text-2xl font-light italic text-gold/60">&</span>
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.4, delay: 0.9 }}
-              className="h-px w-12 bg-gold/40 sm:w-16"
-            />
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
-            className="font-serif text-6xl font-light tracking-[0.08em] text-white sm:text-7xl md:text-8xl lg:text-9xl"
-          >
-            Rosa
-          </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.1 }}
-            className="mt-10"
-          >
-            <Flourish className="mx-auto opacity-60" />
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1.25 }}
-            className="mt-12 text-center"
+            className="mt-3 text-center"
           >
-            <p className="font-display text-3xl font-bold uppercase tracking-[0.35em] text-white sm:text-4xl md:text-5xl">
+            <p
+              className={`${playfair.className} text-4xl font-light tracking-[0.08em] text-white/95 sm:text-5xl md:text-6xl lg:text-7xl leading-tight`}
+            >
               {t.saveTheDate.date}
             </p>
-            <p className="mt-4 font-serif text-base font-medium uppercase tracking-[0.5em] text-white/50 sm:text-base">
+            <p
+              className={`${inter.className} mt-4 text-[11px] font-medium uppercase tracking-[0.2em] text-white/60 sm:text-xs`}
+            >
               {t.saveTheDate.location}
             </p>
             <CalendarButton />

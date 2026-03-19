@@ -30,7 +30,6 @@ export function GuestInfoForm({
   const [address, setAddress] = useState("");
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [alreadySubmitted, setAlreadySubmitted] = useState(false);
 
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -38,13 +37,6 @@ export function GuestInfoForm({
   const addressRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY)) {
-      setAlreadySubmitted(true);
-      onSubmitted?.();
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -176,8 +168,7 @@ export function GuestInfoForm({
     onSubmitted?.();
   };
 
-  const showResult =
-    alreadySubmitted || status === "success" || status === "duplicate";
+  const showResult = status === "success" || status === "duplicate";
 
   const resultTitle =
     status === "duplicate"
