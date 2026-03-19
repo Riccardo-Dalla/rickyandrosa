@@ -208,9 +208,9 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     const bgAudio = new Audio("/save-the-date.mp3");
     bgAudio.preload = "auto";
     bgAudio.currentTime = 11;
-    bgAudio.volume = 0.4;
+    bgAudio.volume = 1.0;
     bgAudio.loop = true;
-    bgAudio.play().catch(() => {});
+    bgAudio.play().catch(() => { });
     bgAudioRef.current = bgAudio;
 
     const startFade = () => {
@@ -269,7 +269,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           className="font-sans text-sm uppercase tracking-[0.3em] text-white/45 sm:text-sm"
         >
-          Tap to open
+          {t.saveTheDate.tapSeal}
         </motion.p>
       </motion.div>
 
@@ -296,7 +296,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
         bgAudio.pause();
       } else {
         if (bgAudio.paused) {
-          bgAudio.play().catch(() => {});
+          bgAudio.play().catch(() => { });
         }
       }
     };

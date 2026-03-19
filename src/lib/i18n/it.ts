@@ -24,7 +24,7 @@ const it: Translations = {
 
   saveTheDate: {
     tapSeal: "Tocca il sigillo per aprire",
-    saveTheDate: "Salva la Data",
+    saveTheDate: "Segna la Data",
     summerBologna: "19 Giugno 2027 \u00A0·\u00A0 Bologna, Italia",
     date: "19 Giugno 2027",
     location: "Bologna, Italia",
@@ -48,7 +48,7 @@ const it: Translations = {
     email: "Email",
     address: "Indirizzo Postale",
     namePlaceholder: "Nome e Cognome",
-    emailPlaceholder: "tua@email.com",
+    emailPlaceholder: "tizio.caio@gmail.com",
     addressPlaceholder: "Inizia a digitare il tuo indirizzo...",
     submit: "Invia",
     submitting: "Invio in corso...",
