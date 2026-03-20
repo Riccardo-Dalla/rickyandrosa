@@ -18,7 +18,7 @@ const it: Translations = {
   },
 
   home: {
-    summerBologna: "Estate 2027 \u00A0·\u00A0 Bologna, Italia",
+    summerBologna: "19 Giugno 2027 \u00A0·\u00A0 Bologna, Italia",
     detailsToCome: "Dettagli in arrivo",
   },
 
