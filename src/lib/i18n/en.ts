@@ -16,7 +16,7 @@ const en = {
   },
 
   home: {
-    summerBologna: "Summer 2027 \u00A0·\u00A0 Bologna, Italy",
+    summerBologna: "June 19, 2027 \u00A0·\u00A0 Bologna, Italy",
     detailsToCome: "Details to come",
   },
 
