@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { RRLogo } from "@/components/RRLogo";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useI18n } from "@/lib/i18n/context";
 
@@ -58,9 +57,21 @@ export function Navigation() {
       >
         <nav className="flex items-center justify-between px-4 py-4 sm:px-6">
           {/* Left — R&R logo */}
-          <Link href="/" className="text-3xl leading-none">
-            <RRLogo />
-          </Link>
+          <Link
+            href="/"
+            className="block h-10 w-20 shrink-0 bg-gold"
+            style={{
+              WebkitMaskImage: "url(/rr-logo.png)",
+              maskImage: "url(/rr-logo.png)",
+              WebkitMaskSize: "contain",
+              maskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+            }}
+            aria-label="R&R Home"
+          />
 
           {/* Center — Desktop nav */}
           <ul className="hidden items-center gap-8 lg:flex">
