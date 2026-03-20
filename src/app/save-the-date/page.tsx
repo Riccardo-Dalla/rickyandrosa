@@ -205,7 +205,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     video.play();
 
     // Start background music immediately on tap, at a clean point in the track
-    const bgAudio = new Audio("/save-the-date.mp3");
+    const bgAudio = new Audio("https://sj0vhlkvbrjeks9b.public.blob.vercel-storage.com/save-the-date.mp3");
     bgAudio.preload = "auto";
     bgAudio.currentTime = 11;
     bgAudio.volume = 1.0;
@@ -249,7 +249,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
       >
         <video
           ref={videoRef}
-          src="/envelope.mp4"
+          src="https://sj0vhlkvbrjeks9b.public.blob.vercel-storage.com/envelope.mp4"
           muted
           playsInline
           preload="auto"

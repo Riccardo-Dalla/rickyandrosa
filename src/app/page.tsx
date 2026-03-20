@@ -14,7 +14,7 @@ export default function Home() {
         playsInline
         className="absolute inset-0 h-full w-full object-cover brightness-[0.85] saturate-[0.9]"
       >
-        <source src="/hero-video.mp4" type="video/mp4" />
+        <source src="https://sj0vhlkvbrjeks9b.public.blob.vercel-storage.com/hero-video.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 via-gray-800/40 to-gray-900/50" />
 

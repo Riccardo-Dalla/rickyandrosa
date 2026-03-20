@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Check if any media files in public/ are staged
+MEDIA_CHANGED=$(git diff --cached --name-only -- 'public/*.mp4' 'public/*.mp3' 'public/*.mov' 'public/*.webm')
+
+if [ -n "$MEDIA_CHANGED" ]; then
+  echo "Media files changed — uploading to Vercel Blob..."
+  echo "$MEDIA_CHANGED"
+  npm run upload-media
+fi
