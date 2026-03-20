@@ -351,7 +351,7 @@ export function GuestInfoForm({
                   type="submit"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2.5 border border-white/20 px-8 py-4 font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold sm:px-10 sm:py-3 sm:text-[10px]"
+                  className="inline-flex items-center gap-2.5 rounded-full border border-white/20 px-7 py-2.5 font-sans text-[10px] font-semibold tracking-[0.08em] text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold"
                 >
                   <svg
                     width="13"

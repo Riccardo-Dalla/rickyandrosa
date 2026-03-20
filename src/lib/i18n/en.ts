@@ -31,18 +31,18 @@ const en = {
     googleCalendar: "Google Calendar",
     appleCalendar: "Apple Calendar",
     scroll: "Scroll",
-    countingDown: "Counting Down",
+    countingDown: "Countdown to the big day!",
     days: "Days",
     hours: "Hours",
     minutes: "Minutes",
     seconds: "Seconds",
-    untilCelebrate: "Until we celebrate together",
+    untilCelebrate: "",
   },
 
   guestForm: {
-    title: "One Last Thing",
+    title: "Please share your details so we can\nsend you a formal invite 💌",
     subtitle:
-      "Please share your details so we can send you a formal invitation",
+      "so we can send you a formal invite 💌",
     name: "Full Name",
     email: "Email",
     address: "Mailing Address",

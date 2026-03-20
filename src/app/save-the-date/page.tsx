@@ -169,23 +169,6 @@ function CalendarButton() {
   );
 }
 
-function Flourish({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 200 20"
-      className={`h-5 w-40 text-gold/40 ${className}`}
-      fill="none"
-    >
-      <path
-        d="M0 10 C30 10, 40 2, 60 2 S90 10, 100 10 S120 2, 140 2 S170 10, 200 10"
-        stroke="currentColor"
-        strokeWidth="0.8"
-      />
-      <circle cx="100" cy="10" r="2" fill="currentColor" />
-    </svg>
-  );
-}
-
 /* ─── Full-Screen Envelope Video ─── */
 const ENVELOPE_DESKTOP = "https://media.rickyandrosa.com/envelope.mp4";
 const ENVELOPE_MOBILE = "https://media.rickyandrosa.com/envelope-mobile.mp4";
@@ -224,13 +207,13 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
 
     const startFade = () => {
       setPhase("fading");
+      if (bgAudioRef.current) {
+        onOpen(bgAudioRef.current);
+      } else {
+        onOpen(bgAudio);
+      }
       setTimeout(() => {
         setPhase("done");
-        if (bgAudioRef.current) {
-          onOpen(bgAudioRef.current);
-        } else {
-          onOpen(bgAudio);
-        }
       }, 1000);
     };
 
@@ -283,13 +266,6 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
         </motion.p>
       </motion.div>
 
-      {/* Fade to white after video ends */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={phase === "fading" || phase === "done" ? { opacity: 1 } : {}}
-        transition={{ duration: 1 }}
-        className="absolute inset-0 z-30 pointer-events-none bg-white"
-      />
     </motion.div>
   );
 }
@@ -413,6 +389,9 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
             <div className="h-8 w-px bg-gradient-to-b from-white/25 to-transparent" />
           </motion.div>
         </motion.div>
+
+        {/* Softer transition into section two */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[2] h-40 bg-gradient-to-b from-transparent via-[#23362b]/35 via-[#213328]/62 to-[#2a3d2e]" />
       </section>
 
       {/* ─── Guest Details + Countdown ─── */}
@@ -421,12 +400,10 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
 
         <div className="relative z-10 mx-auto max-w-3xl text-center">
           <ScrollReveal>
-            <Flourish className="mx-auto mb-10 opacity-40" />
-            <p className="font-serif text-lg font-medium uppercase tracking-[0.5em] text-gold/70 sm:text-lg">
+            <p
+              className={`${playfair.className} whitespace-pre-line text-2xl font-bold tracking-[0.03em] text-gold/70 sm:text-3xl`}
+            >
               {t.guestForm.title}
-            </p>
-            <p className="mx-auto mt-6 max-w-md font-serif text-lg font-light italic text-white/45 sm:text-lg">
-              {t.guestForm.subtitle}
             </p>
           </ScrollReveal>
 
@@ -446,7 +423,9 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
               >
                 <div className="mx-auto mb-10 h-px w-20 bg-gold/20" />
 
-                <p className="font-serif text-xs font-medium uppercase tracking-[0.5em] text-gold/60 sm:text-[10px]">
+                <p
+                  className={`${inter.className} text-[11px] font-medium uppercase tracking-[0.25em] text-gold/60 sm:text-xs`}
+                >
                   {t.saveTheDate.countingDown}
                 </p>
 
@@ -462,9 +441,6 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
                   </div>
                 </div>
 
-                <p className="mt-14 font-serif text-xl font-light italic tracking-wide text-white/35 sm:text-lg">
-                  {t.saveTheDate.untilCelebrate}
-                </p>
               </motion.div>
             )}
           </AnimatePresence>
