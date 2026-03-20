@@ -31,6 +31,9 @@ function detectInitialLocale(): Locale {
     if (val === "en" || val === "it") return val;
   }
 
+  const browserLang = navigator.language || navigator.languages?.[0] || "";
+  if (browserLang.startsWith("it")) return "it";
+
   return "en";
 }
 

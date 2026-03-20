@@ -125,7 +125,7 @@ export default function Home() {
           transition={{ duration: 1, delay: 1.4 }}
           className="mt-6 font-sans text-sm font-light uppercase tracking-[0.4em] text-white/90"
         >
-          Wedding
+          {t.home.wedding}
         </motion.p>
 
         <motion.p

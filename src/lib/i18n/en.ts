@@ -17,6 +17,7 @@ const en = {
 
   home: {
     summerBologna: "June 19, 2027 \u00A0·\u00A0 Bologna, Italy",
+    wedding: "Wedding",
     detailsToCome: "Details to come",
   },
 

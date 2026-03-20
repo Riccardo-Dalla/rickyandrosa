@@ -19,6 +19,7 @@ const it: Translations = {
 
   home: {
     summerBologna: "19 Giugno 2027 \u00A0·\u00A0 Bologna, Italia",
+    wedding: "Matrimonio",
     detailsToCome: "Dettagli in arrivo",
   },
 
