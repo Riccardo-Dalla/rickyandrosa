@@ -4,19 +4,21 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
 
+const BLOB_BASE = "https://sj0vhlkvbrjeks9b.public.blob.vercel-storage.com";
+
 const HERO_VIDEOS = [
-  "/hero-videos/GH010038_1732759039324.mp4",
-  "/hero-videos/GH010071_1732989066470.mp4",
-  "/hero-videos/GH010273_1773562971855.mp4",
-  "/hero-videos/GH010312_1773563884273.mp4",
-  "/hero-videos/Norway00001890.mp4",
-  "/hero-videos/Norway00010415.mp4",
-  "/hero-videos/Norway00010920.mp4",
-  "/hero-videos/Zion00007503.mp4",
-  "/hero-videos/Zion00008579.mp4",
-  "/hero-videos/Zion00015383.mp4",
-  "/hero-videos/CostaRica00023976.mp4",
-  "/hero-videos/Zion00001567.mp4",
+  `${BLOB_BASE}/hero-videos/GH010038_1732759039324.mp4`,
+  `${BLOB_BASE}/hero-videos/GH010071_1732989066470.mp4`,
+  `${BLOB_BASE}/hero-videos/GH010273_1773562971855.mp4`,
+  `${BLOB_BASE}/hero-videos/GH010312_1773563884273.mp4`,
+  `${BLOB_BASE}/hero-videos/Norway00001890.mp4`,
+  `${BLOB_BASE}/hero-videos/Norway00010415.mp4`,
+  `${BLOB_BASE}/hero-videos/Norway00010920.mp4`,
+  `${BLOB_BASE}/hero-videos/Zion00007503.mp4`,
+  `${BLOB_BASE}/hero-videos/Zion00008579.mp4`,
+  `${BLOB_BASE}/hero-videos/Zion00015383.mp4`,
+  `${BLOB_BASE}/hero-videos/CostaRica00023976.mp4`,
+  `${BLOB_BASE}/hero-videos/Zion00001567.mp4`,
 ];
 
 function shuffleArray<T>(arr: T[]): T[] {
