@@ -1,22 +1,90 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
+
+const HERO_VIDEOS = [
+  "/hero-videos/GH010038_1732759039324.mp4",
+  "/hero-videos/GH010071_1732989066470.mp4",
+  "/hero-videos/GH010273_1773562971855.mp4",
+  "/hero-videos/GH010312_1773563884273.mp4",
+  "/hero-videos/Norway00001890.mp4",
+  "/hero-videos/Norway00010415.mp4",
+  "/hero-videos/Norway00010920.mp4",
+  "/hero-videos/Zion00007503.mp4",
+  "/hero-videos/Zion00008579.mp4",
+  "/hero-videos/Zion00015383.mp4",
+  "/hero-videos/CostaRica00023976.mp4",
+  "/hero-videos/Zion00001567.mp4",
+];
+
+function shuffleArray<T>(arr: T[]): T[] {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+function useRotatingVideo(intervalMs = 8000) {
+  const queueRef = useRef<typeof HERO_VIDEOS | null>(null);
+  const posRef = useRef(0);
+  const [current, setCurrent] = useState(HERO_VIDEOS[0]);
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    queueRef.current = shuffleArray(HERO_VIDEOS);
+    posRef.current = 0;
+    setCurrent(queueRef.current[0]);
+  }, []);
+
+  const advance = useCallback(() => {
+    if (!queueRef.current) return;
+    posRef.current += 1;
+    if (posRef.current >= queueRef.current.length) {
+      queueRef.current = shuffleArray(HERO_VIDEOS);
+      posRef.current = 0;
+    }
+    setCurrent(queueRef.current[posRef.current]);
+    setTick((t) => t + 1);
+  }, []);
+
+  useEffect(() => {
+    const id = setTimeout(advance, intervalMs);
+    return () => clearTimeout(id);
+  }, [tick, advance, intervalMs]);
+
+  return { src: current, advance };
+}
 
 export default function Home() {
   const { t } = useI18n();
+  const { src: currentVideo, advance } = useRotatingVideo(8000);
+  const activeSrcRef = useRef(currentVideo);
+  activeSrcRef.current = currentVideo;
+
   return (
     <section className="relative flex h-screen items-center justify-center overflow-hidden">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 h-full w-full object-cover brightness-[0.85] saturate-[0.9]"
-      >
-        <source src="https://sj0vhlkvbrjeks9b.public.blob.vercel-storage.com/hero-video.mp4" type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 via-gray-800/40 to-gray-900/50" />
+      <AnimatePresence mode="popLayout">
+        <motion.video
+          key={currentVideo}
+          autoPlay
+          muted
+          playsInline
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0 h-full w-full object-cover"
+          src={currentVideo}
+          onEnded={(e) => {
+            if (e.currentTarget.src.includes(activeSrcRef.current)) advance();
+          }}
+        />
+      </AnimatePresence>
+      <div className="absolute inset-0 bg-gradient-to-b from-deep/70 via-deep/70 to-deep/70" />
 
       <div className="relative z-10 px-6 text-center">
         <motion.div
