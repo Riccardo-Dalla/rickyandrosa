@@ -39,7 +39,7 @@ export function Navigation() {
     setIsOpen(false);
   }, [pathname]);
 
-  if (isSaveTheDate) return null;
+  if (isSaveTheDate || pathname?.startsWith("/singles")) return null;
 
   const showSolid = scrolled || !isHome;
 

@@ -8,7 +8,7 @@ export function Footer() {
   const pathname = usePathname();
   const { t } = useI18n();
 
-  if (pathname === "/" || pathname === "/save-the-date") return null;
+  if (pathname === "/" || pathname === "/save-the-date" || pathname?.startsWith("/singles")) return null;
 
   return (
     <footer className="border-t border-divider bg-ivory py-16">
