@@ -187,11 +187,19 @@ function Flourish({ className = "" }: { className?: string }) {
 }
 
 /* ─── Full-Screen Envelope Video ─── */
+const ENVELOPE_DESKTOP = "https://media.rickyandrosa.com/envelope.mp4";
+const ENVELOPE_MOBILE = "https://media.rickyandrosa.com/envelope-mobile.mp4";
+
 function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const { t } = useI18n();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<"sealed" | "playing" | "fading" | "done">("sealed");
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
+  const [videoSrc, setVideoSrc] = useState(ENVELOPE_DESKTOP);
+
+  useEffect(() => {
+    setVideoSrc(window.innerWidth < 640 ? ENVELOPE_MOBILE : ENVELOPE_DESKTOP);
+  }, []);
 
   const handleOpen = () => {
     if (phase !== "sealed") return;
@@ -208,7 +216,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     // Start background music immediately on tap, at a clean point in the track
     const bgAudio = new Audio("https://media.rickyandrosa.com/save-the-date.mp3");
     bgAudio.preload = "auto";
-    bgAudio.currentTime = 11;
+    bgAudio.currentTime = 12;
     bgAudio.volume = 1.0;
     bgAudio.loop = true;
     bgAudio.play().catch(() => { });
@@ -228,7 +236,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
 
     const checkTime = () => {
       if (!video) return;
-      if (video.duration - video.currentTime <= 4) {
+      if (video.duration - video.currentTime <= 2) {
         startFade();
       } else {
         requestAnimationFrame(checkTime);
@@ -242,6 +250,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     <motion.div
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
+      layout={false}
       className="fixed inset-0 overflow-hidden bg-black"
     >
       <motion.div
@@ -250,11 +259,11 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
       >
         <video
           ref={videoRef}
-          src="https://media.rickyandrosa.com/envelope.mp4"
+          src={videoSrc}
           muted
           playsInline
           preload="auto"
-          className="h-full w-full select-none object-cover object-center brightness-120"
+          className="h-full w-full select-none object-cover object-center"
         />
       </motion.div>
 
@@ -470,7 +479,7 @@ export default function SaveTheDate() {
   const [bgAudio, setBgAudio] = useState<HTMLAudioElement | null>(null);
 
   return (
-    <div className="std-page bg-deep">
+    <div className="std-page relative bg-deep">
       <AnimatePresence mode="wait">
         {!isOpened && (
           <motion.section
