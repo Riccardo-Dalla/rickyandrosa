@@ -5,12 +5,14 @@ import { config } from "dotenv";
 
 config({ path: ".env.local" });
 
-const { R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME } = process.env;
+const { R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME, CF_API_TOKEN, CF_ZONE_ID } = process.env;
 
 if (!R2_ACCOUNT_ID || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY || !R2_BUCKET_NAME) {
   console.error("Missing R2 env vars. Set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME in .env.local");
   process.exit(1);
 }
+
+const MEDIA_DOMAIN = "https://media.rickyandrosa.com";
 
 const s3 = new S3Client({
   region: "auto",
@@ -64,6 +66,28 @@ async function listAllObjects() {
   return objects;
 }
 
+async function purgeCache(urls) {
+  if (!CF_API_TOKEN || !CF_ZONE_ID || urls.length === 0) return;
+
+  const res = await fetch(
+    `https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${CF_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ files: urls }),
+    }
+  );
+  const data = await res.json();
+  if (data.success) {
+    console.log(`⚡ Purged cache for ${urls.length} file(s)`);
+  } else {
+    console.warn("⚠ Cache purge failed:", data.errors);
+  }
+}
+
 async function main() {
   const files = findMedia(PUBLIC_DIR);
 
@@ -73,6 +97,7 @@ async function main() {
   }
 
   const existing = await listAllObjects();
+  const uploadedUrls = [];
 
   for (const filePath of files) {
     const key = relative(PUBLIC_DIR, filePath);
@@ -98,9 +123,12 @@ async function main() {
       })
     );
 
-    console.log(`  → https://media.rickyandrosa.com/${key}`);
+    const url = `${MEDIA_DOMAIN}/${key}`;
+    console.log(`  → ${url}`);
+    uploadedUrls.push(url);
   }
 
+  await purgeCache(uploadedUrls);
   console.log("\nDone.");
 }
 

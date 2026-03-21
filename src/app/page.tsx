@@ -35,11 +35,19 @@ function getNextPos(queue: string[], pos: number) {
 }
 
 function useRotatingVideo(intervalMs = 8000) {
-  const queueRef = useRef<string[]>(shuffleArray(HERO_VIDEOS));
+  const queueRef = useRef<string[]>(HERO_VIDEOS);
   const posRef = useRef(0);
-  const [current, setCurrent] = useState(() => queueRef.current[0]);
-  const [next, setNext] = useState(() => queueRef.current[1]);
+  const [current, setCurrent] = useState(HERO_VIDEOS[0]);
+  const [next, setNext] = useState(HERO_VIDEOS[1]);
   const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const shuffled = shuffleArray(HERO_VIDEOS);
+    queueRef.current = shuffled;
+    posRef.current = 0;
+    setCurrent(shuffled[0]);
+    setNext(shuffled[1]);
+  }, []);
 
   const advance = useCallback(() => {
     posRef.current += 1;
