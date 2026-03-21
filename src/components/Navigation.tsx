@@ -162,14 +162,14 @@ export function Navigation() {
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-serif text-3xl font-light tracking-wide text-charcoal transition-colors hover:text-gold"
+                      className="font-sans text-3xl font-light tracking-wide text-charcoal transition-colors hover:text-gold"
                     >
                       {item.label}
                     </a>
                   ) : (
                     <Link
                       href={item.href}
-                      className={`font-serif text-3xl font-light tracking-wide transition-colors hover:text-gold ${
+                      className={`font-sans text-3xl font-light tracking-wide transition-colors hover:text-gold ${
                         pathname === item.href ? "text-gold" : "text-charcoal"
                       }`}
                     >

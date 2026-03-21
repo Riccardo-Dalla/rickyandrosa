@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
+import { pinyonScript, playfairDisplay } from "@/lib/fonts";
 
 const MEDIA_BASE = "https://media.rickyandrosa.com";
 
@@ -110,20 +111,20 @@ export default function Home() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 0.6 }}
-          className="flex flex-col items-center"
+          className="flex flex-col items-center gap-0 [&_h1]:leading-[0.8]"
         >
           <h1
-            className="text-6xl text-white sm:text-7xl md:text-8xl lg:text-9xl"
-            style={{ fontFamily: "var(--font-monogram), cursive" }}
+            className={`${pinyonScript.className} text-6xl font-normal text-white sm:text-7xl md:text-8xl lg:text-9xl`}
           >
             Rosa
           </h1>
-          <span className="my-1 font-display text-2xl italic text-gold sm:text-3xl md:text-4xl">
+          <span
+            className={`${playfairDisplay.className} my-0 block text-[0.9rem] font-normal italic leading-none text-gold sm:text-[1.125rem] md:text-[1.35rem] lg:text-[1.8rem]`}
+          >
             &
           </span>
           <h1
-            className="text-6xl text-white sm:text-7xl md:text-8xl lg:text-9xl"
-            style={{ fontFamily: "var(--font-monogram), cursive" }}
+            className={`${pinyonScript.className} text-6xl font-normal text-white sm:text-7xl md:text-8xl lg:text-9xl`}
           >
             Riccardo
           </h1>

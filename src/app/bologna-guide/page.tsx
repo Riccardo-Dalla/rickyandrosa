@@ -60,7 +60,7 @@ export default function BolognaGuide() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`whitespace-nowrap rounded-sm px-4 py-2 font-sans text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${
+                className={`whitespace-nowrap rounded-sm px-4 py-2 font-sans text-[11px] font-medium uppercase transition-all duration-300 ${
                   activeCategory === cat
                     ? "bg-charcoal text-white"
                     : "text-warm-gray hover:bg-charcoal/5 hover:text-charcoal"

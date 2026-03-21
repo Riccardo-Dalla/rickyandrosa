@@ -112,14 +112,14 @@ function CommitModal({ activity, onClose, t }: CommitModalProps) {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 bg-charcoal py-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:bg-gold disabled:opacity-50"
+                  className="flex-1 bg-charcoal py-3 font-sans text-[11px] font-medium uppercase text-white transition-colors duration-300 hover:bg-gold disabled:opacity-50"
                 >
                   {submitting ? t.submitting : t.iCommit}
                 </button>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="border border-divider px-6 py-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-warm-gray transition-colors duration-300 hover:border-charcoal hover:text-charcoal"
+                  className="border border-divider px-6 py-3 font-sans text-[11px] font-medium uppercase text-warm-gray transition-colors duration-300 hover:border-charcoal hover:text-charcoal"
                 >
                   {t.cancel}
                 </button>
@@ -137,7 +137,7 @@ function CommitModal({ activity, onClose, t }: CommitModalProps) {
             </p>
             <button
               onClick={onClose}
-              className="mt-8 border border-divider px-8 py-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-charcoal transition-colors duration-300 hover:bg-charcoal hover:text-white"
+              className="mt-8 border border-divider px-8 py-3 font-sans text-[11px] font-medium uppercase text-charcoal transition-colors duration-300 hover:bg-charcoal hover:text-white"
             >
               {t.close}
             </button>
@@ -208,7 +208,7 @@ export default function Activities() {
                     </span>
                     <button
                       onClick={() => setSelectedActivity(activity)}
-                      className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-gold transition-colors hover:text-charcoal"
+                      className="font-sans text-[10px] font-medium uppercase text-gold transition-colors hover:text-charcoal"
                     >
                       {t.activities.commit}
                     </button>
@@ -285,7 +285,7 @@ export default function Activities() {
                         });
                       }
                     }}
-                    className="w-full bg-charcoal py-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:bg-gold"
+                    className="w-full bg-charcoal py-3 font-sans text-[11px] font-medium uppercase text-white transition-colors duration-300 hover:bg-gold"
                   >
                     {t.activities.commitToThis}
                   </button>

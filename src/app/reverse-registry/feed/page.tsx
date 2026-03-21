@@ -305,7 +305,7 @@ export default function Feed() {
                 </p>
                 <a
                   href="/reverse-registry/activities"
-                  className="mt-6 inline-block rounded-full bg-charcoal px-8 py-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:bg-gold"
+                  className="mt-6 inline-block rounded-full bg-charcoal px-8 py-3 font-sans text-[11px] font-medium uppercase text-white transition-colors duration-300 hover:bg-gold"
                 >
                   {t.feed.browseActivities}
                 </a>
@@ -338,7 +338,7 @@ export default function Feed() {
               <p className="mt-3 font-sans text-sm font-light text-warm-gray">
                 {t.feed.shareDescription}
               </p>
-              <button className="mt-6 rounded-full bg-charcoal px-8 py-3 font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:bg-gold">
+              <button className="mt-6 rounded-full bg-charcoal px-8 py-3 font-sans text-[11px] font-medium uppercase text-white transition-colors duration-300 hover:bg-gold">
                 {t.feed.uploadPhoto}
               </button>
             </div>

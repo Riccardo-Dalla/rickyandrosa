@@ -201,7 +201,7 @@ export default function DatingPage() {
         >
           <button
             onClick={() => handleSelectLocation(null)}
-            className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-sans font-medium uppercase tracking-[0.15em] transition-all border cursor-pointer ${
+            className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-sans font-medium uppercase transition-all border cursor-pointer ${
               selectedLocation === null
                 ? "bg-gold/90 text-[#141220] border-gold"
                 : "bg-transparent text-white/45 border-white/15 hover:border-gold/40 hover:text-white/70"
@@ -217,7 +217,7 @@ export default function DatingPage() {
                   selectedLocation === loc.name ? null : loc.name,
                 )
               }
-              className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-sans font-medium uppercase tracking-[0.15em] transition-all border cursor-pointer ${
+              className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-sans font-medium uppercase transition-all border cursor-pointer ${
                 selectedLocation === loc.name
                   ? "bg-gold/90 text-[#141220] border-gold"
                   : "bg-transparent text-white/45 border-white/15 hover:border-gold/40 hover:text-white/70"

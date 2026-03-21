@@ -10,6 +10,8 @@
   --color-divider: #E5DFD7;
   --color-card: #FFFFFF;
   --color-deep: #1A1614;
+  /* Save-the-date invite modal & forest-themed panels */
+  --color-forest: #081410;
 }
 
 @theme inline {
@@ -22,12 +24,13 @@
   --color-divider: var(--color-divider);
   --color-card: var(--color-card);
   --color-deep: var(--color-deep);
+  --color-forest: var(--color-forest);
 
-  --font-serif: var(--font-cormorant);
-  --font-sans: var(--font-montserrat);
-  --font-script: var(--font-script);
-  --font-display: var(--font-display);
-  --font-monogram: var(--font-monogram);
+  /* Spectral = default body / editorial serif; Inter = UI & H2-style labels; Great Vibes = script date/H1; Pinyon = --font-pinyon on body + --font-monogram alias (see body {}) */
+  --font-serif: var(--font-spectral);
+  --font-sans: var(--font-inter);
+  --font-script: var(--font-great-vibes);
+  --font-display: var(--font-spectral);
 }
 
 html {
@@ -37,9 +40,11 @@ html {
 body {
   background-color: var(--color-ivory);
   color: var(--color-charcoal);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-serif), Georgia, serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* --font-pinyon is set on body by next/font; alias here so var(--font-monogram) works below (not only on :root). */
+  --font-monogram: var(--font-pinyon);
 }
 
 ::selection {
@@ -47,9 +52,7 @@ body {
   color: white;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif), Georgia, serif;
-}
+/* Typography: Spectral (body), Inter (font-sans), Great Vibes (font-script). Use font-sans font-light for captions. */
 
 @keyframes fade-in-up {
   from {
@@ -106,7 +109,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .rr-logo .rr-amp {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-serif), Georgia, serif;
   font-style: italic;
   font-weight: 400;
   font-size: 0.45em;

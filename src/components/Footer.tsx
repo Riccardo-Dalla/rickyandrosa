@@ -21,10 +21,10 @@ export function Footer() {
           className="mx-auto h-20 w-20 object-contain"
         />
         <div className="editorial-divider" />
-        <p className="font-sans text-xs uppercase tracking-[0.3em] text-warm-gray">
+        <p className="font-sans text-xs font-light uppercase tracking-[0.3em] text-warm-gray">
           {t.footer.summerBologna}
         </p>
-        <p className="mt-8 font-sans text-[11px] text-warm-gray/60">
+        <p className="mt-8 font-sans text-[11px] font-light text-warm-gray/60">
           {t.footer.madeWithLove}
         </p>
       </div>

@@ -51,13 +51,13 @@ export default function ReverseRegistry() {
           >
             <Link
               href="/reverse-registry/activities"
-              className="inline-block border border-gold bg-gold/10 px-10 py-3.5 font-sans text-[11px] font-medium uppercase tracking-[0.3em] text-gold transition-all duration-300 hover:bg-gold hover:text-white"
+              className="inline-block border border-gold bg-gold/10 px-10 py-3.5 font-sans text-[11px] font-medium uppercase text-gold transition-all duration-300 hover:bg-gold hover:text-white"
             >
               {t.reverseRegistry.browseActivities}
             </Link>
             <Link
               href="/reverse-registry/feed"
-              className="inline-block border border-white/20 px-10 py-3.5 font-sans text-[11px] font-medium uppercase tracking-[0.3em] text-white/70 transition-all duration-300 hover:border-white/40 hover:text-white"
+              className="inline-block border border-white/20 px-10 py-3.5 font-sans text-[11px] font-medium uppercase text-white/70 transition-all duration-300 hover:border-white/40 hover:text-white"
             >
               {t.reverseRegistry.liveFeed}
             </Link>
@@ -111,7 +111,7 @@ export default function ReverseRegistry() {
             <div className="editorial-divider" />
             <Link
               href="/reverse-registry/activities"
-              className="mt-6 inline-block font-sans text-xs font-medium uppercase tracking-[0.3em] text-gold transition-colors duration-300 hover:text-charcoal"
+              className="mt-6 inline-block font-sans text-xs font-medium uppercase text-gold transition-colors duration-300 hover:text-charcoal"
             >
               {t.reverseRegistry.exploreActivities}
             </Link>

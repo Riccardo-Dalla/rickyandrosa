@@ -1,44 +1,9 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Montserrat, Great_Vibes, Playfair_Display, Pinyon_Script } from "next/font/google";
 import "./globals.css";
+import { spectral, inter, greatVibes, pinyonScript } from "@/lib/fonts";
 import { I18nProvider } from "@/lib/i18n/context";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
-});
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
-});
-
-const greatVibes = Great_Vibes({
-  variable: "--font-script",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const pinyonScript = Pinyon_Script({
-  variable: "--font-monogram",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "R&R Wedding | Summer 2027 | Bologna, Italy",
@@ -71,7 +36,7 @@ export default function RootLayout({
         <meta name="robots" content="noindex, nofollow" />
       </head>
       <body
-        className={`${cormorant.variable} ${montserrat.variable} ${greatVibes.variable} ${playfair.variable} ${pinyonScript.variable} antialiased`}
+        className={`${spectral.variable} ${inter.variable} ${greatVibes.variable} ${pinyonScript.variable} antialiased`}
       >
         <I18nProvider>
           <Navigation />

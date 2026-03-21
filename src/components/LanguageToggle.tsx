@@ -22,14 +22,14 @@ export function LanguageToggle({ className = "" }: { className?: string }) {
         style={{ left: isIT ? "calc(100% - 1.625rem)" : "0.125rem" }}
       />
       <span
-        className={`relative z-10 w-6 text-center font-sans text-[9px] font-bold tracking-wider transition-colors duration-200 ${
+        className={`relative z-10 w-6 text-center font-sans text-[9px] font-light tracking-wider transition-colors duration-200 ${
           !isIT ? "text-white" : "text-current/40"
         }`}
       >
         EN
       </span>
       <span
-        className={`relative z-10 w-6 text-center font-sans text-[9px] font-bold tracking-wider transition-colors duration-200 ${
+        className={`relative z-10 w-6 text-center font-sans text-[9px] font-light tracking-wider transition-colors duration-200 ${
           isIT ? "text-white" : "text-current/40"
         }`}
       >

@@ -23,20 +23,22 @@ const en = {
 
   saveTheDate: {
     tapSeal: "Tap the seal to open",
-    saveTheDate: "Save the Date",
     summerBologna: "June 19, 2027 \u00A0·\u00A0 Bologna, Italy",
-    date: "June 19, 2027",
-    location: "Bologna, Italy",
+    date: "June 19 2027 | Bologna, Italy",
+    heroBody:
+      "Save the date for the wedding of Rosa Hamalainen & Riccardo Dalla",
     addToCalendar: "Add to Calendar",
     googleCalendar: "Google Calendar",
     appleCalendar: "Apple Calendar",
-    scroll: "Scroll",
+    getFormalInvite: "Get your invite",
     countingDown: "Countdown to the big day!",
     days: "Days",
     hours: "Hours",
     minutes: "Minutes",
     seconds: "Seconds",
     untilCelebrate: "",
+    inviteModalTitle:
+      "Share your details so we can send you a formal invite 💌",
   },
 
   guestForm: {
@@ -51,14 +53,15 @@ const en = {
     addressPlaceholder: "Start typing your address...",
     submit: "Submit",
     submitting: "Submitting...",
-    successTitle: "Thank You!",
-    successMessage:
-      "We\u2019ve saved your details and will send your invitation soon.",
+    successTitle: "Thank you",
+    successMessageLine1:
+      "We have your details now! Stay tuned for a formal invitation in the mail.",
+    successMessageLine2: "We hope to see you in Bologna!",
     duplicateTitle: "Already Received!",
     duplicateMessage:
       "We already have your information on file \u2014 no need to submit again.",
     errorMessage: "Something went wrong. Please try again.",
-    required: "This field is required",
+    required: "Please fill out this field 😊",
     invalidEmail: "Please enter a valid email address",
     selectAddress: "Please select an address from the suggestions",
   },

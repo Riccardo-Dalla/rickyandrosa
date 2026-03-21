@@ -25,26 +25,28 @@ const it: Translations = {
 
   saveTheDate: {
     tapSeal: "Tocca il sigillo per aprire",
-    saveTheDate: "Segna la Data",
     summerBologna: "19 Giugno 2027 \u00A0·\u00A0 Bologna, Italia",
-    date: "19 Giugno 2027",
-    location: "Bologna, Italia",
+    date: "19 Giugno 2027 | Bologna, Italia",
+    heroBody:
+      "Segna la data per il matrimonio di Rosa Hamalainen e Riccardo Dalla",
     addToCalendar: "Aggiungi al Calendario",
     googleCalendar: "Google Calendar",
     appleCalendar: "Apple Calendar",
-    scroll: "Scorri",
+    getFormalInvite: "Richiedi il tuo invito",
     countingDown: "Conto alla Rovescia",
     days: "Giorni",
     hours: "Ore",
     minutes: "Minuti",
     seconds: "Secondi",
     untilCelebrate: "Fino a quando festeggeremo insieme",
+    inviteModalTitle:
+      "Condividi i tuoi dati così possiamo inviarti un invito formale 💌",
   },
 
   guestForm: {
-    title: "Un\u2019Ultima Cosa",
-    subtitle:
-      "Condividi i tuoi dati per ricevere l\u2019invito formale",
+    title:
+      "Condividi i tuoi dati così possiamo\ninviarti un invito formale 💌",
+    subtitle: "così possiamo inviarti un invito formale 💌",
     name: "Nome Completo",
     email: "Email",
     address: "Indirizzo Postale",
@@ -53,14 +55,15 @@ const it: Translations = {
     addressPlaceholder: "Inizia a digitare il tuo indirizzo...",
     submit: "Invia",
     submitting: "Invio in corso...",
-    successTitle: "Grazie!",
-    successMessage:
-      "Abbiamo salvato i tuoi dati e ti invieremo l\u2019invito presto.",
-    duplicateTitle: "Gi\u00E0 Ricevuto!",
+    successTitle: "Grazie",
+    successMessageLine1:
+      "Abbiamo i tuoi dati adesso! Resta in attesa dell\u2019invito formale per posta.",
+    successMessageLine2: "Non vediamo l\u2019ora di vederti a Bologna!",
+    duplicateTitle: "Gi\u00E0 ricevuto!",
     duplicateMessage:
-      "Abbiamo gi\u00E0 le tue informazioni \u2014 non \u00E8 necessario reinviare.",
+      "Abbiamo gi\u00E0 le tue informazioni in archivio \u2014 non serve inviare di nuovo.",
     errorMessage: "Qualcosa \u00E8 andato storto. Riprova.",
-    required: "Questo campo \u00E8 obbligatorio",
+    required: "Per favore compila questo campo 😊",
     invalidEmail: "Inserisci un indirizzo email valido",
     selectAddress: "Seleziona un indirizzo dai suggerimenti",
   },
