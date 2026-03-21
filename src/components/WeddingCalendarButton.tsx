@@ -9,7 +9,7 @@ const GOOGLE_CAL_URL =
   "&text=Rosa+%26+Riccardo%27s+Wedding+%F0%9F%92%8D%F0%9F%92%95" +
   "&dates=20270619T140000Z/20270620T000000Z" +
   "&location=Bologna%2C+Italy" +
-  "&details=Rosa+%26+Riccardo%27s+Wedding+%F0%9F%92%8D%F0%9F%92%95" +
+  "&details=Event+details%3A+https%3A%2F%2Fwww.rickyandrosa.com" +
   "&ctz=Europe/Rome";
 
 const ICS_DATA =
@@ -17,7 +17,7 @@ const ICS_DATA =
   "DTSTART;TZID=Europe/Rome:20270619T160000\r\n" +
   "DTEND;TZID=Europe/Rome:20270620T020000\r\n" +
   "SUMMARY:Rosa & Riccardo's Wedding 💍💕\r\nLOCATION:Bologna, Italy\r\n" +
-  "DESCRIPTION:Rosa & Riccardo's Wedding 💍💕\r\n" +
+  "DESCRIPTION:Event details: https://www.rickyandrosa.com\r\n" +
   "END:VEVENT\r\nEND:VCALENDAR";
 
 export type WeddingCalendarVariant = "hero" | "forestGold";

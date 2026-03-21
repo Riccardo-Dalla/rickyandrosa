@@ -398,7 +398,7 @@ export function GuestInfoForm({
               )}
             </AnimatePresence>
 
-            <div className="pt-4 text-center">
+            <div className={forest ? "pt-1 text-center" : "pt-4 text-center"}>
               {status === "submitting" ? (
                 <motion.div
                   initial={{ opacity: 0 }}
