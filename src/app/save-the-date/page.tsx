@@ -202,10 +202,11 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     // Keep the video muted so only the main song is heard
     video.muted = true;
     video.volume = 0.0;
+    video.playbackRate = 1.25;
     video.play();
 
     // Start background music immediately on tap, at a clean point in the track
-    const bgAudio = new Audio("https://sj0vhlkvbrjeks9b.public.blob.vercel-storage.com/save-the-date.mp3");
+    const bgAudio = new Audio("https://media.rickyandrosa.com/save-the-date.mp3");
     bgAudio.preload = "auto";
     bgAudio.currentTime = 11;
     bgAudio.volume = 1.0;
@@ -227,7 +228,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
 
     const checkTime = () => {
       if (!video) return;
-      if (video.duration - video.currentTime <= 2) {
+      if (video.duration - video.currentTime <= 4) {
         startFade();
       } else {
         requestAnimationFrame(checkTime);
@@ -249,11 +250,11 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
       >
         <video
           ref={videoRef}
-          src="https://sj0vhlkvbrjeks9b.public.blob.vercel-storage.com/envelope.mp4"
+          src="https://media.rickyandrosa.com/envelope.mp4"
           muted
           playsInline
           preload="auto"
-          className="h-full w-full select-none object-cover object-center"
+          className="h-full w-full select-none object-cover object-center scale-[1.3]"
         />
       </motion.div>
 

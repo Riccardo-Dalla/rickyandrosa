@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
 
-const BLOB_BASE = "https://sj0vhlkvbrjeks9b.public.blob.vercel-storage.com";
+const BLOB_BASE = "https://media.rickyandrosa.com";
 
 const HERO_VIDEOS = [
   `${BLOB_BASE}/hero-videos/GH010038_1732759039324.mp4`,
@@ -30,26 +30,26 @@ function shuffleArray<T>(arr: T[]): T[] {
   return shuffled;
 }
 
+function getNextPos(queue: string[], pos: number) {
+  return pos + 1 >= queue.length ? 0 : pos + 1;
+}
+
 function useRotatingVideo(intervalMs = 8000) {
-  const queueRef = useRef<typeof HERO_VIDEOS | null>(null);
+  const queueRef = useRef<string[]>(shuffleArray(HERO_VIDEOS));
   const posRef = useRef(0);
-  const [current, setCurrent] = useState(HERO_VIDEOS[0]);
+  const [current, setCurrent] = useState(() => queueRef.current[0]);
+  const [next, setNext] = useState(() => queueRef.current[1]);
   const [tick, setTick] = useState(0);
 
-  useEffect(() => {
-    queueRef.current = shuffleArray(HERO_VIDEOS);
-    posRef.current = 0;
-    setCurrent(queueRef.current[0]);
-  }, []);
-
   const advance = useCallback(() => {
-    if (!queueRef.current) return;
     posRef.current += 1;
     if (posRef.current >= queueRef.current.length) {
       queueRef.current = shuffleArray(HERO_VIDEOS);
       posRef.current = 0;
     }
     setCurrent(queueRef.current[posRef.current]);
+    const nextPos = getNextPos(queueRef.current, posRef.current);
+    setNext(queueRef.current[nextPos % queueRef.current.length]);
     setTick((t) => t + 1);
   }, []);
 
@@ -58,17 +58,25 @@ function useRotatingVideo(intervalMs = 8000) {
     return () => clearTimeout(id);
   }, [tick, advance, intervalMs]);
 
-  return { src: current, advance };
+  return { src: current, nextSrc: next, advance };
 }
 
 export default function Home() {
   const { t } = useI18n();
-  const { src: currentVideo, advance } = useRotatingVideo(8000);
+  const { src: currentVideo, nextSrc, advance } = useRotatingVideo(8000);
   const activeSrcRef = useRef(currentVideo);
   activeSrcRef.current = currentVideo;
 
   return (
     <section className="relative flex h-screen items-center justify-center overflow-hidden">
+      {/* Preload next video off-screen */}
+      <video
+        key={nextSrc}
+        src={nextSrc}
+        preload="auto"
+        muted
+        className="hidden"
+      />
       <AnimatePresence mode="popLayout">
         <motion.video
           key={currentVideo}
