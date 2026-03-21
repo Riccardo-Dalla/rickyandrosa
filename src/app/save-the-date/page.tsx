@@ -254,7 +254,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
           muted
           playsInline
           preload="auto"
-          className="h-full w-full select-none object-cover object-center scale-[1.3]"
+          className="h-full w-full select-none object-cover object-center brightness-120"
         />
       </motion.div>
 

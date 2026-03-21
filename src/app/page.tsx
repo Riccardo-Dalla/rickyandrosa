@@ -4,21 +4,26 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n/context";
 
-const BLOB_BASE = "https://media.rickyandrosa.com";
+const MEDIA_BASE = "https://media.rickyandrosa.com";
 
-const HERO_VIDEOS = [
-  `${BLOB_BASE}/hero-videos/GH010038_1732759039324.mp4`,
-  `${BLOB_BASE}/hero-videos/GH010071_1732989066470.mp4`,
-  `${BLOB_BASE}/hero-videos/GH010273_1773562971855.mp4`,
-  `${BLOB_BASE}/hero-videos/GH010312_1773563884273.mp4`,
-  `${BLOB_BASE}/hero-videos/Norway00001890.mp4`,
-  `${BLOB_BASE}/hero-videos/Norway00010415.mp4`,
-  `${BLOB_BASE}/hero-videos/Norway00010920.mp4`,
-  `${BLOB_BASE}/hero-videos/Zion00007503.mp4`,
-  `${BLOB_BASE}/hero-videos/Zion00008579.mp4`,
-  `${BLOB_BASE}/hero-videos/Zion00015383.mp4`,
-  `${BLOB_BASE}/hero-videos/CostaRica00023976.mp4`,
-  `${BLOB_BASE}/hero-videos/Zion00001567.mp4`,
+interface HeroVideo {
+  src: string;
+  objectPosition?: string;
+}
+
+const HERO_VIDEOS: HeroVideo[] = [
+  { src: `${MEDIA_BASE}/hero-videos/GH010038_1732759039324.mp4` },
+  { src: `${MEDIA_BASE}/hero-videos/GH010071_1732989066470.mp4` },
+  { src: `${MEDIA_BASE}/hero-videos/GH010273_1773562971855.mp4` },
+  { src: `${MEDIA_BASE}/hero-videos/GH010312_1773563884273.mp4`, objectPosition: "35% 50%" },
+  { src: `${MEDIA_BASE}/hero-videos/Norway00001890.mp4`, objectPosition: "30% 70%" },
+  { src: `${MEDIA_BASE}/hero-videos/Norway00010415.mp4` },
+  { src: `${MEDIA_BASE}/hero-videos/Norway00010920.mp4`, objectPosition: "30% 65%" },
+  { src: `${MEDIA_BASE}/hero-videos/Zion00007503.mp4`, objectPosition: "40% 55%" },
+  { src: `${MEDIA_BASE}/hero-videos/Zion00008579.mp4`, objectPosition: "40% 60%" },
+  { src: `${MEDIA_BASE}/hero-videos/Zion00015383.mp4` },
+  { src: `${MEDIA_BASE}/hero-videos/CostaRica00023976.mp4`, objectPosition: "25% 70%" },
+  { src: `${MEDIA_BASE}/hero-videos/Zion00001567.mp4` },
 ];
 
 function shuffleArray<T>(arr: T[]): T[] {
@@ -30,12 +35,8 @@ function shuffleArray<T>(arr: T[]): T[] {
   return shuffled;
 }
 
-function getNextPos(queue: string[], pos: number) {
-  return pos + 1 >= queue.length ? 0 : pos + 1;
-}
-
 function useRotatingVideo(intervalMs = 8000) {
-  const queueRef = useRef<string[]>(HERO_VIDEOS);
+  const queueRef = useRef<HeroVideo[]>(HERO_VIDEOS);
   const posRef = useRef(0);
   const [current, setCurrent] = useState(HERO_VIDEOS[0]);
   const [next, setNext] = useState(HERO_VIDEOS[1]);
@@ -56,8 +57,8 @@ function useRotatingVideo(intervalMs = 8000) {
       posRef.current = 0;
     }
     setCurrent(queueRef.current[posRef.current]);
-    const nextPos = getNextPos(queueRef.current, posRef.current);
-    setNext(queueRef.current[nextPos % queueRef.current.length]);
+    const nextPos = (posRef.current + 1) % queueRef.current.length;
+    setNext(queueRef.current[nextPos]);
     setTick((t) => t + 1);
   }, []);
 
@@ -66,18 +67,17 @@ function useRotatingVideo(intervalMs = 8000) {
     return () => clearTimeout(id);
   }, [tick, advance, intervalMs]);
 
-  return { src: current, nextSrc: next, advance };
+  return { current, nextSrc: next.src, advance };
 }
 
 export default function Home() {
   const { t } = useI18n();
-  const { src: currentVideo, nextSrc, advance } = useRotatingVideo(8000);
-  const activeSrcRef = useRef(currentVideo);
-  activeSrcRef.current = currentVideo;
+  const { current: currentVideo, nextSrc, advance } = useRotatingVideo(8000);
+  const activeSrcRef = useRef(currentVideo.src);
+  activeSrcRef.current = currentVideo.src;
 
   return (
     <section className="relative flex h-screen items-center justify-center overflow-hidden">
-      {/* Preload next video off-screen */}
       <video
         key={nextSrc}
         src={nextSrc}
@@ -87,7 +87,7 @@ export default function Home() {
       />
       <AnimatePresence mode="popLayout">
         <motion.video
-          key={currentVideo}
+          key={currentVideo.src}
           autoPlay
           muted
           playsInline
@@ -96,7 +96,8 @@ export default function Home() {
           exit={{ opacity: 0 }}
           transition={{ duration: 1.5 }}
           className="absolute inset-0 h-full w-full object-cover"
-          src={currentVideo}
+          style={{ objectPosition: currentVideo.objectPosition }}
+          src={currentVideo.src}
           onEnded={(e) => {
             if (e.currentTarget.src.includes(activeSrcRef.current)) advance();
           }}
