@@ -10,6 +10,8 @@ import { playfairDisplay, inter } from "@/lib/fonts";
 /* ─── Full-Screen Envelope Video ─── */
 const ENVELOPE_DESKTOP = "https://media.rickyandrosa.com/envelope.mp4";
 const ENVELOPE_MOBILE = "https://media.rickyandrosa.com/envelope-mobile.mp4";
+const ENVELOPE_FADE_AT = 3;      // seconds into video before fade starts
+const ENVELOPE_FADE_DUR = 0.5;     // seconds the fade-out lasts
 
 function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const { t } = useI18n();
@@ -31,13 +33,12 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     // Keep the video muted so only the main song is heard
     video.muted = true;
     video.volume = 0.0;
-    video.playbackRate = 1.25;
     video.play();
 
     // Start background music immediately on tap, at a clean point in the track
     const bgAudio = new Audio("https://media.rickyandrosa.com/save-the-date.mp3");
     bgAudio.preload = "auto";
-    bgAudio.currentTime = 12;
+    bgAudio.currentTime = 12.5;
     bgAudio.volume = 1.0;
     bgAudio.loop = true;
     bgAudio.play().catch(() => { });
@@ -52,12 +53,16 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
       }
       setTimeout(() => {
         setPhase("done");
-      }, 1000);
+        if (videoRef.current) {
+          videoRef.current.pause();
+          videoRef.current.src = "";
+        }
+      }, ENVELOPE_FADE_DUR * 1000);
     };
 
     const checkTime = () => {
       if (!video) return;
-      if (video.duration - video.currentTime <= 2) {
+      if (video.currentTime >= ENVELOPE_FADE_AT) {
         startFade();
       } else {
         requestAnimationFrame(checkTime);
@@ -70,7 +75,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   return (
     <motion.div
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 2 }}
       layout={false}
       className="fixed inset-0 overflow-hidden bg-black"
     >
@@ -96,9 +101,9 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
         className="absolute bottom-[5%] left-0 right-0 z-[25] flex justify-center pointer-events-none"
       >
         <motion.p
-          animate={{ opacity: [0.5, 0.9, 0.5] }}
+          animate={{ opacity: [0.6, 1, 0.6] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="font-sans text-sm font-light uppercase tracking-[0.3em] text-white/45 sm:text-sm"
+          className="font-sans text-sm font-light uppercase tracking-[0.3em] text-white/70 sm:text-sm"
         >
           {t.saveTheDate.tapSeal}
         </motion.p>
@@ -277,7 +282,7 @@ export default function SaveTheDate() {
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: ENVELOPE_FADE_DUR, ease: "easeInOut" }}
           >
             <Envelope onOpen={(audio) => { setBgAudio(audio); setIsOpened(true); }} />
           </motion.section>
