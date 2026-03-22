@@ -24,9 +24,9 @@ const en = {
   saveTheDate: {
     tapSeal: "Tap the seal to open",
     summerBologna: "June 19, 2027 \u00A0·\u00A0 Bologna, Italy",
-    date: "June 19 2027 | Bologna, Italy",
-    heroBody:
-      "Save the date for the wedding of Rosa Hamalainen & Riccardo Dalla",
+    date: "June 19, 2027",
+    location: "Bologna, Italy",
+    heroBody: "Save the date",
     addToCalendar: "Add to Calendar",
     googleCalendar: "Google Calendar",
     appleCalendar: "Apple Calendar",

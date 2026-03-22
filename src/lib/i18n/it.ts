@@ -26,9 +26,9 @@ const it: Translations = {
   saveTheDate: {
     tapSeal: "Tocca il sigillo per aprire",
     summerBologna: "19 Giugno 2027 \u00A0·\u00A0 Bologna, Italia",
-    date: "19 Giugno 2027 | Bologna, Italia",
-    heroBody:
-      "Segna la data per il matrimonio di Rosa Hamalainen e Riccardo Dalla",
+    date: "19 Giugno 2027",
+    location: "Bologna, Italia",
+    heroBody: "Segna la data",
     addToCalendar: "Aggiungi al Calendario",
     googleCalendar: "Google Calendar",
     appleCalendar: "Apple Calendar",

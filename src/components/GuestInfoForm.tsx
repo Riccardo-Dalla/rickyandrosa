@@ -429,8 +429,8 @@ export function GuestInfoForm({
                   whileTap={{ scale: 0.97 }}
                   className={
                     forest
-                      ? "inline-flex items-center gap-2.5 rounded-full border border-gold/55 bg-gold/10 px-7 py-2.5 font-sans text-[10px] font-semibold text-gold backdrop-blur-sm transition-all duration-300 hover:bg-gold/18"
-                      : "inline-flex items-center gap-2.5 rounded-full border border-white/20 px-7 py-2.5 font-sans text-[10px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold"
+                      ? "inline-flex items-center gap-2.5 rounded-full border border-gold/55 bg-gold/10 px-7 py-2.5 font-sans text-[11px] font-semibold text-gold backdrop-blur-sm transition-all duration-300 hover:bg-gold/18"
+                      : "inline-flex items-center gap-2.5 rounded-full border border-white/20 px-7 py-2.5 font-sans text-[11px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold"
                   }
                 >
                   <svg

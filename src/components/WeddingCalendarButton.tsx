@@ -24,16 +24,16 @@ export type WeddingCalendarVariant = "hero" | "forestGold";
 
 const triggerStyles: Record<WeddingCalendarVariant, string> = {
   hero:
-    "inline-flex items-center gap-2.5 rounded-full border border-white/20 px-7 py-2.5 font-sans text-[10px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold",
+    "inline-flex items-center gap-2.5 rounded-full border border-white/20 px-7 py-2.5 font-sans text-[11px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold",
   forestGold:
-    "inline-flex items-center gap-2.5 rounded-full border border-gold/45 px-7 py-2.5 font-sans text-[10px] font-semibold text-gold/90 backdrop-blur-sm transition-all duration-300 hover:border-gold hover:bg-gold/10 hover:text-gold",
+    "inline-flex items-center gap-2.5 rounded-full border border-gold/45 px-7 py-2.5 font-sans text-[11px] font-semibold text-gold/90 backdrop-blur-sm transition-all duration-300 hover:border-gold hover:bg-gold/10 hover:text-gold",
 };
 
 const menuItemStyles: Record<WeddingCalendarVariant, string> = {
   hero:
-    "inline-flex items-center gap-2 rounded-full border border-white/15 bg-deep/90 px-5 py-2 font-sans text-[10px] font-medium uppercase text-white/70 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold",
+    "inline-flex items-center gap-2 rounded-full border border-white/15 bg-deep/90 px-5 py-2 font-sans text-[11px] font-medium uppercase text-white/70 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold",
   forestGold:
-    "inline-flex items-center gap-2 rounded-full border border-gold/25 bg-forest px-5 py-2 font-sans text-[10px] font-medium uppercase text-gold/85 backdrop-blur-md transition-colors hover:border-gold/50 hover:bg-gold/5 hover:text-gold",
+    "inline-flex items-center gap-2 rounded-full border border-gold/25 bg-forest px-5 py-2 font-sans text-[11px] font-medium uppercase text-gold/85 backdrop-blur-md transition-colors hover:border-gold/50 hover:bg-gold/5 hover:text-gold",
 };
 
 export function WeddingCalendarButton({
@@ -106,11 +106,11 @@ export function WeddingCalendarButton({
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            initial={{ opacity: 0, y: -8, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            exit={{ opacity: 0, y: -8, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-1/2 z-[200] mt-2 flex -translate-x-1/2 flex-col gap-2 whitespace-nowrap"
+            className="absolute bottom-full left-1/2 z-[200] mb-2 flex -translate-x-1/2 flex-col gap-2 whitespace-nowrap"
           >
             <a
               href={GOOGLE_CAL_URL}

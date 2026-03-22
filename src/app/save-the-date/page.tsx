@@ -147,7 +147,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
 
   return (
     <>
-      <section className="relative flex h-screen items-center justify-center overflow-hidden">
+      <section className="relative flex h-screen flex-col items-center overflow-hidden">
         <motion.div
           className="absolute inset-0"
         >
@@ -160,52 +160,40 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
           <div className="std-grain absolute inset-0 opacity-[0.03]" />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 1, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0 }}
-          className="relative z-10 px-6 text-center"
-        >
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0 }}
-            className="mt-6 flex justify-center sm:mt-10"
-          >
-            <img
-              src="/rr-logo.png"
-              alt="Riccardo & Rosa"
-              className="w-[208px] opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
-            />
-          </motion.div>
+        <div className="relative z-10 mt-16 flex justify-center sm:mt-20">
+          <img
+            src="/rr-logo.png"
+            alt="Riccardo & Rosa"
+            className="w-[208px] opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
+          />
+        </div>
 
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0 }}
-            className="mt-3 text-center"
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 -mt-[8vh]">
+          <p
+            className={`${inter.className} mb-0 text-center text-[0.9rem] font-normal leading-[1.4] text-white/[0.78] sm:mb-0 sm:text-[1.0125rem]`}
           >
-            <div className="mx-auto w-full max-w-lg sm:max-w-xl md:max-w-2xl">
-              <h2
-                className={`${playfairDisplay.className} w-full text-xl font-normal leading-[1.35] tracking-[0.02em] text-white/90 sm:text-2xl md:text-3xl lg:text-4xl`}
-              >
-                {t.saveTheDate.date}
-              </h2>
-              <p
-                className={`${inter.className} mx-auto mt-5 w-full max-w-xl text-center text-[0.9rem] font-normal leading-[1.4] text-white/[0.78] sm:mt-6 sm:text-[1.0125rem] md:max-w-2xl`}
-              >
-                {t.saveTheDate.heroBody}
-              </p>
-            </div>
-            <div className="mt-8 flex items-center justify-center gap-4">
+            {t.saveTheDate.heroBody}
+          </p>
+          <h2
+            className={`${playfairDisplay.className} text-center text-6xl font-normal leading-[1.2] tracking-[0.02em] text-white/90 sm:text-7xl md:text-8xl lg:text-9xl`}
+          >
+            {t.saveTheDate.date}
+          </h2>
+          <p
+            className={`${playfairDisplay.className} mt-3 text-center text-xl font-normal tracking-[0.02em] text-white/90 sm:mt-4 sm:text-2xl md:text-3xl lg:text-4xl`}
+          >
+            {t.saveTheDate.location}
+          </p>
+        </div>
+
+        <div className="relative z-10 mt-auto mb-[12vh] flex items-center justify-center gap-4 px-6 sm:mb-[10vh]">
               <motion.button
                 type="button"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setInviteOpen(true)}
-                className="inline-flex items-center gap-2.5 rounded-full bg-gold px-7 py-2.5 font-sans text-[10px] font-semibold text-charcoal backdrop-blur-sm transition-all duration-300 hover:bg-gold/90"
+                className="inline-flex items-center gap-2.5 rounded-full bg-gold px-7 py-2.5 font-sans text-[11px] font-semibold text-charcoal backdrop-blur-sm transition-all duration-300 hover:bg-gold/90"
               >
-                {/* Same stroke weight / size as WeddingCalendarButton icon */}
                 <svg
                   width="14"
                   height="14"
@@ -223,9 +211,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
                 {t.saveTheDate.getFormalInvite}
               </motion.button>
               <WeddingCalendarButton />
-            </div>
-          </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Invite modal */}
@@ -252,9 +238,9 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
                 type="button"
                 aria-label="Close"
                 onClick={() => setInviteOpen(false)}
-                className="absolute right-2 top-2 rounded-full border border-gold/30 bg-black/15 p-1 text-gold/90 transition-colors hover:border-gold/50 hover:bg-gold/10 sm:right-2.5 sm:top-2.5"
+                className="absolute right-2 top-2 rounded-full border border-gold/30 bg-black/15 p-1.5 text-gold/90 transition-colors hover:border-gold/50 hover:bg-gold/10"
               >
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M18 6L6 18" />
                   <path d="M6 6l12 12" />
                 </svg>
