@@ -9,7 +9,7 @@ const GOOGLE_CAL_URL =
   "&text=Rosa+%26+Riccardo%27s+Wedding+%F0%9F%92%8D%F0%9F%92%95" +
   "&dates=20270619T140000Z/20270620T000000Z" +
   "&location=Bologna%2C+Italy" +
-  "&details=Event+details%3A+https%3A%2F%2Fwww.rickyandrosa.com" +
+  "&details=Event+details%3A+www.rickyandrosa.com" +
   "&ctz=Europe/Rome";
 
 const ICS_DATA =
@@ -17,34 +17,36 @@ const ICS_DATA =
   "DTSTART;TZID=Europe/Rome:20270619T160000\r\n" +
   "DTEND;TZID=Europe/Rome:20270620T020000\r\n" +
   "SUMMARY:Rosa & Riccardo's Wedding 💍💕\r\nLOCATION:Bologna, Italy\r\n" +
-  "DESCRIPTION:Event details: https://www.rickyandrosa.com\r\n" +
+  "DESCRIPTION:Event details: www.rickyandrosa.com\r\n" +
   "END:VEVENT\r\nEND:VCALENDAR";
 
 export type WeddingCalendarVariant = "hero" | "forestGold";
 
 const triggerStyles: Record<WeddingCalendarVariant, string> = {
   hero:
-    "inline-flex items-center gap-2.5 rounded-full border border-white/20 px-7 py-2.5 font-sans text-[11px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold",
+    "inline-flex items-center gap-3 rounded-full border border-white/20 px-8 py-3 font-sans text-[13px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold",
   forestGold:
-    "inline-flex items-center gap-2.5 rounded-full border border-gold/45 px-7 py-2.5 font-sans text-[11px] font-semibold text-gold/90 backdrop-blur-sm transition-all duration-300 hover:border-gold hover:bg-gold/10 hover:text-gold",
+    "inline-flex items-center gap-3 rounded-full border border-gold/45 px-8 py-3 font-sans text-[13px] font-semibold text-gold/90 backdrop-blur-sm transition-all duration-300 hover:border-gold hover:bg-gold/10 hover:text-gold",
 };
 
 const menuItemStyles: Record<WeddingCalendarVariant, string> = {
   hero:
-    "inline-flex items-center gap-2 rounded-full border border-white/15 bg-deep/90 px-5 py-2 font-sans text-[11px] font-medium uppercase text-white/70 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold",
+    "flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/15 bg-deep/90 px-4 py-2.5 font-sans text-[10px] font-medium uppercase text-white/70 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold",
   forestGold:
-    "inline-flex items-center gap-2 rounded-full border border-gold/25 bg-forest px-5 py-2 font-sans text-[11px] font-medium uppercase text-gold/85 backdrop-blur-md transition-colors hover:border-gold/50 hover:bg-gold/5 hover:text-gold",
+    "flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-gold/25 bg-forest px-4 py-2.5 font-sans text-[10px] font-medium uppercase text-gold/85 backdrop-blur-md transition-colors hover:border-gold/50 hover:bg-gold/5 hover:text-gold",
 };
 
 export function WeddingCalendarButton({
   className = "",
   variant = "hero",
   onOpenChange,
+  direction = "up",
 }: {
   className?: string;
   variant?: WeddingCalendarVariant;
   /** Fires when the calendar menu opens or closes (e.g. to grow a parent modal). */
   onOpenChange?: (open: boolean) => void;
+  direction?: "up" | "down";
 }) {
   const [open, setOpen] = useState(false);
   const { t } = useI18n();
@@ -76,7 +78,7 @@ export function WeddingCalendarButton({
   };
 
   return (
-    <div ref={wrapperRef} className={`relative inline-block ${className}`}>
+    <div ref={wrapperRef} className={`relative inline-flex ${className}`}>
       <motion.button
         type="button"
         onClick={() => setOpen(!open)}
@@ -85,8 +87,8 @@ export function WeddingCalendarButton({
         className={triggerStyles[variant]}
       >
         <svg
-          width="14"
-          height="14"
+          width="17"
+          height="17"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -106,11 +108,12 @@ export function WeddingCalendarButton({
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.95 }}
+            initial={{ opacity: 0, y: direction === "up" ? -8 : 8, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+            exit={{ opacity: 0, y: direction === "up" ? -8 : 8, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute bottom-full left-1/2 z-[200] mb-2 flex -translate-x-1/2 flex-col gap-2 whitespace-nowrap"
+            className={`absolute left-0 right-0 z-[200] flex flex-col gap-2 ${direction === "up" ? "bottom-full mb-2" : "top-full mt-2"
+              }`}
           >
             <a
               href={GOOGLE_CAL_URL}
@@ -120,8 +123,8 @@ export function WeddingCalendarButton({
               className={menuItemStyles[variant]}
             >
               <svg
-                width="14"
-                height="14"
+                width="17"
+                height="17"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 aria-hidden
@@ -139,8 +142,8 @@ export function WeddingCalendarButton({
               className={menuItemStyles[variant]}
             >
               <svg
-                width="14"
-                height="14"
+                width="17"
+                height="17"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 aria-hidden

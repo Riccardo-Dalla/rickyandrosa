@@ -225,7 +225,7 @@ export function GuestInfoForm({
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className={`text-center transition-[padding] duration-200 ease-out ${
-              forest && forestCalendarOpen ? "pb-14 sm:pb-16" : ""
+              forest && forestCalendarOpen ? "pb-28 sm:pb-32" : ""
             }`}
           >
             <>
@@ -265,6 +265,7 @@ export function GuestInfoForm({
                   <WeddingCalendarButton
                     variant="forestGold"
                     onOpenChange={setForestCalendarOpen}
+                    direction="down"
                   />
                 </div>
               )}
@@ -429,13 +430,13 @@ export function GuestInfoForm({
                   whileTap={{ scale: 0.97 }}
                   className={
                     forest
-                      ? "inline-flex items-center gap-2.5 rounded-full border border-gold/55 bg-gold/10 px-7 py-2.5 font-sans text-[11px] font-semibold text-gold backdrop-blur-sm transition-all duration-300 hover:bg-gold/18"
-                      : "inline-flex items-center gap-2.5 rounded-full border border-white/20 px-7 py-2.5 font-sans text-[11px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold"
+                      ? "inline-flex items-center gap-3 rounded-full border border-gold/55 bg-gold/10 px-8 py-3 font-sans text-[13px] font-semibold text-gold backdrop-blur-sm transition-all duration-300 hover:bg-gold/18"
+                      : "inline-flex items-center gap-3 rounded-full border border-white/20 px-8 py-3 font-sans text-[13px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold"
                   }
                 >
                   <svg
-                    width="13"
-                    height="13"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
