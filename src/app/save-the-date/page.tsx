@@ -18,7 +18,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<"sealed" | "playing" | "fading" | "done">("sealed");
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
-  const [videoSrc, setVideoSrc] = useState(ENVELOPE_DESKTOP);
+  const [videoSrc, setVideoSrc] = useState("");
 
   useEffect(() => {
     setVideoSrc(window.innerWidth < 640 ? ENVELOPE_MOBILE : ENVELOPE_DESKTOP);
@@ -94,7 +94,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
       >
         <video
           ref={videoRef}
-          src={videoSrc}
+          src={videoSrc || undefined}
           muted
           playsInline
           preload="auto"
@@ -170,10 +170,20 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
         </motion.div>
 
         <div className="relative z-10 mt-16 flex justify-center sm:mt-20">
-          <img
-            src="/rr-logo.png"
-            alt="Riccardo & Rosa"
-            className="w-[208px] opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
+          <div
+            className="w-[208px] aspect-[2/1] bg-gold opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
+            role="img"
+            aria-label="Riccardo & Rosa"
+            style={{
+              WebkitMaskImage: "url(/rr-logo.png)",
+              maskImage: "url(/rr-logo.png)",
+              WebkitMaskSize: "contain",
+              maskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+            }}
           />
         </div>
 
@@ -196,30 +206,30 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
         </div>
 
         <div className="relative z-10 mt-auto mb-6 flex items-center justify-center gap-4 px-6 sm:mb-8">
-              <motion.button
-                type="button"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => setInviteOpen(true)}
-                className="inline-flex items-center gap-3 rounded-full bg-gold px-8 py-3 font-sans text-[13px] font-semibold text-charcoal backdrop-blur-sm transition-all duration-300 hover:bg-gold/90"
-              >
-                <svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden
-                >
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                  <path d="m22 6-10 7L2 6" />
-                </svg>
-                {t.saveTheDate.getFormalInvite}
-              </motion.button>
-              <WeddingCalendarButton />
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => setInviteOpen(true)}
+            className="inline-flex items-center gap-3 rounded-full bg-gold px-8 py-3 font-sans text-[13px] font-semibold text-charcoal backdrop-blur-sm transition-all duration-300 hover:bg-gold/90"
+          >
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <path d="m22 6-10 7L2 6" />
+            </svg>
+            {t.saveTheDate.getFormalInvite}
+          </motion.button>
+          <WeddingCalendarButton />
         </div>
       </section>
 
