@@ -17,6 +17,7 @@ interface CommitModalProps {
 function CommitModal({ activity, onClose, t }: CommitModalProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -37,6 +38,7 @@ function CommitModal({ activity, onClose, t }: CommitModalProps) {
           activityId: activity.id,
           activityName: activity.name,
           costRange: activity.costRange,
+          isPrivate,
         }),
       });
       if (!res.ok) throw new Error("Failed to submit");
@@ -104,6 +106,23 @@ function CommitModal({ activity, onClose, t }: CommitModalProps) {
                   placeholder={t.placeholders.email}
                 />
               </div>
+
+              <label className="flex cursor-pointer items-start gap-3 pt-2">
+                <input
+                  type="checkbox"
+                  checked={isPrivate}
+                  onChange={(e) => setIsPrivate(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 accent-gold"
+                />
+                <span className="select-none">
+                  <span className="font-sans text-sm font-light text-charcoal">
+                    {t.keepPrivate}
+                  </span>
+                  <span className="mt-0.5 block font-sans text-[11px] font-light text-warm-gray/60">
+                    {t.privateHint}
+                  </span>
+                </span>
+              </label>
 
               {error && (
                 <p className="text-xs text-rose">{error}</p>

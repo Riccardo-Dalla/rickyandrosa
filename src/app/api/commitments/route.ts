@@ -3,13 +3,14 @@ import { getCommitments, addCommitment } from "@/lib/commitments";
 
 export async function GET() {
   const commitments = await getCommitments();
-  return NextResponse.json(commitments);
+  const publicCommitments = commitments.filter((c) => !c.isPrivate);
+  return NextResponse.json(publicCommitments);
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, activityId, activityName, costRange } = body;
+    const { name, email, activityId, activityName, costRange, isPrivate } = body;
 
     if (!name || !email || !activityId || !activityName) {
       return NextResponse.json(
@@ -24,6 +25,7 @@ export async function POST(request: Request) {
       activityId,
       activityName,
       costRange: costRange || "Varies",
+      isPrivate: Boolean(isPrivate),
     });
 
     return NextResponse.json(commitment, { status: 201 });
