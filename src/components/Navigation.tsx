@@ -54,7 +54,7 @@ export function Navigation() {
             : "bg-transparent"
         }`}
       >
-        <nav className="flex items-center justify-between px-4 py-4 sm:px-6">
+        <nav className="flex items-center justify-between px-4 py-4 sm:px-6" style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}>
           {/* Left — R&R logo */}
           <Link
             href="/"
