@@ -1,37 +1,16 @@
 import { test, expect } from "@playwright/test";
 
-const pages = [
-  { path: "/", name: "Homepage", mustHave: ["Rosa", "Riccardo"] },
-  { path: "/events", name: "Events" },
-  { path: "/bologna-guide", name: "Bologna Guide" },
-  { path: "/our-story", name: "Our Story" },
-  { path: "/reverse-registry", name: "Reverse Registry" },
-  { path: "/reverse-registry/activities", name: "Activities" },
-  { path: "/reverse-registry/feed", name: "Feed" },
-];
+test("Homepage loads without errors", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (err) => errors.push(err.message));
 
-for (const page of pages) {
-  test(`${page.name} (${page.path}) loads without errors`, async ({
-    page: p,
-  }) => {
-    const errors: string[] = [];
-    p.on("pageerror", (err) => errors.push(err.message));
+  const response = await page.goto("/", { waitUntil: "domcontentloaded" });
 
-    const response = await p.goto(page.path, { waitUntil: "domcontentloaded" });
-
-    expect(response?.status()).toBe(200);
-
-    if (page.mustHave) {
-      for (const text of page.mustHave) {
-        await expect(p.locator(`text=${text}`).first()).toBeVisible({
-          timeout: 10000,
-        });
-      }
-    }
-
-    expect(errors).toEqual([]);
-  });
-}
+  expect(response?.status()).toBe(200);
+  await expect(page.locator("text=Rosa").first()).toBeVisible({ timeout: 10000 });
+  await expect(page.locator("text=Riccardo").first()).toBeVisible({ timeout: 10000 });
+  expect(errors).toEqual([]);
+});
 
 test("Save the Date loads without errors", async ({ page }) => {
   const errors: string[] = [];
@@ -51,10 +30,26 @@ test("Homepage has video element", async ({ page }) => {
   await expect(video).toBeAttached({ timeout: 10000 });
 });
 
-test("Navigation is visible", async ({ page }) => {
-  await page.goto("/events", { waitUntil: "domcontentloaded" });
+test("Navigation is visible on homepage", async ({ page }) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
   const nav = page.locator("nav").first();
   await expect(nav).toBeVisible({ timeout: 10000 });
+});
+
+const blockedRoutes = ["/events", "/bologna-guide", "/our-story", "/reverse-registry"];
+
+for (const route of blockedRoutes) {
+  test(`${route} redirects to homepage`, async ({ page }) => {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    expect(page.url()).toContain("localhost");
+    expect(new URL(page.url()).pathname).toBe("/");
+  });
+}
+
+test("Unknown route redirects to homepage", async ({ page }) => {
+  await page.goto("/some-random-page", { waitUntil: "domcontentloaded" });
+  await page.waitForURL("/", { timeout: 5000 });
+  expect(new URL(page.url()).pathname).toBe("/");
 });
 
 test("API health: GET /api/commitments", async ({ request }) => {

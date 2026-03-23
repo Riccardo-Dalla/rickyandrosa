@@ -9,6 +9,35 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/events/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/bologna-guide/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/our-story/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/reverse-registry/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/singles/:path*",
+        destination: "/",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {

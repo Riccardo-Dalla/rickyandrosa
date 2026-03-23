@@ -5,8 +5,7 @@ module.exports = {
       startServerReadyPattern: "Ready in",
       url: [
         "http://localhost:3000/",
-        "http://localhost:3000/events",
-        "http://localhost:3000/reverse-registry",
+        "http://localhost:3000/save-the-date",
       ],
       numberOfRuns: 1,
       settings: {
