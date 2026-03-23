@@ -46,7 +46,7 @@ export default function RootLayout({
       >
         <I18nProvider>
           <Navigation />
-          <main>{children}</main>
+          <main className="bg-ivory">{children}</main>
           <Footer />
         </I18nProvider>
       </body>

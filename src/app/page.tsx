@@ -112,7 +112,7 @@ export default function Home() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-dvh items-center justify-center overflow-hidden select-none"
+      className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-deep select-none"
       style={{ WebkitTouchCallout: "none", touchAction: "manipulation" }}
       onMouseDown={pause}
       onMouseUp={resume}

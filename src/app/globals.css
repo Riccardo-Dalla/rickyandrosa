@@ -36,6 +36,7 @@
 html,
 body {
   height: 100%;
+  margin: 0;
 }
 
 html {
@@ -43,7 +44,7 @@ html {
 }
 
 body {
-  background-color: var(--color-ivory);
+  background-color: var(--color-deep);
   color: var(--color-charcoal);
   font-family: var(--font-serif), Georgia, serif;
   -webkit-font-smoothing: antialiased;
