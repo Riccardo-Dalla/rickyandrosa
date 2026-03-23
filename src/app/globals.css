@@ -44,7 +44,7 @@ html {
 }
 
 body {
-  background-color: var(--color-deep);
+  background-color: var(--color-ivory);
   color: var(--color-charcoal);
   font-family: var(--font-serif), Georgia, serif;
   -webkit-font-smoothing: antialiased;
@@ -91,10 +91,15 @@ body {
 }
 
 .hero-fullbleed {
-  min-height: 100svh;
-  min-height: calc(100dvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
+  min-height: 100vh;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@supports (min-height: 100dvh) {
+  .hero-fullbleed {
+    min-height: 100dvh;
+  }
 }
 
 .std-page {
