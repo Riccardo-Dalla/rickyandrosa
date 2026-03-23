@@ -1,6 +1,14 @@
 #!/bin/sh
 
-# Check if any media files in public/ are staged
+# ── Smoke tests (Chromium only, ~8s) ───────────────────────────────
+echo "Running smoke tests..."
+npx playwright test --project=chromium
+if [ $? -ne 0 ]; then
+  echo "Smoke tests failed — commit aborted."
+  exit 1
+fi
+
+# ── Upload media if changed ────────────────────────────────────────
 MEDIA_CHANGED=$(git diff --cached --name-only -- 'public/*.mp4' 'public/*.mp3' 'public/*.mov' 'public/*.webm')
 
 if [ -n "$MEDIA_CHANGED" ]; then

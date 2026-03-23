@@ -36,6 +36,7 @@
 html,
 body {
   height: 100%;
+  margin: 0;
 }
 
 html {
@@ -87,6 +88,18 @@ body {
   height: 1px;
   background: var(--color-gold);
   margin: 2rem auto;
+}
+
+.hero-fullbleed {
+  min-height: 100vh;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@supports (min-height: 100dvh) {
+  .hero-fullbleed {
+    min-height: 100dvh;
+  }
 }
 
 .std-page {

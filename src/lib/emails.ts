@@ -1,6 +1,10 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
+}
 const from = process.env.RESEND_FROM || "Rosa & Riccardo <hello@rickyandrosa.com>";
 const SITE_URL = "https://rickyandrosa.com";
 
@@ -66,7 +70,7 @@ export async function sendCommitmentEmail(
     </table>
   `);
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: email,
     subject: `You're committed to ${activityName}!`,
@@ -100,7 +104,7 @@ export async function sendCompletionEmail(
     </table>
   `);
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: email,
     subject: `You completed ${activityName}!`,
@@ -134,7 +138,7 @@ export async function sendReminderEmail(
     </table>
   `);
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from,
     to: email,
     subject: `Reminder: Have you done ${activityName} yet?`,
