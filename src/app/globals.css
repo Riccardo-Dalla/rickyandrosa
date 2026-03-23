@@ -91,16 +91,10 @@ body {
 }
 
 .hero-fullbleed {
-  min-height: 100dvh;
-  min-height: 100svh; /* fallback for older browsers */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-@supports (min-height: 100dvh) {
-  .hero-fullbleed {
-    min-height: 100dvh;
-  }
+  min-height: 100svh;
+  min-height: calc(100dvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .std-page {
