@@ -27,9 +27,13 @@ jobs:
         run: npx playwright install --with-deps chromium firefox webkit
 
       - run: npm run build
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
 
       - name: Run smoke tests
         run: npx playwright test
+        env:
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
 
       - uses: actions/upload-artifact@v5
         if: failure()
