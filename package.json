@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "playwright test",
+    "test:lighthouse": "lhci autorun",
+    "test:all": "playwright test && lhci autorun",
     "upload-media": "node scripts/upload-media.mjs",
     "setup-db": "node scripts/setup-db.mjs",
     "prepare": "git config core.hooksPath .githooks"
@@ -24,6 +27,8 @@
     "resend": "^6.9.4"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
     "@types/google.maps": "^3.58.1",
     "@types/node": "^20",
