@@ -16,11 +16,16 @@ async function main() {
       photo_url     TEXT,
       is_private    BOOLEAN DEFAULT false,
       completed     BOOLEAN DEFAULT false,
-      created_at    TIMESTAMPTZ DEFAULT NOW()
+      created_at    TIMESTAMPTZ DEFAULT NOW(),
+      last_reminded_at TIMESTAMPTZ
     )
   `;
 
-  console.log("commitments table created (or already exists).");
+  await sql`
+    ALTER TABLE commitments ADD COLUMN IF NOT EXISTS last_reminded_at TIMESTAMPTZ
+  `;
+
+  console.log("commitments table created/updated (last_reminded_at column ensured).");
   process.exit(0);
 }
 

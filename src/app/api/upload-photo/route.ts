@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { updateCommitmentPhoto } from "@/lib/commitments";
+import {
+  updateCommitmentPhoto,
+  markCommitmentCompleted,
+} from "@/lib/commitments";
+import { sendCompletionEmail } from "@/lib/emails";
 
 const MEDIA_DOMAIN = "https://media.rickyandrosa.com";
 
@@ -34,37 +38,51 @@ export async function POST(request: NextRequest) {
     const file = form.get("file") as File | null;
     const commitmentId = form.get("commitmentId") as string | null;
 
-    if (!file || !commitmentId) {
+    if (!commitmentId) {
       return NextResponse.json(
-        { error: "File and commitmentId are required" },
+        { error: "commitmentId is required" },
         { status: 400 }
       );
     }
 
-    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
-    const key = `photos/${commitmentId}-${Date.now()}.${ext}`;
-    const bucket = process.env.R2_BUCKET_NAME!;
+    if (file && file.size > 0) {
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+      const key = `registry-photos/${commitmentId}-${Date.now()}.${ext}`;
+      const bucket = process.env.R2_BUCKET_NAME!;
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+      const buffer = Buffer.from(await file.arrayBuffer());
 
-    const s3 = getR2Client();
-    await s3.send(
-      new PutObjectCommand({
-        Bucket: bucket,
-        Key: key,
-        Body: buffer,
-        ContentType: IMAGE_CONTENT_TYPES[ext] || "application/octet-stream",
-      })
+      const s3 = getR2Client();
+      await s3.send(
+        new PutObjectCommand({
+          Bucket: bucket,
+          Key: key,
+          Body: buffer,
+          ContentType: IMAGE_CONTENT_TYPES[ext] || "application/octet-stream",
+        })
+      );
+
+      const photoUrl = `${MEDIA_DOMAIN}/${key}`;
+      const commitment = await updateCommitmentPhoto(commitmentId, photoUrl);
+
+      sendCompletionEmail(commitment.name, commitment.email, commitment.activityName).catch(
+        (err) => console.error("Failed to send completion email:", err)
+      );
+
+      return NextResponse.json(commitment);
+    }
+
+    const commitment = await markCommitmentCompleted(commitmentId);
+
+    sendCompletionEmail(commitment.name, commitment.email, commitment.activityName).catch(
+      (err) => console.error("Failed to send completion email:", err)
     );
-
-    const photoUrl = `${MEDIA_DOMAIN}/${key}`;
-    const commitment = await updateCommitmentPhoto(commitmentId, photoUrl);
 
     return NextResponse.json(commitment);
   } catch (err) {
-    console.error("Upload failed:", err);
+    console.error("Complete/upload failed:", err);
     return NextResponse.json(
-      { error: "Failed to upload photo" },
+      { error: "Failed to complete activity" },
       { status: 500 }
     );
   }

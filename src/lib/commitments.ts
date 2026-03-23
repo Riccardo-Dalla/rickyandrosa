@@ -69,9 +69,10 @@ export async function addCommitment(
   return rows[0] as Commitment;
 }
 
-export async function getCommitmentsByEmail(
-  email: string
+export async function searchCommitments(
+  query: string
 ): Promise<Commitment[]> {
+  const q = query.trim();
   const { rows } = await sql`
     SELECT
       id,
@@ -86,7 +87,8 @@ export async function getCommitmentsByEmail(
       completed,
       created_at     AS "createdAt"
     FROM commitments
-    WHERE LOWER(email) = LOWER(${email})
+    WHERE LOWER(email) = LOWER(${q})
+       OR LOWER(name) = LOWER(${q})
     ORDER BY created_at DESC
   `;
   return rows as Commitment[];
@@ -115,4 +117,72 @@ export async function updateCommitmentPhoto(
   `;
   if (rows.length === 0) throw new Error("Commitment not found");
   return rows[0] as Commitment;
+}
+
+export async function deleteCommitment(id: string): Promise<string | null> {
+  const { rows } = await sql`
+    DELETE FROM commitments
+    WHERE id = ${id}
+    RETURNING photo_url AS "photoUrl"
+  `;
+  if (rows.length === 0) return null;
+  return (rows[0] as { photoUrl: string | null }).photoUrl;
+}
+
+export async function markCommitmentCompleted(
+  id: string
+): Promise<Commitment> {
+  const { rows } = await sql`
+    UPDATE commitments
+    SET completed = true
+    WHERE id = ${id}
+    RETURNING
+      id,
+      name,
+      email,
+      activity_id   AS "activityId",
+      activity_name  AS "activityName",
+      cost_range     AS "costRange",
+      message,
+      photo_url      AS "photoUrl",
+      is_private     AS "isPrivate",
+      completed,
+      created_at     AS "createdAt"
+  `;
+  if (rows.length === 0) throw new Error("Commitment not found");
+  return rows[0] as Commitment;
+}
+
+export async function getUnremindedCommitments(): Promise<Commitment[]> {
+  const { rows } = await sql`
+    SELECT
+      id,
+      name,
+      email,
+      activity_id   AS "activityId",
+      activity_name  AS "activityName",
+      cost_range     AS "costRange",
+      message,
+      photo_url      AS "photoUrl",
+      is_private     AS "isPrivate",
+      completed,
+      created_at     AS "createdAt",
+      last_reminded_at AS "lastRemindedAt"
+    FROM commitments
+    WHERE completed = false
+      AND (
+        last_reminded_at IS NULL
+        OR last_reminded_at < NOW() - INTERVAL '90 days'
+      )
+    ORDER BY created_at ASC
+  `;
+  return rows as Commitment[];
+}
+
+export async function updateLastReminded(ids: string[]): Promise<void> {
+  if (ids.length === 0) return;
+  await sql.query(
+    `UPDATE commitments SET last_reminded_at = NOW() WHERE id = ANY($1::text[])`,
+    [ids]
+  );
 }

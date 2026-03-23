@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCommitmentsByEmail } from "@/lib/commitments";
+import { searchCommitments } from "@/lib/commitments";
 
 export async function GET(request: NextRequest) {
-  const email = request.nextUrl.searchParams.get("email");
-  if (!email) {
+  const q = request.nextUrl.searchParams.get("q");
+  if (!q) {
     return NextResponse.json(
-      { error: "Email is required" },
+      { error: "Name or email is required" },
       { status: 400 }
     );
   }
 
   try {
-    const commitments = await getCommitmentsByEmail(email);
+    const commitments = await searchCommitments(q);
     return NextResponse.json(commitments);
   } catch {
     return NextResponse.json(

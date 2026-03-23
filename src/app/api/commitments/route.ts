@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import { getCommitments, addCommitment } from "@/lib/commitments";
+import { sendCommitmentEmail } from "@/lib/emails";
 
 export async function GET() {
   const commitments = await getCommitments();
-  const publicCommitments = commitments.filter((c) => !c.isPrivate);
-  return NextResponse.json(publicCommitments);
+  const sanitized = commitments.map((c) =>
+    c.isPrivate ? { ...c, name: "", email: "" } : c
+  );
+  return NextResponse.json(sanitized);
 }
 
 export async function POST(request: Request) {
@@ -27,6 +30,10 @@ export async function POST(request: Request) {
       costRange: costRange || "Varies",
       isPrivate: Boolean(isPrivate),
     });
+
+    sendCommitmentEmail(name, email, activityName).catch((err) =>
+      console.error("Failed to send commitment email:", err)
+    );
 
     return NextResponse.json(commitment, { status: 201 });
   } catch {

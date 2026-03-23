@@ -63,12 +63,16 @@ function Bubble({
   activityIcon,
   onSelect,
   timeAgoText,
+  statusLabel,
+  anonymousLabel,
 }: {
   commitment: Commitment;
   index: number;
   activityIcon: string;
   onSelect: () => void;
   timeAgoText: string;
+  statusLabel: string;
+  anonymousLabel: string;
 }) {
   const colorClass = BUBBLE_COLORS[index % BUBBLE_COLORS.length];
 
@@ -113,7 +117,7 @@ function Bubble({
             activityIcon
           ) : (
             <span className="font-serif text-base font-semibold text-gold">
-              {getInitials(commitment.name)}
+              {commitment.name ? getInitials(commitment.name) : "?"}
             </span>
           )}
         </div>
@@ -123,10 +127,15 @@ function Bubble({
           {commitment.activityName}
         </p>
 
+        {/* Status tag */}
+        <span className={`rounded-full px-2.5 py-0.5 font-sans text-[9px] font-medium uppercase tracking-wide ${commitment.completed ? "bg-sage/15 text-sage" : "bg-gold/10 text-gold"}`}>
+          {statusLabel}
+        </span>
+
         {/* Person name + time */}
         <div className="flex items-center gap-1.5">
           <span className="font-sans text-[10px] font-medium text-warm-gray sm:text-[11px]">
-            {commitment.name}
+            {commitment.name || anonymousLabel}
           </span>
           <span className="text-warm-gray/30">·</span>
           <span className="font-sans text-[9px] text-warm-gray/50 sm:text-[10px]">
@@ -144,12 +153,14 @@ function BubbleDetail({
   timeAgoText,
   onClose,
   commitLabel,
+  anonymousLabel,
 }: {
   commitment: Commitment;
   activityIcon: string;
   timeAgoText: string;
   onClose: () => void;
-  commitLabel: string;
+  commitLabel: { committed: string; completed: string };
+  anonymousLabel: string;
 }) {
   return (
     <motion.div
@@ -191,7 +202,7 @@ function BubbleDetail({
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold/15 to-gold/5 text-4xl shadow-inner">
               {activityIcon || (
                 <span className="font-serif text-2xl font-semibold text-gold">
-                  {getInitials(commitment.name)}
+                  {commitment.name ? getInitials(commitment.name) : "?"}
                 </span>
               )}
             </div>
@@ -201,9 +212,9 @@ function BubbleDetail({
             {commitment.activityName}
           </h3>
 
-          <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-gold/10 px-4 py-1.5">
-            <span className="font-sans text-[10px] font-medium uppercase tracking-[0.15em] text-gold">
-              {commitLabel}
+          <div className={`mt-3 inline-flex items-center gap-2 rounded-full px-4 py-1.5 ${commitment.completed ? "bg-sage/15" : "bg-gold/10"}`}>
+            <span className={`font-sans text-[10px] font-medium uppercase tracking-[0.15em] ${commitment.completed ? "text-sage" : "text-gold"}`}>
+              {commitment.completed ? commitLabel.completed : commitLabel.committed}
             </span>
           </div>
 
@@ -213,7 +224,7 @@ function BubbleDetail({
                 Person
               </span>
               <span className="font-sans text-sm font-medium text-charcoal">
-                {commitment.name}
+                {commitment.name || anonymousLabel}
               </span>
             </div>
             <div className="flex items-center justify-between border-b border-divider pb-2">
@@ -245,7 +256,7 @@ function BubbleDetail({
   );
 }
 
-type UploadStep = "email" | "pick" | "photo" | "done";
+type UploadStep = "search" | "pick" | "confirm" | "done";
 
 function UploadModal({
   onClose,
@@ -256,8 +267,8 @@ function UploadModal({
 }) {
   const { t } = useI18n();
   const u = t.feed.upload;
-  const [step, setStep] = useState<UploadStep>("email");
-  const [email, setEmail] = useState("");
+  const [step, setStep] = useState<UploadStep>("search");
+  const [query, setQuery] = useState("");
   const [myCommitments, setMyCommitments] = useState<Commitment[]>([]);
   const [selectedId, setSelectedId] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -266,14 +277,16 @@ function UploadModal({
   const [error, setError] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleFindCommitments = useCallback(
+  const selectedCommitment = myCommitments.find((c) => c.id === selectedId);
+
+  const handleSearch = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       setLoading(true);
       setError("");
       try {
         const res = await fetch(
-          `/api/commitments/mine?email=${encodeURIComponent(email)}`
+          `/api/commitments/mine?q=${encodeURIComponent(query)}`
         );
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
@@ -282,19 +295,14 @@ function UploadModal({
           return;
         }
         setMyCommitments(data);
-        if (data.length === 1) {
-          setSelectedId(data[0].id);
-          setStep("photo");
-        } else {
-          setStep("pick");
-        }
+        setStep("pick");
       } catch {
         setError(u.error);
       } finally {
         setLoading(false);
       }
     },
-    [email, u]
+    [query, u]
   );
 
   const handleFileChange = (f: File | null) => {
@@ -308,16 +316,16 @@ function UploadModal({
     setError("");
   };
 
-  const handleUpload = async () => {
-    if (!file || !selectedId) return;
+  const handleComplete = async () => {
+    if (!selectedId) return;
     setLoading(true);
     setError("");
     try {
       const form = new FormData();
-      form.append("file", file);
       form.append("commitmentId", selectedId);
+      if (file) form.append("file", file);
       const res = await fetch("/api/upload-photo", { method: "POST", body: form });
-      if (!res.ok) throw new Error("Upload failed");
+      if (!res.ok) throw new Error("Failed");
       setStep("done");
       onUploaded();
     } catch {
@@ -345,7 +353,7 @@ function UploadModal({
       >
         {step === "done" ? (
           <div className="py-8 text-center">
-            <span className="text-4xl">📸</span>
+            <span className="text-4xl">🎉</span>
             <h3 className="mt-4 font-serif text-2xl font-light tracking-wide text-charcoal">
               {u.success}
             </h3>
@@ -369,19 +377,19 @@ function UploadModal({
             </h3>
             <div className="mt-3 h-px w-8 bg-gold/30" />
 
-            {step === "email" && (
-              <form onSubmit={handleFindCommitments} className="mt-8 space-y-4">
+            {step === "search" && (
+              <form onSubmit={handleSearch} className="mt-8 space-y-4">
                 <div>
                   <label className="block font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-warm-gray/60">
-                    {u.enterEmail}
+                    {u.enterNameOrEmail}
                   </label>
                   <input
-                    type="email"
+                    type="text"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
                     className="mt-1 w-full border-b border-divider bg-transparent py-2 font-sans text-sm text-charcoal outline-none transition-colors focus:border-gold"
-                    placeholder={u.emailPlaceholder}
+                    placeholder={u.placeholder}
                   />
                 </div>
                 {error && <p className="text-xs text-rose">{error}</p>}
@@ -405,20 +413,30 @@ function UploadModal({
                     key={c.id}
                     onClick={() => {
                       setSelectedId(c.id);
-                      setStep("photo");
+                      setStep("confirm");
                     }}
                     className="w-full border border-divider p-4 text-left transition-all duration-200 hover:border-gold/50 hover:shadow-sm"
                   >
-                    <span className="font-serif text-base font-light tracking-wide text-charcoal">
-                      {c.activityName}
-                    </span>
+                    <div className="flex items-center justify-between">
+                      <span className="font-serif text-base font-light tracking-wide text-charcoal">
+                        {c.activityName}
+                      </span>
+                      {c.completed && (
+                        <span className="rounded-full bg-sage/15 px-2 py-0.5 font-sans text-[9px] font-medium uppercase text-sage">
+                          {t.feed.completed}
+                        </span>
+                      )}
+                    </div>
                     <span className="mt-1 block font-sans text-xs text-warm-gray/60">
                       {c.costRange}
                     </span>
                   </button>
                 ))}
                 <button
-                  onClick={() => setStep("email")}
+                  onClick={() => {
+                    setStep("search");
+                    setMyCommitments([]);
+                  }}
                   className="mt-2 font-sans text-xs text-warm-gray/60 transition-colors hover:text-charcoal"
                 >
                   {u.back}
@@ -426,8 +444,21 @@ function UploadModal({
               </div>
             )}
 
-            {step === "photo" && (
+            {step === "confirm" && selectedCommitment && (
               <div className="mt-8 space-y-4">
+                <div className="rounded-lg bg-ivory p-4 text-center">
+                  <span className="font-serif text-lg font-light tracking-wide text-charcoal">
+                    {selectedCommitment.activityName}
+                  </span>
+                  <span className="mt-1 block font-sans text-xs text-warm-gray/60">
+                    {selectedCommitment.costRange}
+                  </span>
+                </div>
+
+                <p className="font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-warm-gray/60">
+                  {u.addPhoto}
+                </p>
+
                 <input
                   ref={fileRef}
                   type="file"
@@ -470,9 +501,9 @@ function UploadModal({
                       e.preventDefault();
                       handleFileChange(e.dataTransfer.files?.[0] ?? null);
                     }}
-                    className="flex w-full flex-col items-center gap-2 rounded-lg border-2 border-dashed border-divider py-12 text-center transition-colors hover:border-gold/40"
+                    className="flex w-full flex-col items-center gap-2 rounded-lg border-2 border-dashed border-divider py-8 text-center transition-colors hover:border-gold/40"
                   >
-                    <span className="text-3xl">📷</span>
+                    <span className="text-2xl">📷</span>
                     <span className="font-sans text-sm font-light text-warm-gray">
                       {u.dragOrClick}
                     </span>
@@ -486,8 +517,8 @@ function UploadModal({
 
                 <div className="flex gap-3 pt-2">
                   <button
-                    onClick={handleUpload}
-                    disabled={!file || loading}
+                    onClick={handleComplete}
+                    disabled={loading}
                     className="flex-1 bg-charcoal py-3 font-sans text-[11px] font-medium uppercase text-white transition-colors duration-300 hover:bg-gold disabled:opacity-50"
                   >
                     {loading ? u.uploading : u.submit}
@@ -496,7 +527,8 @@ function UploadModal({
                     onClick={() => {
                       setFile(null);
                       setPreview(null);
-                      setStep(myCommitments.length > 1 ? "pick" : "email");
+                      setSelectedId("");
+                      setStep("pick");
                     }}
                     className="border border-divider px-6 py-3 font-sans text-[11px] font-medium uppercase text-warm-gray transition-colors duration-300 hover:border-charcoal hover:text-charcoal"
                   >
@@ -618,6 +650,8 @@ export default function Feed() {
                   activityIcon={activityIconMap[item.activityId] || ""}
                   onSelect={() => setSelected(item)}
                   timeAgoText={timeAgo(item.createdAt, t.feed.timeAgo)}
+                  statusLabel={item.completed ? t.feed.completed : t.feed.committed}
+                  anonymousLabel={t.feed.anonymous}
                 />
               ))}
             </div>
@@ -654,7 +688,8 @@ export default function Feed() {
             activityIcon={activityIconMap[selected.activityId] || ""}
             timeAgoText={timeAgo(selected.createdAt, t.feed.timeAgo)}
             onClose={() => setSelected(null)}
-            commitLabel={t.feed.committed}
+            commitLabel={{ committed: t.feed.committed, completed: t.feed.completed }}
+            anonymousLabel={t.feed.anonymous}
           />
         )}
       </AnimatePresence>
