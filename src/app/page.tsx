@@ -85,7 +85,7 @@ function useRotatingVideo(intervalMs = 8000) {
     videoRef.current?.play();
   }, []);
 
-  return { current, nextSrc: next?.src ?? null, advance, paused, pause, resume, videoRef };
+  return { current, nextSrc: next?.src ?? null, advance, pause, resume, videoRef };
 }
 
 export default function Home() {
