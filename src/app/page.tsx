@@ -12,21 +12,23 @@ const MEDIA_BASE = "https://media.rickyandrosa.com";
 interface HeroVideo {
   src: string;
   objectPosition?: string;
+  location: string;
 }
 
 const HERO_VIDEOS: HeroVideo[] = [
-  { src: `${MEDIA_BASE}/hero-videos/GH010038_1732759039324.mp4` },
-  { src: `${MEDIA_BASE}/hero-videos/GH010071_1732989066470.mp4` },
-  { src: `${MEDIA_BASE}/hero-videos/GH010273_1773562971855.mp4` },
-  { src: `${MEDIA_BASE}/hero-videos/GH010312_1773563884273.mp4`, objectPosition: "50% 50%" },
-  { src: `${MEDIA_BASE}/hero-videos/Norway00001890.mp4`, objectPosition: "15% 70%" },
-  { src: `${MEDIA_BASE}/hero-videos/Norway00010415.mp4` },
-  { src: `${MEDIA_BASE}/hero-videos/Norway00010920.mp4`, objectPosition: "30% 65%" },
-  { src: `${MEDIA_BASE}/hero-videos/Zion00007503.mp4`, objectPosition: "40% 55%" },
-  { src: `${MEDIA_BASE}/hero-videos/Zion00008579.mp4`, objectPosition: "40% 60%" },
-  { src: `${MEDIA_BASE}/hero-videos/Zion00015383.mp4` },
-  { src: `${MEDIA_BASE}/hero-videos/CostaRica00023976.mp4`, objectPosition: "50% 70%" },
-  { src: `${MEDIA_BASE}/hero-videos/Zion00001567.mp4` },
+  { src: `${MEDIA_BASE}/hero-videos/GH010038_1732759039324.mp4`, location: "La Fortuna, Costa Rica" },
+  { src: `${MEDIA_BASE}/hero-videos/GH010071_1732989066470.mp4`, location: "Tortuguero, Costa Rica" },
+  { src: `${MEDIA_BASE}/hero-videos/GH010152_1773561192800.mp4`, location: "El Nido, Philippines" },
+  { src: `${MEDIA_BASE}/hero-videos/GH010273_1773562971855.mp4`, location: "Kawasan Falls, Philippines" },
+  { src: `${MEDIA_BASE}/hero-videos/GH010312_1773563884273.mp4`, objectPosition: "50% 50%", location: "Cebu, Philippines" },
+  { src: `${MEDIA_BASE}/hero-videos/Norway00001890.mp4`, objectPosition: "15% 70%", location: "Senja, Norway" },
+  { src: `${MEDIA_BASE}/hero-videos/Norway00010415.mp4`, location: "Senja, Norway" },
+  { src: `${MEDIA_BASE}/hero-videos/Norway00010920.mp4`, objectPosition: "30% 65%", location: "Blåisvatnet, Norway" },
+  { src: `${MEDIA_BASE}/hero-videos/Zion00007503.mp4`, objectPosition: "40% 55%", location: "Utah" },
+  { src: `${MEDIA_BASE}/hero-videos/Zion00008579.mp4`, objectPosition: "40% 60%", location: "Utah" },
+  { src: `${MEDIA_BASE}/hero-videos/Zion00015383.mp4`, location: "Utah" },
+  { src: `${MEDIA_BASE}/hero-videos/CostaRica00023976.mp4`, objectPosition: "50% 70%", location: "Playa Cocles, Costa Rica" },
+  { src: `${MEDIA_BASE}/hero-videos/Zion00001567.mp4`, location: "Utah" },
 ];
 
 function shuffleArray<T>(arr: T[]): T[] {
@@ -44,6 +46,8 @@ function useRotatingVideo(intervalMs = 8000) {
   const [current, setCurrent] = useState<HeroVideo | null>(null);
   const [next, setNext] = useState<HeroVideo | null>(null);
   const [tick, setTick] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const shuffled = shuffleArray(HERO_VIDEOS);
@@ -66,22 +70,55 @@ function useRotatingVideo(intervalMs = 8000) {
   }, []);
 
   useEffect(() => {
+    if (paused) return;
     const id = setTimeout(advance, intervalMs);
     return () => clearTimeout(id);
-  }, [tick, advance, intervalMs]);
+  }, [tick, advance, intervalMs, paused]);
 
-  return { current, nextSrc: next?.src ?? null, advance };
+  const pause = useCallback(() => {
+    setPaused(true);
+    videoRef.current?.pause();
+  }, []);
+
+  const resume = useCallback(() => {
+    setPaused(false);
+    videoRef.current?.play();
+  }, []);
+
+  return { current, nextSrc: next?.src ?? null, advance, paused, pause, resume, videoRef };
 }
 
 export default function Home() {
   const { t } = useI18n();
-  const { current: currentVideo, nextSrc, advance } = useRotatingVideo(8000);
+  const { current: currentVideo, nextSrc, advance, pause, resume, videoRef } = useRotatingVideo(8000);
   const activeSrcRef = useRef(currentVideo?.src ?? "");
+  const sectionRef = useRef<HTMLElement>(null);
   useEffect(() => { homeHasAnimated = true; }, []);
   if (currentVideo) activeSrcRef.current = currentVideo.src;
 
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { e.preventDefault(); pause(); };
+    const onTouchEnd = () => resume();
+    el.addEventListener("touchstart", onTouchStart, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [pause, resume]);
+
   return (
-    <section className="relative flex h-screen items-center justify-center overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative flex min-h-dvh items-center justify-center overflow-hidden select-none"
+      style={{ WebkitTouchCallout: "none", touchAction: "manipulation" }}
+      onMouseDown={pause}
+      onMouseUp={resume}
+      onMouseLeave={resume}
+      onContextMenu={(e) => e.preventDefault()}
+    >
       {nextSrc && (
         <video
           key={nextSrc}
@@ -95,6 +132,7 @@ export default function Home() {
         {currentVideo && (
           <motion.video
             key={currentVideo.src}
+            ref={(el) => { if (el) videoRef.current = el; }}
             autoPlay
             muted
             playsInline
@@ -112,6 +150,21 @@ export default function Home() {
         )}
       </AnimatePresence>
       <div className="absolute inset-0 bg-gradient-to-b from-deep/70 via-deep/70 to-deep/70" />
+
+      <AnimatePresence mode="wait">
+        {currentVideo && (
+          <motion.span
+            key={currentVideo.location}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute bottom-4 right-4 z-10 pb-[env(safe-area-inset-bottom)] font-sans text-[10px] font-light tracking-[0.15em] text-white/50 sm:bottom-6 sm:right-6 sm:text-[11px]"
+          >
+            {currentVideo.location}
+          </motion.span>
+        )}
+      </AnimatePresence>
 
       <div className="relative z-10 px-6 text-center">
         <motion.div

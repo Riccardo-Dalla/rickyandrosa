@@ -1,9 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { spectral, inter, greatVibes, pinyonScript } from "@/lib/fonts";
 import { I18nProvider } from "@/lib/i18n/context";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "R&R Wedding | Summer 2027 | Bologna, Italy",
