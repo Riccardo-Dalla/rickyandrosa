@@ -159,7 +159,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
-            className="absolute bottom-14 right-2 z-10 font-sans text-[10px] font-light tracking-[0.15em] text-white/50 sm:bottom-6 sm:right-6 sm:text-[11px]"
+            className="absolute bottom-16 right-2 z-10 font-sans text-[10px] font-light tracking-[0.15em] text-white/50 sm:bottom-6 sm:right-6 sm:text-[11px]"
           >
             {currentVideo.location}
           </motion.span>
