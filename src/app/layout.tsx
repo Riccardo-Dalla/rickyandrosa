@@ -47,6 +47,11 @@ export default function RootLayout({
       <body
         className={`${spectral.variable} ${inter.variable} ${greatVibes.variable} ${pinyonScript.variable} antialiased`}
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.addEventListener("beforeinstallprompt",function(e){e.preventDefault()});if("serviceWorker"in navigator){navigator.serviceWorker.register("/sw.js")}`,
+          }}
+        />
         <I18nProvider>
           <Navigation />
           <main className="bg-ivory">{children}</main>
