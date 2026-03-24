@@ -8,6 +8,38 @@ import { WeddingCalendarButton } from "@/components/WeddingCalendarButton";
 
 const STORAGE_KEY = "rr-guest-submitted";
 
+const STAR_WARS_CHARACTERS = [
+  ["luke", "skywalker"],
+  ["leia", "organa"],
+  ["han", "solo"],
+  ["darth", "vader"],
+  ["obi.wan", "kenobi"],
+  ["padme", "amidala"],
+  ["anakin", "skywalker"],
+  ["yoda", "master"],
+  ["mace", "windu"],
+  ["boba", "fett"],
+  ["lando", "calrissian"],
+  ["din", "djarin"],
+  ["ahsoka", "tano"],
+  ["qui.gon", "jinn"],
+  ["darth", "sidious"],
+  ["chewbacca", "wookiee"],
+  ["jabba", "hutt"],
+  ["bo", "katan"],
+  ["cassian", "andor"],
+  ["jyn", "erso"],
+  ["mon", "mothma"],
+  ["darth", "maul"],
+  ["emperor", "palpatine"],
+
+];
+
+function generateRandomEmail(): string {
+  const [firstName, lastName] = STAR_WARS_CHARACTERS[Math.floor(Math.random() * STAR_WARS_CHARACTERS.length)];
+  return `${firstName}.${lastName}@gmail.com`;
+}
+
 type FormStatus = "idle" | "submitting" | "success" | "duplicate" | "error";
 
 interface FieldErrors {
@@ -35,6 +67,7 @@ export function GuestInfoForm({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [emailPlaceholder, setEmailPlaceholder] = useState("");
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -45,6 +78,10 @@ export function GuestInfoForm({
   const addressRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => {
+    setEmailPlaceholder(generateRandomEmail());
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -191,14 +228,12 @@ export function GuestInfoForm({
 
   const inputClass = (hasError: boolean) =>
     forest
-      ? `mt-2 w-full border-0 border-b-2 bg-transparent py-3 font-serif text-base font-light outline-none transition-colors duration-300 sm:text-lg text-gold placeholder-gold/35 ${
-          hasError
-            ? "border-[#ffb6c1]/85"
-            : "border-gold/35 focus:border-gold"
-        }`
-      : `mt-2 w-full border-0 border-b-2 bg-transparent py-3 font-serif text-base font-light text-white placeholder-white/20 outline-none transition-colors duration-300 sm:text-lg ${
-          hasError ? "border-red-400" : "border-white/15 focus:border-gold/50"
-        }`;
+      ? `mt-2 w-full border-0 border-b-2 bg-transparent py-3 font-serif text-base font-light outline-none transition-colors duration-300 sm:text-lg text-gold placeholder-gold/35 ${hasError
+        ? "border-[#ffb6c1]/85"
+        : "border-gold/35 focus:border-gold"
+      }`
+      : `mt-2 w-full border-0 border-b-2 bg-transparent py-3 font-serif text-base font-light text-white placeholder-white/20 outline-none transition-colors duration-300 sm:text-lg ${hasError ? "border-red-400" : "border-white/15 focus:border-gold/50"
+      }`;
 
   const labelClass = forest
     ? "block font-sans text-xs font-light uppercase tracking-[0.3em] text-gold/90 sm:text-[10px]"
@@ -224,9 +259,8 @@ export function GuestInfoForm({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className={`text-center transition-[padding] duration-200 ease-out ${
-              forest && forestCalendarOpen ? "pb-28 sm:pb-32" : ""
-            }`}
+            className={`text-center transition-[padding] duration-200 ease-out ${forest && forestCalendarOpen ? "pb-28 sm:pb-32" : ""
+              }`}
           >
             <>
               <h1
@@ -244,18 +278,16 @@ export function GuestInfoForm({
               </h1>
               {status === "success" ? (
                 <div
-                  className={`mx-auto mt-5 max-w-sm space-y-2 text-base font-light leading-relaxed sm:text-lg ${
-                    forest ? "text-gold/80" : "text-white/50"
-                  }`}
+                  className={`mx-auto mt-5 max-w-sm space-y-2 text-base font-light leading-relaxed sm:text-lg ${forest ? "text-gold/80" : "text-white/50"
+                    }`}
                 >
                   <p className="font-serif">{t.guestForm.successMessageLine1}</p>
                   <p className="font-serif">{t.guestForm.successMessageLine2}</p>
                 </div>
               ) : (
                 <p
-                  className={`mx-auto mt-5 max-w-sm font-serif text-base font-light leading-relaxed sm:text-lg ${
-                    forest ? "text-gold/80" : "text-white/50"
-                  }`}
+                  className={`mx-auto mt-5 max-w-sm font-serif text-base font-light leading-relaxed sm:text-lg ${forest ? "text-gold/80" : "text-white/50"
+                    }`}
                 >
                   {t.guestForm.duplicateMessage}
                 </p>
@@ -326,7 +358,7 @@ export function GuestInfoForm({
                   if (errors.email)
                     setErrors((p) => ({ ...p, email: undefined }));
                 }}
-                placeholder={t.guestForm.emailPlaceholder}
+                placeholder={emailPlaceholder}
                 className={inputClass(!!errors.email)}
                 autoComplete="email"
               />
@@ -355,22 +387,20 @@ export function GuestInfoForm({
               {showSuggestions && suggestions.length > 0 && (
                 <div
                   ref={suggestionsRef}
-                  className={`absolute left-0 right-0 z-50 mt-1 overflow-hidden border shadow-[0_8px_30px_rgba(0,0,0,0.35)] ${
-                    forest
-                      ? "border-gold/25 bg-deep"
-                      : "border-white/[0.08] bg-deep"
-                  }`}
+                  className={`absolute left-0 right-0 z-50 mt-1 overflow-hidden border shadow-[0_8px_30px_rgba(0,0,0,0.35)] ${forest
+                    ? "border-gold/25 bg-deep"
+                    : "border-white/[0.08] bg-deep"
+                    }`}
                 >
                   {suggestions.map((s) => (
                     <button
                       key={s.placeId}
                       type="button"
                       onClick={() => selectSuggestion(s.placeId, s.text)}
-                      className={`block w-full border-t px-4 py-4 text-left font-sans text-sm transition-colors first:border-t-0 sm:py-3 sm:text-[13px] ${
-                        forest
-                          ? "border-gold/15 text-gold/85 hover:bg-gold/10 hover:text-gold"
-                          : "border-white/[0.04] text-white/60 hover:bg-white/[0.06] hover:text-white/85"
-                      }`}
+                      className={`block w-full border-t px-4 py-4 text-left font-sans text-sm transition-colors first:border-t-0 sm:py-3 sm:text-[13px] ${forest
+                        ? "border-gold/15 text-gold/85 hover:bg-gold/10 hover:text-gold"
+                        : "border-white/[0.04] text-white/60 hover:bg-white/[0.06] hover:text-white/85"
+                        }`}
                     >
                       {s.text}
                     </button>
@@ -416,9 +446,8 @@ export function GuestInfoForm({
                     }
                   />
                   <span
-                    className={`font-sans text-xs font-semibold uppercase sm:text-[10px] ${
-                      forest ? "text-gold/85" : "text-gold/70"
-                    }`}
+                    className={`font-sans text-xs font-semibold uppercase sm:text-[10px] ${forest ? "text-gold/85" : "text-gold/70"
+                      }`}
                   >
                     {t.guestForm.submitting}
                   </span>
