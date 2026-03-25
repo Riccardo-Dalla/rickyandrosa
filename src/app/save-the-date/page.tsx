@@ -187,7 +187,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
           />
         </div>
 
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 -mt-[8vh]">
+        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 -mt-[8vh]">
           <p
             className={`${playfairDisplay.className} mb-0 text-center text-xl font-normal tracking-[0.02em] text-white/90 sm:mb-0 sm:text-2xl md:text-3xl lg:text-4xl`}
           >
@@ -284,14 +284,14 @@ export default function SaveTheDate() {
 
   return (
     <div className="std-page relative min-h-dvh bg-deep">
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {!isOpened && (
           <motion.section
             key="envelope"
             className="fixed inset-0 z-50 overflow-hidden"
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, pointerEvents: "none" }}
             transition={{ duration: ENVELOPE_FADE_DUR, ease: "easeInOut" }}
           >
             <Envelope onOpen={(audio) => { setBgAudio(audio); setIsOpened(true); }} />
