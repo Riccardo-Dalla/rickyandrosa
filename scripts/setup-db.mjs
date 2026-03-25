@@ -25,7 +25,19 @@ async function main() {
     ALTER TABLE commitments ADD COLUMN IF NOT EXISTS last_reminded_at TIMESTAMPTZ
   `;
 
-  console.log("commitments table created/updated (last_reminded_at column ensured).");
+  console.log("commitments table created/updated.");
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS guests (
+      id         TEXT PRIMARY KEY,
+      name       TEXT NOT NULL,
+      email      TEXT NOT NULL UNIQUE,
+      address    TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+
+  console.log("guests table created/updated.");
   process.exit(0);
 }
 

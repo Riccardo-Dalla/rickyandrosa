@@ -1,15 +1,25 @@
 import { NextResponse } from "next/server";
+import { findGuestByEmail, addGuest } from "@/lib/guests";
+import { sendGuestNotificationEmail } from "@/lib/emails";
 
-const APPS_SCRIPT_URL = process.env.GOOGLE_APPS_SCRIPT_URL;
+const GOOGLE_SHEET_URL = process.env.GOOGLE_APPS_SCRIPT_URL;
+
+async function syncToGoogleSheet(name: string, email: string, address: string) {
+  if (!GOOGLE_SHEET_URL) return;
+  
+  try {
+    await fetch(GOOGLE_SHEET_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, address }),
+      redirect: "follow",
+    });
+  } catch (err) {
+    console.error("Failed to sync to Google Sheet:", err);
+  }
+}
 
 export async function POST(request: Request) {
-  if (!APPS_SCRIPT_URL) {
-    return NextResponse.json(
-      { status: "error", message: "Server not configured" },
-      { status: 500 },
-    );
-  }
-
   try {
     const body = await request.json();
     const { name, email, address } = body;
@@ -29,29 +39,26 @@ export async function POST(request: Request) {
       );
     }
 
-    const response = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name.trim(),
-        email: email.trim(),
-        address: address.trim(),
-      }),
-      redirect: "follow",
+    const existing = await findGuestByEmail(email);
+    if (existing) {
+      return NextResponse.json({ status: "duplicate" });
+    }
+
+    const guest = await addGuest({
+      name: name.trim(),
+      email: email.trim(),
+      address: address.trim(),
     });
 
-    const text = await response.text();
+    // Background tasks (non-blocking)
+    sendGuestNotificationEmail(guest.name, guest.email, guest.address).catch(
+      (err) => console.error("Failed to send guest notification:", err)
+    );
+    syncToGoogleSheet(guest.name, guest.email, guest.address);
 
-    try {
-      const result = JSON.parse(text);
-      return NextResponse.json(result);
-    } catch {
-      return NextResponse.json(
-        { status: "error", message: "Invalid response from server" },
-        { status: 502 },
-      );
-    }
-  } catch {
+    return NextResponse.json({ status: "success" });
+  } catch (err) {
+    console.error("Failed to save guest info:", err);
     return NextResponse.json(
       { status: "error", message: "Failed to save guest info" },
       { status: 500 },

@@ -6,6 +6,7 @@ function getResend() {
   return _resend;
 }
 const from = process.env.RESEND_FROM || "Rosa & Riccardo <hello@rickyandrosa.com>";
+const notificationEmail = process.env.NOTIFICATION_EMAIL || "";
 const SITE_URL = "https://rickyandrosa.com";
 
 function layout(content: string) {
@@ -142,6 +143,46 @@ export async function sendReminderEmail(
     from,
     to: email,
     subject: `Reminder: Have you done ${activityName} yet?`,
+    html,
+  });
+}
+
+export async function sendGuestNotificationEmail(
+  guestName: string,
+  guestEmail: string,
+  guestAddress: string
+) {
+  if (!notificationEmail) return;
+
+  const html = layout(`
+    <h1 style="margin:0 0 16px;font-size:26px;font-weight:300;color:#2C2C2C;letter-spacing:0.02em;">
+      New Guest Signup!
+    </h1>
+    <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#6B6259;font-family:-apple-system,sans-serif;">
+      Someone just signed up for a formal invite:
+    </p>
+    <table cellpadding="0" cellspacing="0" style="margin:0 auto 24px;text-align:left;">
+      <tr>
+        <td style="padding:8px 16px 8px 0;font-size:13px;color:#6B6259;font-family:-apple-system,sans-serif;font-weight:600;">Name</td>
+        <td style="padding:8px 0;font-size:15px;color:#2C2C2C;font-family:-apple-system,sans-serif;">${guestName}</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 16px 8px 0;font-size:13px;color:#6B6259;font-family:-apple-system,sans-serif;font-weight:600;">Email</td>
+        <td style="padding:8px 0;font-size:15px;color:#2C2C2C;font-family:-apple-system,sans-serif;">
+          <a href="mailto:${guestEmail}" style="color:#C5A47E;text-decoration:none;">${guestEmail}</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:8px 16px 8px 0;font-size:13px;color:#6B6259;font-family:-apple-system,sans-serif;font-weight:600;vertical-align:top;">Address</td>
+        <td style="padding:8px 0;font-size:15px;color:#2C2C2C;font-family:-apple-system,sans-serif;">${guestAddress.replace(/,/g, ",<br>")}</td>
+      </tr>
+    </table>
+  `);
+
+  await getResend().emails.send({
+    from,
+    to: notificationEmail,
+    subject: `New guest signup: ${guestName}`,
     html,
   });
 }
