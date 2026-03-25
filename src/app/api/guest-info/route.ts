@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { after } from "next/server";
 import { findGuestByEmail, addGuest } from "@/lib/guests";
 import { sendGuestNotificationEmail } from "@/lib/emails";
 
@@ -50,11 +51,15 @@ export async function POST(request: Request) {
       address: address.trim(),
     });
 
-    // Background tasks (non-blocking)
-    sendGuestNotificationEmail(guest.name, guest.email, guest.address).catch(
-      (err) => console.error("Failed to send guest notification:", err)
-    );
-    syncToGoogleSheet(guest.name, guest.email, guest.address);
+    // Background tasks (run after response is sent, but kept alive by Vercel)
+    after(async () => {
+      await Promise.all([
+        sendGuestNotificationEmail(guest.name, guest.email, guest.address).catch(
+          (err) => console.error("Failed to send guest notification:", err)
+        ),
+        syncToGoogleSheet(guest.name, guest.email, guest.address),
+      ]);
+    });
 
     return NextResponse.json({ status: "success" });
   } catch (err) {
