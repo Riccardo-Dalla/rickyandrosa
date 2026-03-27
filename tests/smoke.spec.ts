@@ -1,4 +1,7 @@
 import { test, expect } from "@playwright/test";
+import dotenv from "dotenv";
+
+dotenv.config({ path: ".env.local" });
 
 test("Homepage loads without errors", async ({ page }) => {
   const errors: string[] = [];
@@ -36,14 +39,22 @@ test("Navigation is visible on homepage", async ({ page }) => {
   await expect(nav).toBeVisible({ timeout: 10000 });
 });
 
-const blockedRoutes = ["/events", "/bologna-guide", "/our-story", "/reverse-registry"];
+const hiddenRoutes = ["/events", "/bologna-guide", "/our-story", "/reverse-registry"];
+const showAllPages = process.env.NEXT_PUBLIC_SHOW_ALL_PAGES === "true";
 
-for (const route of blockedRoutes) {
-  test(`${route} redirects to homepage`, async ({ page }) => {
-    await page.goto(route, { waitUntil: "domcontentloaded" });
-    expect(page.url()).toContain("localhost");
-    expect(new URL(page.url()).pathname).toBe("/");
-  });
+for (const route of hiddenRoutes) {
+  if (showAllPages) {
+    test(`${route} loads without errors`, async ({ page }) => {
+      const response = await page.goto(route, { waitUntil: "domcontentloaded" });
+      expect(response?.status()).toBe(200);
+    });
+  } else {
+    test(`${route} redirects to homepage`, async ({ page }) => {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      expect(page.url()).toContain("localhost");
+      expect(new URL(page.url()).pathname).toBe("/");
+    });
+  }
 }
 
 test("Unknown route redirects to homepage", async ({ page }) => {

@@ -7,9 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useI18n } from "@/lib/i18n/context";
 
+const showAllPages = process.env.NEXT_PUBLIC_SHOW_ALL_PAGES === "true";
+
 function useNavItems() {
   const { t } = useI18n();
-  return [
+  const allItems = [
     { label: t.nav.home, href: "/" },
     { label: t.nav.events, href: "/events" },
     { label: t.nav.bolognaGuide, href: "/bologna-guide" },
@@ -18,6 +20,9 @@ function useNavItems() {
     { label: t.nav.gallery, href: "https://gallery.rickyandrosa.com", external: true },
     { label: t.nav.rsvp, href: "https://rsvp.rickyandrosa.com", external: true },
   ];
+  
+  if (showAllPages) return allItems;
+  return [];
 }
 
 export function Navigation() {
@@ -39,11 +44,12 @@ export function Navigation() {
     setIsOpen(false);
   }, [pathname]);
 
-  if (!isHome) return null;
+  if (isSaveTheDate || pathname?.startsWith("/singles")) return null;
 
   const showSolid = scrolled || !isHome;
 
-  if (isHome) {
+  // Minimal nav for homepage when feature flag is off
+  if (isHome && !showAllPages) {
     return (
       <motion.header
         initial={false}
