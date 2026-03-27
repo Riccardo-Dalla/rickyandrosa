@@ -29,11 +29,13 @@ jobs:
       - run: npm run build
         env:
           POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          NEXT_PUBLIC_SHOW_ALL_PAGES: "true"
 
       - name: Run smoke tests
         run: npx playwright test
         env:
           POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          NEXT_PUBLIC_SHOW_ALL_PAGES: "true"
 
       - uses: actions/upload-artifact@v5
         if: failure()
