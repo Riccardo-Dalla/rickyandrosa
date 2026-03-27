@@ -51,21 +51,9 @@ export function Navigation() {
         className="fixed top-0 left-0 right-0 z-50"
       >
         <nav className="flex items-center justify-between px-4 py-4 sm:px-6" style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}>
-          <Link
-            href="/"
-            className="block h-10 w-20 shrink-0 bg-gold"
-            style={{
-              WebkitMaskImage: "url(/rr-logo.png)",
-              maskImage: "url(/rr-logo.png)",
-              WebkitMaskSize: "contain",
-              maskSize: "contain",
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-              WebkitMaskPosition: "center",
-              maskPosition: "center",
-            }}
-            aria-label="R&R Home"
-          />
+          <Link href="/" className="block shrink-0" aria-label="R&R Home">
+            <img src="/rr-logo-gold.png" alt="R&R" className="h-10 w-auto" />
+          </Link>
           <LanguageToggle className="relative z-50 text-white/90" />
         </nav>
       </motion.header>
@@ -85,21 +73,9 @@ export function Navigation() {
       >
         <nav className="flex items-center justify-between px-4 py-4 sm:px-6" style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}>
           {/* Left — R&R logo */}
-          <Link
-            href="/"
-            className="block h-10 w-20 shrink-0 bg-gold"
-            style={{
-              WebkitMaskImage: "url(/rr-logo.png)",
-              maskImage: "url(/rr-logo.png)",
-              WebkitMaskSize: "contain",
-              maskSize: "contain",
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-              WebkitMaskPosition: "center",
-              maskPosition: "center",
-            }}
-            aria-label="R&R Home"
-          />
+          <Link href="/" className="block shrink-0" aria-label="R&R Home">
+            <img src="/rr-logo-gold.png" alt="R&R" className="h-10 w-auto" />
+          </Link>
 
           {/* Center — Desktop nav */}
           <ul className="hidden items-center gap-8 lg:flex">

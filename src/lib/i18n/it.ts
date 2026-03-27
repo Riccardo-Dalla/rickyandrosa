@@ -28,7 +28,7 @@ const it: Translations = {
     summerBologna: "19 Giugno 2027 \u00A0·\u00A0 Bologna, Italia",
     date: "19 Giugno 2027",
     location: "Bologna, Italia",
-    heroBody: "Segnati la data",
+    heroBody: "Metti in calendario",
     addToCalendar: "Aggiungi al Calendario",
     googleCalendar: "Google Calendar",
     appleCalendar: "Apple Calendar",

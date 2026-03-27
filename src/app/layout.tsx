@@ -12,7 +12,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "R&R Wedding | Summer 2027 | Bologna, Italy",
+  title: "R&R Wedding",
   description: "The wedding of Riccardo & Rosa — Summer 2027 in Bologna, Italy",
   icons: {
     icon: [

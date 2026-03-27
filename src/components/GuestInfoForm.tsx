@@ -298,6 +298,7 @@ export function GuestInfoForm({
                     variant="forestGold"
                     onOpenChange={setForestCalendarOpen}
                     direction="down"
+                    solid
                   />
                 </div>
               )}

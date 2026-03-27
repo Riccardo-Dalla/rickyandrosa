@@ -11,7 +11,7 @@ import { playfairDisplay, inter } from "@/lib/fonts";
 const ENVELOPE_DESKTOP = "https://media.rickyandrosa.com/envelope.mp4";
 const ENVELOPE_MOBILE = "https://media.rickyandrosa.com/envelope-mobile.mp4";
 const ENVELOPE_FADE_AT = 3;      // seconds into video before fade starts
-const ENVELOPE_FADE_DUR = 0.5;     // seconds the fade-out lasts
+const ENVELOPE_FADE_DUR = 0.8;     // seconds the fade-out lasts
 
 function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const { t } = useI18n();
@@ -84,7 +84,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   return (
     <motion.div
       exit={{ opacity: 0 }}
-      transition={{ duration: 2 }}
+      transition={{ duration: ENVELOPE_FADE_DUR, ease: "easeInOut" }}
       layout={false}
       className="fixed inset-0 overflow-hidden bg-black"
     >
@@ -98,7 +98,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
           muted
           playsInline
           preload="auto"
-          className="h-full w-full select-none object-cover object-center"
+          className="h-full w-full select-none object-cover object-center sepia-[0.15] saturate-[1.1] brightness-[1.02] sm:sepia-0 sm:saturate-100 sm:brightness-100"
         />
       </motion.div>
 
@@ -107,12 +107,12 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: phase === "sealed" ? 1 : 0 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-[5%] left-0 right-0 z-[25] flex justify-center pointer-events-none"
+        className="absolute left-0 right-0 bottom-8 z-[999] flex justify-center pointer-events-none sm:bottom-12 md:bottom-16"
       >
         <motion.p
           animate={{ opacity: [0.6, 1, 0.6] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="font-sans text-sm font-light uppercase tracking-[0.3em] text-white/70 sm:text-sm"
+          className="font-sans text-sm font-medium uppercase tracking-[0.3em] text-[#8B7355] drop-shadow-[0_1px_2px_rgba(255,255,255,0.5)] sm:text-base"
         >
           {t.saveTheDate.tapSeal}
         </motion.p>
@@ -155,7 +155,11 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
   }, [inviteOpen]);
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+    >
       <section className="relative flex h-dvh min-h-dvh flex-col items-center overflow-hidden bg-deep">
         <motion.div
           className="absolute inset-0"
@@ -164,26 +168,17 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
             src="/save-the-date-bg.jpg"
             alt=""
             className="absolute inset-0 h-full w-full object-cover opacity-40"
+            style={{ objectPosition: "60% center" }}
           />
           <div className="absolute inset-0 bg-deep/40" />
           <div className="std-grain absolute inset-0 opacity-[0.03]" />
         </motion.div>
 
         <div className="relative z-10 mt-16 flex justify-center sm:mt-20">
-          <div
-            className="w-[208px] aspect-[2/1] bg-gold opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
-            role="img"
-            aria-label="Riccardo & Rosa"
-            style={{
-              WebkitMaskImage: "url(/rr-logo.png)",
-              maskImage: "url(/rr-logo.png)",
-              WebkitMaskSize: "contain",
-              maskSize: "contain",
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-              WebkitMaskPosition: "center",
-              maskPosition: "center",
-            }}
+          <img
+            src="/rr-logo-gold.png"
+            alt="Riccardo & Rosa"
+            className="w-[208px] opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
           />
         </div>
 
@@ -205,17 +200,17 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
           </p>
         </div>
 
-        <div className="relative z-10 mt-auto mb-6 flex items-center justify-center gap-4 px-6 sm:mb-8">
+        <div className="relative z-10 mt-auto mb-6 grid w-full grid-cols-2 gap-3 px-4 sm:mb-8 sm:flex sm:w-auto sm:gap-4 sm:px-6">
           <motion.button
             type="button"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => setInviteOpen(true)}
-            className="inline-flex items-center gap-3 rounded-full bg-gold px-8 py-3 font-sans text-[13px] font-semibold text-charcoal backdrop-blur-sm transition-all duration-300 hover:bg-gold/90"
+            className="flex flex-col items-center justify-center gap-1.5 rounded-full bg-gold px-5 py-3 font-sans text-[11px] font-semibold text-charcoal backdrop-blur-sm transition-all duration-300 hover:bg-gold/90 sm:flex-row sm:gap-3 sm:px-8 sm:text-[13px]"
           >
             <svg
-              width="17"
-              height="17"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -223,13 +218,14 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
               strokeLinecap="round"
               strokeLinejoin="round"
               aria-hidden
+              className="sm:h-[17px] sm:w-[17px]"
             >
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
               <path d="m22 6-10 7L2 6" />
             </svg>
-            {t.saveTheDate.getFormalInvite}
+            <span className="whitespace-nowrap">{t.saveTheDate.getFormalInvite}</span>
           </motion.button>
-          <WeddingCalendarButton />
+          <WeddingCalendarButton className="w-full sm:w-auto" />
         </div>
       </section>
 
@@ -241,7 +237,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/55 p-10 sm:p-12 md:p-16 backdrop-blur-sm"
+            className="fixed inset-0 z-[80] flex items-center justify-center overflow-y-auto bg-black/55 p-6 sm:p-12 md:p-16 backdrop-blur-sm"
             onMouseDown={(e) => {
               if (e.target === e.currentTarget) setInviteOpen(false);
             }}
@@ -269,7 +265,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </motion.div>
   );
 }
 
