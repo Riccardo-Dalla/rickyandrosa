@@ -19,7 +19,9 @@ function layout(content: string) {
       <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
         <!-- Header -->
         <tr><td style="text-align:center;padding-bottom:32px;">
-          <img src="https://media.rickyandrosa.com/rr-logo-gold.png" alt="R&R" width="120" height="60" style="display:inline-block;width:120px;height:60px;" />
+          <a href="${SITE_URL}" style="display:inline-block;text-decoration:none;">
+            <img src="https://media.rickyandrosa.com/rr-logo-gold.png" alt="R&R" width="120" height="60" style="display:inline-block;width:120px;height:60px;" />
+          </a>
           <p style="margin:8px 0 0;font-size:11px;color:#6B6259;">June 19, 2027 &middot; Bologna, Italy</p>
         </td></tr>
         <!-- Divider -->
