@@ -10,8 +10,10 @@ import { playfairDisplay, inter } from "@/lib/fonts";
 /* ─── Full-Screen Envelope Video ─── */
 const ENVELOPE_DESKTOP = "https://media.rickyandrosa.com/envelope.mp4";
 const ENVELOPE_MOBILE = "https://media.rickyandrosa.com/envelope-mobile.mp4";
-const ENVELOPE_FADE_AT = 3;      // seconds into video before fade starts
-const ENVELOPE_FADE_DUR = 0.8;     // seconds the fade-out lasts
+const ENVELOPE_FADE_AT = 3;       // seconds into video before fade starts
+const ENVELOPE_FADE_DUR = 0.8;    // seconds the fade-out lasts
+const MUSIC_FADE_IN_MS = 500;    // milliseconds for music to fade in
+const MUSIC_SKIP_MS = 0;        // milliseconds to skip at start (hides stutter)
 
 function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const { t } = useI18n();
@@ -22,6 +24,18 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
 
   useEffect(() => {
     setVideoSrc(window.innerWidth < 640 ? ENVELOPE_MOBILE : ENVELOPE_DESKTOP);
+  }, []);
+
+  // Preload background music so it's ready when user clicks
+  useEffect(() => {
+    const bgAudio = new Audio("https://media.rickyandrosa.com/save-the-date.mp3");
+    bgAudio.preload = "auto";
+    bgAudio.volume = 0;
+    bgAudio.loop = true;
+    // Seek to the start point and let it buffer
+    bgAudio.currentTime = 12.5;
+    bgAudioRef.current = bgAudio;
+    // No cleanup - audio continues after component unmounts (passed to parent)
   }, []);
 
   useEffect(() => {
@@ -44,21 +58,33 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     video.volume = 0.0;
     video.play();
 
-    // Start background music immediately on tap, at a clean point in the track
-    const bgAudio = new Audio("https://media.rickyandrosa.com/save-the-date.mp3");
-    bgAudio.preload = "auto";
-    bgAudio.currentTime = 12.5;
-    bgAudio.volume = 1.0;
-    bgAudio.loop = true;
-    bgAudio.play().catch(() => { });
-    bgAudioRef.current = bgAudio;
+    // Start background music (already preloaded)
+    const bgAudio = bgAudioRef.current;
+    if (bgAudio) {
+      bgAudio.currentTime = 12.5;
+      bgAudio.volume = 0;
+      bgAudio.play().catch(() => { });
+
+      // Skip first 50ms (stay silent), then fade in
+      setTimeout(() => {
+        const fadeSteps = 20;
+        const fadeInterval = MUSIC_FADE_IN_MS / fadeSteps;
+        const fadeIncrement = 1 / fadeSteps;
+        const fadeIn = setInterval(() => {
+          if (bgAudio.volume < 1 - fadeIncrement) {
+            bgAudio.volume = Math.min(1, bgAudio.volume + fadeIncrement);
+          } else {
+            bgAudio.volume = 1;
+            clearInterval(fadeIn);
+          }
+        }, fadeInterval);
+      }, MUSIC_SKIP_MS);
+    }
 
     const startFade = () => {
       setPhase("fading");
       if (bgAudioRef.current) {
         onOpen(bgAudioRef.current);
-      } else {
-        onOpen(bgAudio);
       }
       setTimeout(() => {
         setPhase("done");
