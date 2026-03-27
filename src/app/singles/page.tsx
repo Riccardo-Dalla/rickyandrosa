@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { InteractiveGlobe } from "@/components/singles/InteractiveGlobe";
 import type { GlobeLocation } from "@/components/singles/InteractiveGlobe";
 import { profiles, type SinglesProfile } from "@/data/singles-profiles";
+import { playfairDisplay } from "@/lib/fonts";
 
 function PinIcon({ className }: { className?: string }) {
   return (
@@ -60,9 +61,8 @@ function ProfileCard({ profile }: { profile: SinglesProfile }) {
           alt={profile.name}
           onLoad={() => setImgLoaded(true)}
           onError={() => setImgError(true)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-            imgLoaded ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${imgLoaded ? "opacity-100" : "opacity-0"
+            }`}
         />
       )}
 
@@ -159,9 +159,9 @@ export default function DatingPage() {
       <section className="relative flex min-h-dvh flex-col items-center px-6 pt-16 pb-6">
         <Link
           href="/"
-          className="absolute top-6 left-6 z-10 text-[10px] text-white/25 hover:text-white/60 transition-colors font-sans uppercase tracking-[0.25em]"
+          className="absolute top-6 left-6 z-10 transition-opacity hover:opacity-70"
         >
-          &larr; R&amp;R
+          <img src="/rr-logo-gold.png" alt="R&R" className="h-8 w-auto" />
         </Link>
 
         <div className="flex-1" />
@@ -172,8 +172,8 @@ export default function DatingPage() {
           transition={{ duration: 1, delay: 0.3 }}
           className="text-center mb-6 sm:mb-8"
         >
-          <h1 className="font-script text-5xl sm:text-6xl lg:text-7xl text-gold">
-            Singles at R&amp;R Wedding
+          <h1 className={`${playfairDisplay.className} text-5xl sm:text-6xl lg:text-7xl text-gold italic font-light tracking-wide`}>
+            Singles at R<span className="text-[0.75em]">&amp;</span>R Wedding
           </h1>
           <p className="font-sans text-[11px] sm:text-xs text-white/40 mt-4 tracking-[0.15em]">
             Here are the single guests coming from all over the world!
@@ -201,11 +201,10 @@ export default function DatingPage() {
         >
           <button
             onClick={() => handleSelectLocation(null)}
-            className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-sans font-medium uppercase transition-all border cursor-pointer ${
-              selectedLocation === null
+            className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-sans font-medium uppercase transition-all border cursor-pointer ${selectedLocation === null
                 ? "bg-gold/90 text-[#141220] border-gold"
                 : "bg-transparent text-white/45 border-white/15 hover:border-gold/40 hover:text-white/70"
-            }`}
+              }`}
           >
             All
           </button>
@@ -217,11 +216,10 @@ export default function DatingPage() {
                   selectedLocation === loc.name ? null : loc.name,
                 )
               }
-              className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-sans font-medium uppercase transition-all border cursor-pointer ${
-                selectedLocation === loc.name
+              className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-sans font-medium uppercase transition-all border cursor-pointer ${selectedLocation === loc.name
                   ? "bg-gold/90 text-[#141220] border-gold"
                   : "bg-transparent text-white/45 border-white/15 hover:border-gold/40 hover:text-white/70"
-              }`}
+                }`}
             >
               {loc.name}
             </button>
