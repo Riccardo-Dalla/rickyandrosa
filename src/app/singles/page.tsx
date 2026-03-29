@@ -161,7 +161,7 @@ export default function DatingPage() {
           href="/"
           className="absolute top-6 left-6 z-10 transition-opacity hover:opacity-70"
         >
-          <img src="/rr-logo-gold.png" alt="R&R" className="h-8 w-auto" />
+          <img src="https://media.rickyandrosa.com/rr-logo-gold.png" alt="R&R" className="h-8 w-auto" />
         </Link>
 
         <div className="flex-1" />

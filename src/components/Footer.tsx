@@ -13,7 +13,7 @@ export function Footer() {
     <footer className="border-t border-divider bg-ivory py-16">
       <div className="mx-auto max-w-7xl px-6 text-center lg:px-12">
         <img
-          src="/rr-logo-gold.png"
+          src="https://media.rickyandrosa.com/rr-logo-gold.png"
           alt="R&R"
           className="mx-auto h-20 w-auto"
         />

@@ -58,7 +58,7 @@ export function Navigation() {
       >
         <nav className="flex items-center justify-between px-4 py-4 sm:px-6" style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}>
           <Link href="/" className="block shrink-0" aria-label="R&R Home">
-            <img src="/rr-logo-gold.png" alt="R&R" className="h-10 w-auto" />
+            <img src="https://media.rickyandrosa.com/rr-logo-gold.png" alt="R&R" className="h-10 w-auto" />
           </Link>
           <LanguageToggle className="relative z-50 text-white/90" />
         </nav>
@@ -80,7 +80,7 @@ export function Navigation() {
         <nav className="flex items-center justify-between px-4 py-4 sm:px-6" style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}>
           {/* Left — R&R logo */}
           <Link href="/" className="block shrink-0" aria-label="R&R Home">
-            <img src="/rr-logo-gold.png" alt="R&R" className="h-10 w-auto" />
+            <img src="https://media.rickyandrosa.com/rr-logo-gold.png" alt="R&R" className="h-10 w-auto" />
           </Link>
 
           {/* Center — Desktop nav */}

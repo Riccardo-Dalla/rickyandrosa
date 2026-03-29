@@ -190,7 +190,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
           className="absolute inset-0"
         >
           <img
-            src="/save-the-date-bg.jpg"
+            src="https://media.rickyandrosa.com/save-the-date-bg.jpg"
             alt=""
             className="absolute inset-0 h-full w-full object-cover opacity-40"
             style={{ objectPosition: "60% center" }}
@@ -201,7 +201,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
 
         <div className="relative z-10 mt-16 flex justify-center sm:mt-20">
           <img
-            src="/rr-logo-gold.png"
+            src="https://media.rickyandrosa.com/rr-logo-gold.png"
             alt="Riccardo & Rosa"
             className="w-[208px] opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
           />
