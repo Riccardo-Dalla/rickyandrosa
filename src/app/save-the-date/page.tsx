@@ -32,8 +32,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     bgAudio.preload = "auto";
     bgAudio.volume = 0;
     bgAudio.loop = true;
-    // Seek to the start point and let it buffer
-    bgAudio.currentTime = 12.5;
+    bgAudio.load();
     bgAudioRef.current = bgAudio;
     // No cleanup - audio continues after component unmounts (passed to parent)
   }, []);
@@ -61,7 +60,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
     // Start background music (already preloaded)
     const bgAudio = bgAudioRef.current;
     if (bgAudio) {
-      bgAudio.currentTime = 12.5;
+      bgAudio.currentTime = 0;
       bgAudio.volume = 0;
       bgAudio.play().catch(() => { });
 
