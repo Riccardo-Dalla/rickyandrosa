@@ -65,7 +65,7 @@ async function getPlaceDetails(placeId: string) {
       {
         headers: {
           "X-Goog-Api-Key": API_KEY!,
-          "X-Goog-FieldMask": "formattedAddress,addressComponents",
+          "X-Goog-FieldMask": "formattedAddress,addressComponents,location",
         },
       },
     );
@@ -74,8 +74,10 @@ async function getPlaceDetails(placeId: string) {
 
     return NextResponse.json({
       formattedAddress: data.formattedAddress || null,
+      latitude: data.location?.latitude || null,
+      longitude: data.location?.longitude || null,
     });
   } catch {
-    return NextResponse.json({ formattedAddress: null });
+    return NextResponse.json({ formattedAddress: null, latitude: null, longitude: null });
   }
 }
