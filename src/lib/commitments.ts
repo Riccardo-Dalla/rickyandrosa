@@ -171,8 +171,8 @@ export async function getUnremindedCommitments(): Promise<Commitment[]> {
     FROM commitments
     WHERE completed = false
       AND (
-        last_reminded_at IS NULL
-        OR last_reminded_at < NOW() - INTERVAL '90 days'
+        (last_reminded_at IS NULL AND created_at <= NOW() - INTERVAL '90 days')
+        OR last_reminded_at <= NOW() - INTERVAL '90 days'
       )
     ORDER BY created_at ASC
   `;
