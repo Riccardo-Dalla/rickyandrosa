@@ -74,6 +74,7 @@ export function GuestInfoForm({
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [addressConfirmed, setAddressConfirmed] = useState(false);
+  const [placesAvailable, setPlacesAvailable] = useState(true);
   const [forestCalendarOpen, setForestCalendarOpen] = useState(false);
   const addressRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -113,9 +114,11 @@ export function GuestInfoForm({
       const items: Suggestion[] = data.suggestions || [];
       setSuggestions(items);
       setShowSuggestions(items.length > 0);
+      if (items.length === 0 && input.length >= 3) setPlacesAvailable(false);
     } catch {
       setSuggestions([]);
       setShowSuggestions(false);
+      setPlacesAvailable(false);
     }
   }, []);
 
@@ -157,7 +160,7 @@ export function GuestInfoForm({
     }
     if (!address.trim()) {
       newErrors.address = t.guestForm.required;
-    } else if (!addressConfirmed) {
+    } else if (placesAvailable && !addressConfirmed) {
       newErrors.address = t.guestForm.selectAddress;
     }
     setErrors(newErrors);

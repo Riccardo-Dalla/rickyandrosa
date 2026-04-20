@@ -34,6 +34,11 @@ export async function GET(request: Request) {
 
     const data = await response.json();
 
+    if (!response.ok || data.error) {
+      console.error("Places API error:", data.error?.message ?? response.status);
+      return NextResponse.json({ suggestions: [] });
+    }
+
     const suggestions = (data.suggestions || [])
       .filter(
         (s: { placePrediction?: { text?: { text?: string } } }) =>
