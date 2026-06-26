@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# ── Ensure Playwright browsers (Chromium only for smoke tests) ─────
+echo "Ensuring Playwright Chromium is installed..."
+npx playwright install chromium
+if [ $? -ne 0 ]; then
+  echo "Failed to install Playwright Chromium — commit aborted."
+  exit 1
+fi
+
 # ── Smoke tests (Chromium only, ~8s) ───────────────────────────────
 echo "Running smoke tests..."
 npx playwright test --project=chromium

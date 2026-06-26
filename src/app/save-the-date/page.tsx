@@ -185,7 +185,7 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
     >
-      <section className="relative flex h-dvh min-h-dvh flex-col items-center overflow-hidden bg-deep">
+      <section className="relative grid h-dvh min-h-dvh grid-rows-[auto_1fr_auto] overflow-x-hidden overflow-y-auto bg-deep px-4 pb-4 sm:px-6 sm:pb-8">
         <motion.div
           className="absolute inset-0"
         >
@@ -199,33 +199,35 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
           <div className="std-grain absolute inset-0 opacity-[0.03]" />
         </motion.div>
 
-        <div className="relative z-10 mt-16 flex justify-center sm:mt-20">
+        <div className="relative z-10 flex shrink-0 justify-center pt-[clamp(1rem,4dvh,5rem)]">
           <img
             src="https://media.rickyandrosa.com/rr-logo-gold.png"
             alt="Riccardo & Rosa"
-            className="w-[208px] opacity-90 sm:w-[288px] md:w-[368px] lg:w-[416px]"
+            className="h-auto w-[clamp(7rem,42vw,26rem)] max-h-[min(26dvh,16rem,calc(100dvh-15rem))] object-contain opacity-90"
           />
         </div>
 
-        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 -mt-[8vh]">
-          <p
-            className={`${playfairDisplay.className} mb-0 text-center text-xl font-normal tracking-[0.02em] text-white/90 sm:mb-0 sm:text-2xl md:text-3xl lg:text-4xl`}
-          >
-            {t.saveTheDate.heroBody}
-          </p>
-          <h2
-            className={`${playfairDisplay.className} text-center text-5xl font-normal leading-[1.2] tracking-[0.02em] text-white/90 sm:text-6xl md:text-7xl lg:text-8xl`}
-          >
-            {t.saveTheDate.date}
-          </h2>
-          <p
-            className={`${playfairDisplay.className} mt-3 text-center text-xl font-normal tracking-[0.02em] text-white/90 sm:mt-4 sm:text-2xl md:text-3xl lg:text-4xl`}
-          >
-            {t.saveTheDate.location}
-          </p>
+        <div className="relative z-10 flex min-h-0 items-center justify-center px-2 sm:px-6">
+          <div className="w-full -translate-y-[min(5rem,8vh,max(0px,calc((100dvh-20rem)/4)))] text-center">
+            <p
+              className={`${playfairDisplay.className} text-[clamp(1.125rem,2.2vw+0.5rem,2.25rem)] font-normal tracking-[0.02em] text-white/90`}
+            >
+              {t.saveTheDate.heroBody}
+            </p>
+            <h2
+              className={`${playfairDisplay.className} mt-[clamp(0.125rem,0.75vh,0.75rem)] text-[clamp(1.5rem,4vw+0.5rem,5rem)] font-normal leading-[1.1] tracking-[0.02em] text-white/90`}
+            >
+              {t.saveTheDate.date}
+            </h2>
+            <p
+              className={`${playfairDisplay.className} mt-[clamp(0.25rem,1vh,1rem)] text-[clamp(0.875rem,2vw+0.5rem,2.25rem)] font-normal tracking-[0.02em] text-white/90`}
+            >
+              {t.saveTheDate.location}
+            </p>
+          </div>
         </div>
 
-        <div className="relative z-10 mt-auto mb-6 grid w-full grid-cols-2 gap-3 px-4 sm:mb-8 sm:flex sm:w-auto sm:gap-4 sm:px-6">
+        <div className="relative z-10 grid w-full max-w-lg shrink-0 grid-cols-2 justify-self-center gap-3 min-[540px]:flex min-[540px]:w-auto min-[540px]:max-w-none min-[540px]:gap-4">
           <motion.button
             type="button"
             whileHover={{ scale: 1.03 }}

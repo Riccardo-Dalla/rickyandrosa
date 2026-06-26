@@ -29,6 +29,8 @@ const HERO_VIDEOS: HeroVideo[] = [
   { src: `${MEDIA_BASE}/hero-videos/Zion00015383.mp4`, location: "Utah" },
   { src: `${MEDIA_BASE}/hero-videos/CostaRica00023976.mp4`, objectPosition: "50% 70%", location: "Playa Cocles, Costa Rica" },
   { src: `${MEDIA_BASE}/hero-videos/Zion00001567.mp4`, location: "Utah" },
+  { src: `${MEDIA_BASE}/hero-videos/Dolomites00003000.mp4`, location: "Dolomites, Italy" },
+  { src: `${MEDIA_BASE}/hero-videos/Dolomites00011000.mp4`, location: "Dolomites, Italy" },
 ];
 
 function shuffleArray<T>(arr: T[]): T[] {
