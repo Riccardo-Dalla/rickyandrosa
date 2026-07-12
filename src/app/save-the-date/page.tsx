@@ -20,11 +20,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<"sealed" | "playing" | "fading" | "done">("sealed");
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
-  const [videoSrc, setVideoSrc] = useState("");
-
-  useEffect(() => {
-    setVideoSrc(window.innerWidth < 640 ? ENVELOPE_MOBILE : ENVELOPE_DESKTOP);
-  }, []);
+  const [frameReady, setFrameReady] = useState(false);
 
   // Preload background music so it's ready when user clicks
   useEffect(() => {
@@ -40,11 +36,22 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    video.load();
-    const showFirstFrame = () => { video.currentTime = 0; };
+
+    const showFirstFrame = () => {
+      const reveal = () => setFrameReady(true);
+      if (video.currentTime === 0) {
+        reveal();
+        return;
+      }
+      video.currentTime = 0;
+      video.addEventListener("seeked", reveal, { once: true });
+    };
+
     video.addEventListener("loadeddata", showFirstFrame, { once: true });
+    video.load();
+
     return () => video.removeEventListener("loadeddata", showFirstFrame);
-  }, [videoSrc]);
+  }, []);
 
   const handleOpen = () => {
     if (phase !== "sealed") return;
@@ -119,12 +126,14 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
       >
         <video
           ref={videoRef}
-          src={videoSrc || undefined}
           muted
           playsInline
           preload="auto"
-          className="h-full w-full select-none object-cover object-center sepia-[0.15] saturate-[1.1] brightness-[1.02] sm:sepia-0 sm:saturate-100 sm:brightness-100"
-        />
+          className={`h-full w-full select-none object-cover object-center transition-opacity duration-150 sepia-[0.15] saturate-[1.1] brightness-[1.02] sm:sepia-0 sm:saturate-100 sm:brightness-100 ${frameReady ? "opacity-100" : "opacity-0"}`}
+        >
+          <source media="(max-width: 639px)" src={ENVELOPE_MOBILE} type="video/mp4" />
+          <source src={ENVELOPE_DESKTOP} type="video/mp4" />
+        </video>
       </motion.div>
 
       {/* Tap hint — below the seal */}
