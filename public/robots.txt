@@ -1,9 +1,15 @@
-# Allow Meta crawlers (Facebook, WhatsApp, Instagram link previews)
+# Meta crawlers — link previews (Facebook, WhatsApp, Instagram)
 User-agent: facebookexternalhit
 Allow: /
+Allow: /*?*
 
 User-agent: Facebot
 Allow: /
+Allow: /*?*
+
+User-agent: meta-externalagent
+Allow: /
+Allow: /*?*
 
 # Block everyone else (private wedding site)
 User-agent: *
