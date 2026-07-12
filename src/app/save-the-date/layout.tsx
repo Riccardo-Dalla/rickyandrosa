@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const OG_IMAGE = "https://media.rickyandrosa.com/save-the-date-bg.jpg";
+const OG_IMAGE = "https://media.rickyandrosa.com/save-the-date-bg.jpg?v=2";
 
 export const metadata: Metadata = {
   title: "Save the Date — R&R Wedding",

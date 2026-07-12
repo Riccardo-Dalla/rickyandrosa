@@ -11,9 +11,10 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const OG_LOGO = "https://media.rickyandrosa.com/rr-logo-gold.png";
+const OG_IMAGE = "https://rickyandrosa.com/og-home.png?v=2";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://rickyandrosa.com"),
   title: "R&R Wedding",
   description: "",
   openGraph: {
@@ -23,9 +24,9 @@ export const metadata: Metadata = {
     url: "https://rickyandrosa.com",
     images: [
       {
-        url: OG_LOGO,
-        width: 1024,
-        height: 512,
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
         alt: "Rosa & Riccardo",
       },
     ],
@@ -34,14 +35,14 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "R&R Wedding",
     description: "",
-    images: [OG_LOGO],
+    images: [OG_IMAGE],
   },
   icons: {
     icon: [
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png?v=2", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png?v=2", sizes: "16x16", type: "image/png" },
     ],
-    apple: "/apple-touch-icon.png",
+    apple: "/apple-touch-icon.png?v=2",
   },
   robots: {
     index: false,
