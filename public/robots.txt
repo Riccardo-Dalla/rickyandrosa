@@ -1,2 +1,10 @@
+# Allow Meta crawlers (Facebook, WhatsApp, Instagram link previews)
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Facebot
+Allow: /
+
+# Block everyone else (private wedding site)
 User-agent: *
 Disallow: /
