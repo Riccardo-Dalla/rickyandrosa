@@ -47,7 +47,7 @@ const it: Translations = {
     title:
       "Condividi i tuoi dati così possiamo\ninviarti un invito formale 💌",
     subtitle: "così possiamo inviarti un invito formale 💌",
-    name: "Nome Completo",
+    name: "Nome e Cognome",
     email: "Email",
     address: "Indirizzo Postale",
     namePlaceholder: "Nome e Cognome",
