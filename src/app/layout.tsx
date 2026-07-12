@@ -11,9 +11,31 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+const OG_LOGO = "https://media.rickyandrosa.com/rr-logo-gold.png";
+
 export const metadata: Metadata = {
   title: "R&R Wedding",
-  description: "The wedding of Riccardo & Rosa — Summer 2027 in Bologna, Italy",
+  description: "",
+  openGraph: {
+    title: "R&R Wedding",
+    description: "",
+    type: "website",
+    url: "https://rickyandrosa.com",
+    images: [
+      {
+        url: OG_LOGO,
+        width: 1024,
+        height: 512,
+        alt: "Rosa & Riccardo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "R&R Wedding",
+    description: "",
+    images: [OG_LOGO],
+  },
   icons: {
     icon: [
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
