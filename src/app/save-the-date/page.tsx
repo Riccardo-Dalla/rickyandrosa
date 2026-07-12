@@ -208,19 +208,19 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
         </div>
 
         <div className="relative z-10 flex min-h-0 items-center justify-center px-2 sm:px-6">
-          <div className="w-full -translate-y-[min(5rem,8vh,max(0px,calc((100dvh-20rem)/4)))] text-center">
+          <div className="flex w-full flex-col items-center text-center -translate-y-[min(5rem,8vh,max(0px,calc((100dvh-20rem)/4)))]">
             <p
-              className={`${playfairDisplay.className} text-[clamp(1.125rem,2.2vw+0.5rem,2.25rem)] font-normal tracking-[0.02em] text-white/90`}
+              className={`${playfairDisplay.className} m-0 mb-3 text-xl font-normal leading-none tracking-[0.02em] text-white/90 sm:mb-4 sm:text-2xl md:text-3xl lg:text-4xl`}
             >
               {t.saveTheDate.heroBody}
             </p>
             <h2
-              className={`${playfairDisplay.className} mt-[clamp(0.125rem,0.75vh,0.75rem)] text-[clamp(1.5rem,4vw+0.5rem,5rem)] font-normal leading-[1.1] tracking-[0.02em] text-white/90`}
+              className={`${playfairDisplay.className} m-0 -mt-1 mb-3 text-5xl font-normal leading-none tracking-[0.02em] text-white/90 sm:-mt-1.5 sm:mb-4 sm:text-6xl md:text-7xl lg:text-8xl`}
             >
               {t.saveTheDate.date}
             </h2>
             <p
-              className={`${playfairDisplay.className} mt-[clamp(0.25rem,1vh,1rem)] text-[clamp(0.875rem,2vw+0.5rem,2.25rem)] font-normal tracking-[0.02em] text-white/90`}
+              className={`${playfairDisplay.className} m-0 text-xl font-normal leading-none tracking-[0.02em] text-white/90 sm:text-2xl md:text-3xl lg:text-4xl`}
             >
               {t.saveTheDate.location}
             </p>
