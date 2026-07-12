@@ -40,12 +40,12 @@ const it: Translations = {
     seconds: "Secondi",
     untilCelebrate: "Fino a quando festeggeremo insieme",
     inviteModalTitle:
-      "Condividi i tuoi dati così possiamo inviarti un invito formale 💌",
+      "Condividi i tuoi dati così possiamo inviarti un invito formale per posta 💌",
   },
 
   guestForm: {
     title:
-      "Condividi i tuoi dati così possiamo\ninviarti un invito formale 💌",
+      "Condividi i tuoi dati così possiamo\ninviarti un invito formale per posta 💌",
     subtitle: "così possiamo inviarti un invito formale 💌",
     name: "Nome e Cognome",
     email: "Email",

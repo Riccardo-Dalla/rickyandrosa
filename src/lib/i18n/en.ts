@@ -38,11 +38,11 @@ const en = {
     seconds: "Seconds",
     untilCelebrate: "",
     inviteModalTitle:
-      "Share your details so we can send you a formal invite 💌",
+      "Share your details so we can send you a formal invite by mail 💌",
   },
 
   guestForm: {
-    title: "Please share your details so we can\nsend you a formal invite 💌",
+    title: "Please share your details so we can\nsend you a formal invite by mail 💌",
     subtitle:
       "so we can send you a formal invite 💌",
     name: "Full Name",
