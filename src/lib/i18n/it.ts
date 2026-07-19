@@ -65,7 +65,6 @@ const it: Translations = {
     errorMessage: "Qualcosa \u00E8 andato storto. Riprova.",
     required: "Per favore compila questo campo 😊",
     invalidEmail: "Inserisci un indirizzo email valido",
-    selectAddress: "Seleziona un indirizzo dai suggerimenti",
   },
 
   ourStory: {

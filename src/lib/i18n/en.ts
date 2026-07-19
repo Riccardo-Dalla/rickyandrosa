@@ -63,7 +63,6 @@ const en = {
     errorMessage: "Something went wrong. Please try again.",
     required: "Please fill out this field 😊",
     invalidEmail: "Please enter a valid email address",
-    selectAddress: "Please select an address from the suggestions",
   },
 
   ourStory: {

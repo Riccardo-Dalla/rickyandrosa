@@ -73,8 +73,6 @@ export function GuestInfoForm({
 
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [addressConfirmed, setAddressConfirmed] = useState(false);
-  const [placesAvailable, setPlacesAvailable] = useState(true);
   const [forestCalendarOpen, setForestCalendarOpen] = useState(false);
   const addressRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -114,17 +112,14 @@ export function GuestInfoForm({
       const items: Suggestion[] = data.suggestions || [];
       setSuggestions(items);
       setShowSuggestions(items.length > 0);
-      if (items.length === 0 && input.length >= 3) setPlacesAvailable(false);
     } catch {
       setSuggestions([]);
       setShowSuggestions(false);
-      setPlacesAvailable(false);
     }
   }, []);
 
   const handleAddressChange = (value: string) => {
     setAddress(value);
-    setAddressConfirmed(false);
     if (errors.address) setErrors((p) => ({ ...p, address: undefined }));
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -133,7 +128,6 @@ export function GuestInfoForm({
 
   const selectSuggestion = async (placeId: string, fallbackText: string) => {
     setAddress(fallbackText);
-    setAddressConfirmed(true);
     setShowSuggestions(false);
     setSuggestions([]);
 
@@ -160,8 +154,6 @@ export function GuestInfoForm({
     }
     if (!address.trim()) {
       newErrors.address = t.guestForm.required;
-    } else if (placesAvailable && !addressConfirmed) {
-      newErrors.address = t.guestForm.selectAddress;
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
