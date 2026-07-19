@@ -14,6 +14,22 @@ const ENVELOPE_FADE_AT = 3;       // seconds into video before fade starts
 const ENVELOPE_FADE_DUR = 0.8;    // seconds the fade-out lasts
 const MUSIC_FADE_IN_MS = 500;    // milliseconds for music to fade in
 const MUSIC_SKIP_MS = 0;        // milliseconds to skip at start (hides stutter)
+function setSaveTheDateMediaSession() {
+  if (!("mediaSession" in navigator)) return;
+  const origin = window.location.origin;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: "Save the Date",
+    artist: "Rosa & Riccardo",
+    album: "R&R Wedding",
+    artwork: [
+      {
+        src: `${origin}/media-artwork.png`,
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+  });
+}
 
 function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
   const { t } = useI18n();
@@ -70,6 +86,7 @@ function Envelope({ onOpen }: { onOpen: (bgAudio: HTMLAudioElement) => void }) {
       bgAudio.currentTime = 0;
       bgAudio.volume = 0;
       bgAudio.play().catch(() => { });
+      setSaveTheDateMediaSession();
 
       // Skip first 50ms (stay silent), then fade in
       setTimeout(() => {
@@ -162,6 +179,8 @@ function SaveTheDateContent({ bgAudio }: { bgAudio: HTMLAudioElement | null }) {
 
   useEffect(() => {
     if (!bgAudio) return;
+
+    setSaveTheDateMediaSession();
 
     const onVisibility = () => {
       if (document.hidden) {
