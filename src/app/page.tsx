@@ -33,6 +33,8 @@
 // 22Oct2026 - Used Composer via Cursor to fluid-scale hero title/wedding/RSVP on mobile
 // 22Oct2026 - Used Composer via Cursor to add light center hero-scrim under title stack
 // 22Oct2026 - Used Composer via Cursor to swap hero opening videos 1 and 2 (Dolomites before Zion)
+// 22Oct2026 - Used Composer via Cursor to fade hero video plane ~25% via black overlay
+// 22Oct2026 - Used Composer via Cursor to set hero-video-fade to 20% and remove hero-scrim
 "use client";
 
 import { useState, useEffect, useRef, useCallback, type SyntheticEvent } from "react";
@@ -374,14 +376,14 @@ export default function Home() {
         )}
       </AnimatePresence>
 
+      {/* Overall video-plane fade (~20%) — delete this node + .hero-video-fade in globals.css to revert */}
+      <div aria-hidden="true" className="hero-video-fade" />
+
       {/* Top gradient only — darkens nav; title drop-shadow carries readability over bright video */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(6,24,18,0.82)_0%,rgba(6,24,18,0.45)_9%,rgba(6,24,18,0)_18%,rgba(6,24,18,0)_100%)] max-md:bg-[linear-gradient(to_bottom,rgba(6,24,18,0.8)_0%,rgba(6,24,18,0.4)_10%,rgba(6,24,18,0)_18%,rgba(6,24,18,0)_100%)]"
+        className="absolute inset-0 z-[2] bg-[linear-gradient(to_bottom,rgba(6,24,18,0.82)_0%,rgba(6,24,18,0.45)_9%,rgba(6,24,18,0)_18%,rgba(6,24,18,0)_100%)] max-md:bg-[linear-gradient(to_bottom,rgba(6,24,18,0.8)_0%,rgba(6,24,18,0.4)_10%,rgba(6,24,18,0)_18%,rgba(6,24,18,0)_100%)]"
       />
-
-      {/* Soft center scrim under text only — delete this node + .hero-scrim in globals.css to revert */}
-      <div aria-hidden="true" className="hero-scrim" />
 
       {/* Title + wedding line + RSVP — centered.
           Opacity-only entrance (no y) + reserved title min-height keep RSVP from jumping on font swap. */}

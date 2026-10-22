@@ -25,6 +25,8 @@
 /* 22Oct2026 - Used Composer via Cursor to densify hero-scrim vignette under title stack */
 /* 22Oct2026 - Used Composer via Cursor to restore lighter original hero-scrim vignette */
 /* 22Oct2026 - Used Composer via Cursor to widen hero title fluid clamp on mobile */
+/* 22Oct2026 - Used Composer via Cursor to fade hero video plane ~25% via black overlay */
+/* 22Oct2026 - Used Composer via Cursor to set hero-video-fade to 20% and remove hero-scrim */
 
 :root {
   --color-ivory: #FAF7F2;
@@ -133,17 +135,16 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Soft radial under hero names / wedding / RSVP — not a card; edges stay clear.
-   Revert: remove this block + the .hero-scrim div in page.tsx. */
-.hero-scrim {
+/* Overall fade of the hero video plane (~20%). Overlay — not video opacity —
+   so Framer Motion crossfades stay intact. Tweak opacity; revert: remove this
+   block + the .hero-video-fade div in page.tsx. */
+.hero-video-fade {
   pointer-events: none;
   position: absolute;
   inset: 0;
-  z-index: 9;
-  background: radial-gradient(ellipse 58% 42% at 50% 48%,
-      rgba(0, 0, 0, 0.38) 0%,
-      rgba(0, 0, 0, 0.18) 40%,
-      rgba(0, 0, 0, 0) 72%);
+  z-index: 1;
+  background: #000;
+  opacity: 0.20;
 }
 
 .std-page {
