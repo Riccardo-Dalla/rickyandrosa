@@ -24,6 +24,7 @@
 /* 22Oct2026 - Used Composer via Cursor to add light center hero-scrim under title stack */
 /* 22Oct2026 - Used Composer via Cursor to densify hero-scrim vignette under title stack */
 /* 22Oct2026 - Used Composer via Cursor to restore lighter original hero-scrim vignette */
+/* 22Oct2026 - Used Composer via Cursor to widen hero title fluid clamp on mobile */
 
 :root {
   --color-ivory: #FAF7F2;
@@ -180,9 +181,10 @@ body {
 }
 
 /* Hero title — font from heroTitleFont (HERO_TITLE_FONT in fonts.ts). White + dark shadow, one line.
-   Min must stay below preferred vw so phones can shrink (4.875rem floor was desktop-sized). */
+   Min must stay below preferred vw so phones can shrink (4.875rem floor was desktop-sized).
+   Mobile bias: ~3rem / 12.5vw so names read wider; desktop max unchanged. */
 .hero-title {
-  font-size: clamp(2.6rem, 10vw + 0.5rem, 10.125rem);
+  font-size: clamp(3rem, 12.5vw + 0.35rem, 10.125rem);
   line-height: 1;
   min-height: 1.05em;
   color: #fff;

@@ -32,6 +32,7 @@
 // 22Oct2026 - Used Composer via Cursor to strengthen hero title shadow, bold wedding line, tighten title gap
 // 22Oct2026 - Used Composer via Cursor to fluid-scale hero title/wedding/RSVP on mobile
 // 22Oct2026 - Used Composer via Cursor to add light center hero-scrim under title stack
+// 22Oct2026 - Used Composer via Cursor to swap hero opening videos 1 and 2 (Dolomites before Zion)
 "use client";
 
 import { useState, useEffect, useRef, useCallback, type SyntheticEvent } from "react";
@@ -88,12 +89,12 @@ function shuffleArray<T>(arr: T[]): T[] {
   return shuffled;
 }
 
-/** Zion first, Dolomites second, then a shuffle of the rest. Later cycles reshuffle all. */
+/** Dolomites first, Zion second, then a shuffle of the rest. Later cycles reshuffle all. */
 function buildOpeningQueue(): HeroVideo[] {
   const rest = HERO_VIDEOS.filter(
     (v) => v.src !== OPENING_ZION.src && v.src !== OPENING_DOLOMITES.src,
   );
-  return [OPENING_ZION, OPENING_DOLOMITES, ...shuffleArray(rest)];
+  return [OPENING_DOLOMITES, OPENING_ZION, ...shuffleArray(rest)];
 }
 
 function useRotatingVideo(intervalMs = 8000) {
