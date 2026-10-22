@@ -1,6 +1,24 @@
+// 22Oct2026 - Used Composer via Cursor to wire Quasar Velour CSS variable on root layout
+// 22Oct2026 - Used Composer via Cursor to wire Xyric Nocturne CSS variable on root layout
+// 22Oct2026 - Used Composer via Cursor to wire Allura CSS variable on root layout
+// 22Oct2026 - Used Composer via Cursor to wire Italianno CSS variable on root layout
+// 22Oct2026 - Used Composer via Cursor to wire parameterized heroTitleFont on root layout
+// 22Oct2026 - Used Composer via Cursor to wire Playfair Display CSS variable on root layout
+// 22Oct2026 - Used Composer via Cursor to wire Montserrat CSS variable on root layout
+// 22Oct2026 - Used Composer via Cursor to wire Forum CSS variable on root layout
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { spectral, inter, greatVibes, pinyonScript } from "@/lib/fonts";
+import {
+  spectral,
+  inter,
+  greatVibes,
+  forum,
+  pinyonScript,
+  parisienne,
+  italianno,
+  allura,
+  playfairDisplay,
+} from "@/lib/fonts";
 import { I18nProvider } from "@/lib/i18n/context";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -69,7 +87,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body
-        className={`${spectral.variable} ${inter.variable} ${greatVibes.variable} ${pinyonScript.variable} antialiased`}
+        className={`${spectral.variable} ${inter.variable} ${greatVibes.variable} ${forum.variable} ${pinyonScript.variable} ${parisienne.variable} ${italianno.variable} ${allura.variable} ${playfairDisplay.variable} antialiased`}
       >
         <script
           dangerouslySetInnerHTML={{

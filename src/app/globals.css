@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+/* 22Oct2026 - Used Composer via Cursor to extract shared outline-pill CTA for calendar + homepage RSVP */
+/* 22Oct2026 - Used Composer via Cursor to style hero title amp as cropped logo glyph image */
+/* 22Oct2026 - Used Composer via Cursor to restyle hero amp as italic Playfair serif */
+/* 22Oct2026 - Used Composer via Cursor to pin hero to stable svh so mobile chrome does not shift RSVP */
+/* 22Oct2026 - Used Composer via Cursor to keep hero name PNGs on one line and scale to fit */
+/* 22Oct2026 - Used Composer via Cursor to retune hero title grid for Gemini gold script ARs */
+/* 22Oct2026 - Used Composer via Cursor to add ~30% gold glow on hero title PNGs */
+/* 22Oct2026 - Used Composer via Cursor to swap hero gold glow for dark drop-shadow + tighten title spacing */
+/* 22Oct2026 - Used Composer via Cursor to grow hero names 50% and match Rosa/Riccardo capital-R height */
+/* 22Oct2026 - Used Composer via Cursor to set homepage hero names in Pinyon Script (logo match) */
+/* 22Oct2026 - Used Composer via Cursor to switch hero names to white Quasar Velour Script */
+/* 22Oct2026 - Used Composer via Cursor to optically lighten Quasar Velour hero title (no bold synth) */
+/* 22Oct2026 - Used Composer via Cursor to mix Great Vibes capital R with Quasar Velour hero names */
+/* 22Oct2026 - Used Composer via Cursor to flip hero fonts: Quasar R + Great Vibes remainder */
+/* 22Oct2026 - Used Composer via Cursor to set hero title entirely in Xyric Nocturne */
+/* 22Oct2026 - Used Composer via Cursor to swap homepage hero title font to Allura */
+/* 22Oct2026 - Used Composer via Cursor to swap homepage hero title font to Italianno */
+/* 22Oct2026 - Used Composer via Cursor to inherit hero title font from heroTitleFont.className */
+/* 22Oct2026 - Used Composer via Cursor to grow hero title/wedding/RSVP sizes 50% */
+/* 22Oct2026 - Used Composer via Cursor to strengthen hero title shadow, bold wedding line, tighten title gap */
+/* 22Oct2026 - Used Composer via Cursor to fluid-scale hero title/wedding/RSVP on mobile */
+/* 22Oct2026 - Used Composer via Cursor to add light center hero-scrim under title stack */
+/* 22Oct2026 - Used Composer via Cursor to densify hero-scrim vignette under title stack */
+/* 22Oct2026 - Used Composer via Cursor to restore lighter original hero-scrim vignette */
+
 :root {
   --color-ivory: #FAF7F2;
   --color-charcoal: #2C2C2C;
@@ -65,6 +90,7 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -72,8 +98,15 @@ body {
 }
 
 @keyframes gentle-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .ornament {
@@ -90,16 +123,26 @@ body {
   margin: 2rem auto;
 }
 
+/* Prefer svh over dvh: dynamic viewport height shifts when mobile browser chrome shows/hides,
+   which reflows the absolutely centered hero stack (RSVP jumps). svh stays stable. */
 .hero-fullbleed {
   min-height: 100vh;
+  min-height: 100svh;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-@supports (min-height: 100dvh) {
-  .hero-fullbleed {
-    min-height: 100dvh;
-  }
+/* Soft radial under hero names / wedding / RSVP — not a card; edges stay clear.
+   Revert: remove this block + the .hero-scrim div in page.tsx. */
+.hero-scrim {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  background: radial-gradient(ellipse 58% 42% at 50% 48%,
+      rgba(0, 0, 0, 0.38) 0%,
+      rgba(0, 0, 0, 0.18) 40%,
+      rgba(0, 0, 0, 0) 72%);
 }
 
 .std-page {
@@ -136,15 +179,92 @@ body {
   color: #c5a47e;
 }
 
-@keyframes gold-glow {
-  0%, 100% {
-    filter: drop-shadow(0 0 14px rgba(197, 164, 126, 0.55)) drop-shadow(0 0 40px rgba(197, 164, 126, 0.3)) drop-shadow(0 0 70px rgba(197, 164, 126, 0.15));
+/* Hero title — font from heroTitleFont (HERO_TITLE_FONT in fonts.ts). White + dark shadow, one line.
+   Min must stay below preferred vw so phones can shrink (4.875rem floor was desktop-sized). */
+.hero-title {
+  font-size: clamp(2.6rem, 10vw + 0.5rem, 10.125rem);
+  line-height: 1;
+  min-height: 1.05em;
+  color: #fff;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+.hero-title-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.12em;
+  width: max-content;
+  max-width: 100%;
+  margin-inline: auto;
+  white-space: nowrap;
+  /* font-family from heroTitleFont.className on .hero-title (HERO_TITLE_FONT in fonts.ts) */
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: 0.012em;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.9),
+    0 2px 8px rgba(0, 0, 0, 0.7),
+    0 6px 20px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Classic italic serif amp — not Pinyon’s script glyph (same idea as .rr-amp). */
+.hero-amp {
+  font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.6em;
+  margin: 0 0.04em;
+  color: #fff;
+  line-height: 1;
+}
+
+.hero-wedding-line {
+  font-size: clamp(0.7rem, 2vw + 0.35rem, 1.22rem);
+  font-weight: 700;
+  letter-spacing: clamp(0.1em, 0.35vw + 0.08em, 0.22em);
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.hero-rsvp-pill {
+  font-size: clamp(0.8125rem, 1.5vw + 0.5rem, 1.22rem);
+  padding-inline: clamp(1.75rem, 4vw, 3rem);
+  padding-block: clamp(0.75rem, 1.5vw, 1.125rem);
+  letter-spacing: clamp(0.14em, 0.3vw + 0.1em, 0.26em);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+}
+
+/* One-shot muted sound-icon hint — plays once, then stays quiet */
+@keyframes sound-hint-pulse {
+
+  0%,
+  100% {
+    color: rgba(255, 255, 255, 0.8);
+    transform: scale(1);
   }
-  50% {
-    filter: drop-shadow(0 0 22px rgba(197, 164, 126, 0.7)) drop-shadow(0 0 60px rgba(197, 164, 126, 0.4)) drop-shadow(0 0 100px rgba(197, 164, 126, 0.2));
+
+  35% {
+    color: #c5a47e;
+    transform: scale(1.12);
+  }
+
+  65% {
+    color: #e3c78a;
+    transform: scale(1.06);
   }
 }
 
-.rr-glow {
-  animation: gold-glow 5s ease-in-out infinite;
+.sound-hint-once {
+  animation: sound-hint-pulse 1.6s ease-in-out 1.4s 1 both;
+}
+
+/* Outline pill CTA — save-the-date Add to Calendar + homepage RSVP */
+.cta-outline-pill {
+  @apply rounded-full border border-white/20 font-sans font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold;
 }

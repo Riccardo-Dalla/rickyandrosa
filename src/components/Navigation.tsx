@@ -1,3 +1,6 @@
+// 22Oct2026 - Used Composer via Cursor to soften homepage minimal-nav logo hierarchy
+// 22Oct2026 - Used Composer via Cursor to fix mobile burger X gap at center cross
+// 22Oct2026 - Used Composer via Cursor to remove gallery nav item
 "use client";
 
 import { useState, useEffect } from "react";
@@ -17,7 +20,6 @@ function useNavItems() {
     { label: t.nav.bolognaGuide, href: "/bologna-guide" },
     { label: t.nav.ourStory, href: "/our-story" },
     { label: t.nav.reverseRegistry, href: "/reverse-registry" },
-    { label: t.nav.gallery, href: "https://gallery.rickyandrosa.com", external: true },
     { label: t.nav.rsvp, href: "https://rsvp.rickyandrosa.com", external: true },
   ];
   
@@ -58,7 +60,11 @@ export function Navigation() {
       >
         <nav className="flex items-center justify-between px-4 py-4 sm:px-6" style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}>
           <Link href="/" className="block shrink-0" aria-label="R&R Home">
-            <img src="https://media.rickyandrosa.com/rr-logo-gold.png" alt="R&R" className="h-10 w-auto" />
+            <img
+              src="https://media.rickyandrosa.com/rr-logo-gold.png"
+              alt="R&R"
+              className="h-8 w-auto opacity-90"
+            />
           </Link>
           <LanguageToggle className="relative z-50 text-white/90" />
         </nav>
@@ -118,28 +124,24 @@ export function Navigation() {
 
           {/* Right — Language toggle + mobile burger */}
           <div className="flex items-center gap-3">
-            {/* Mobile burger */}
+            {/* Mobile burger — absolute bars so open state shares one center (no flex-gap hole) */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="relative z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
+              className="relative z-50 flex h-10 w-10 items-center justify-center lg:hidden"
               aria-label={t.nav.toggleMenu}
             >
               <span
-                className={`block h-[1.5px] w-6 transition-all duration-300 ${
+                className={`absolute block h-[1.5px] w-6 transition-all duration-300 ${
                   isOpen
-                    ? "translate-y-[3px] rotate-45 bg-charcoal"
-                    : showSolid
-                    ? "bg-charcoal"
-                    : "bg-white"
+                    ? "rotate-45 bg-charcoal"
+                    : `-translate-y-[3.5px] ${showSolid ? "bg-charcoal" : "bg-white"}`
                 }`}
               />
               <span
-                className={`block h-[1.5px] w-6 transition-all duration-300 ${
+                className={`absolute block h-[1.5px] w-6 transition-all duration-300 ${
                   isOpen
-                    ? "-translate-y-[3px] -rotate-45 bg-charcoal"
-                    : showSolid
-                    ? "bg-charcoal"
-                    : "bg-white"
+                    ? "-rotate-45 bg-charcoal"
+                    : `translate-y-[3.5px] ${showSolid ? "bg-charcoal" : "bg-white"}`
                 }`}
               />
             </button>

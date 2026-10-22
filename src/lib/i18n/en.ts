@@ -1,11 +1,13 @@
+// 22Oct2026 - Used Composer via Cursor to add homepage dateShort/city copy keys
+// 22Oct2026 - Used Composer via Cursor to remove gallery nav i18n key
+// 22Oct2026 - Used Composer via Cursor to rename Reverse Registry labels to Registry
 const en = {
   nav: {
     home: "Home",
     events: "Events",
     bolognaGuide: "Bologna Guide",
     ourStory: "Our Story",
-    reverseRegistry: "Reverse Registry",
-    gallery: "Gallery",
+    reverseRegistry: "Registry",
     rsvp: "RSVP",
     toggleMenu: "Toggle menu",
   },
@@ -18,7 +20,11 @@ const en = {
   home: {
     summerBologna: "June 19, 2027 \u00A0·\u00A0 Bologna, Italy",
     wedding: "Wedding",
+    dateShort: "June 19 2027",
+    city: "Bologna",
     detailsToCome: "Details to come",
+    muteMusic: "Mute music",
+    unmuteMusic: "Unmute music",
   },
 
   saveTheDate: {
@@ -364,7 +370,7 @@ const en = {
   },
 
   reverseRegistry: {
-    reverseRegistry: "Reverse Registry",
+    reverseRegistry: "Registry",
     title: "The Things We\u2019ll Finally Do",
     subtitle:
       "Instead of buying things for the couple, choose from a list of experiences to do for yourself — and commit to actually doing them. You can also add your own ideas.",
@@ -398,7 +404,7 @@ const en = {
   },
 
   activities: {
-    reverseRegistry: "Reverse Registry",
+    reverseRegistry: "Registry",
     chooseYourAdventure: "Choose Your Adventure",
     commit: "Commit \u2192",
     yourIdea: "Your Idea",

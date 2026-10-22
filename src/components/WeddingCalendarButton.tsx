@@ -1,3 +1,4 @@
+// 22Oct2026 - Used Composer via Cursor to share outline-pill CTA class with homepage RSVP
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -24,7 +25,7 @@ export type WeddingCalendarVariant = "hero" | "forestGold";
 
 const triggerStyles: Record<WeddingCalendarVariant, string> = {
   hero:
-    "flex flex-col items-center gap-1.5 rounded-full border border-white/20 px-5 py-3 font-sans text-[11px] font-semibold text-white/70 backdrop-blur-sm transition-all duration-300 hover:border-gold/50 hover:text-gold sm:flex-row sm:gap-3 sm:px-8 sm:text-[13px]",
+    "cta-outline-pill flex flex-col items-center gap-1.5 px-5 py-3 text-[11px] sm:flex-row sm:gap-3 sm:px-8 sm:text-[13px]",
   forestGold:
     "flex flex-col items-center gap-1.5 rounded-full border border-gold/45 px-5 py-3 font-sans text-[11px] font-semibold text-gold/90 backdrop-blur-sm transition-all duration-300 hover:border-gold hover:bg-gold/10 hover:text-gold sm:flex-row sm:gap-3 sm:px-8 sm:text-[13px]",
 };

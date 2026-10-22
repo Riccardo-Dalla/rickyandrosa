@@ -1,13 +1,15 @@
 import type { Translations } from "./en";
 
+// 22Oct2026 - Used Composer via Cursor to add homepage dateShort/city copy keys
+// 22Oct2026 - Used Composer via Cursor to remove gallery nav i18n key
+// 22Oct2026 - Used Composer via Cursor to rename Reverse Registry labels to Registry
 const it: Translations = {
   nav: {
     home: "Home",
     events: "Eventi",
     bolognaGuide: "Guida a Bologna",
     ourStory: "La Nostra Storia",
-    reverseRegistry: "Reverse Registry",
-    gallery: "Galleria",
+    reverseRegistry: "Registry",
     rsvp: "RSVP",
     toggleMenu: "Apri menu",
   },
@@ -20,7 +22,11 @@ const it: Translations = {
   home: {
     summerBologna: "19 Giugno 2027 \u00A0·\u00A0 Bologna, Italia",
     wedding: "Matrimonio",
+    dateShort: "19 Giugno 2027",
+    city: "Bologna",
     detailsToCome: "Dettagli in arrivo",
+    muteMusic: "Disattiva audio",
+    unmuteMusic: "Attiva audio",
   },
 
   saveTheDate: {
@@ -366,7 +372,7 @@ const it: Translations = {
   },
 
   reverseRegistry: {
-    reverseRegistry: "Reverse Registry",
+    reverseRegistry: "Registry",
     title: "Le Cose Che Finalmente Faremo",
     subtitle:
       "Invece di comprare regali per gli sposi, scegliete dalla lista di esperienze da fare per voi stessi — e impegnatevi davvero a farle. Potete anche aggiungere le vostre idee.",
@@ -400,7 +406,7 @@ const it: Translations = {
   },
 
   activities: {
-    reverseRegistry: "Reverse Registry",
+    reverseRegistry: "Registry",
     chooseYourAdventure: "Scegli la Tua Avventura",
     commit: "Mi Impegno \u2192",
     yourIdea: "La Tua Idea",
